@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dowith/view/dowith/dowith_main.dart';
 import 'package:flutter_dowith/view/settings/settings_main.dart';
 import 'package:flutter_dowith/view/todo/todo_main.dart';
 
@@ -21,6 +21,7 @@ class _NaviHomeState extends State<NaviHome> {
     _selectedIndex = 0;
     _pageList = const [
       TodoMain(),
+      DoWithMain(),
       SettingsMain(),
     ];
     _pageController = PageController(initialPage: _selectedIndex);
@@ -67,7 +68,7 @@ class _NaviHomeState extends State<NaviHome> {
         bottomNavigationBar: NavigationBarTheme(
           data: NavigationBarThemeData(
             elevation: 12.0,
-            backgroundColor: scheme.onSecondary,
+            indicatorColor: scheme.onPrimary,
             labelTextStyle: MaterialStateProperty.all(
               const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.5),
             ),
@@ -77,7 +78,6 @@ class _NaviHomeState extends State<NaviHome> {
             child: ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(20)),
               child: NavigationBar(
-                indicatorColor: scheme.onPrimary,
                 animationDuration: const Duration(milliseconds: 500),
                 labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
                 selectedIndex: _selectedIndex,
@@ -93,6 +93,10 @@ class _NaviHomeState extends State<NaviHome> {
                       selectedIcon: Icon(Icons.task_sharp, color: scheme.primary),
                       icon: const Icon(Icons.task_outlined),
                       label: 'TODO'),
+                  NavigationDestination(
+                      selectedIcon: Icon(Icons.supervisor_account_outlined, color: scheme.primary),
+                      icon: const Icon(Icons.supervisor_account_rounded),
+                      label: 'DO WITH'),
                   NavigationDestination(
                       selectedIcon: Icon(Icons.settings_applications, color: scheme.primary),
                       icon: const Icon(Icons.settings_applications_outlined),

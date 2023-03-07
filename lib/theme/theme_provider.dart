@@ -3,15 +3,25 @@ import 'theme_palette.dart';
 
 class ThemeProvider extends ChangeNotifier {
   late ColorScheme _colorScheme;
-  final bool _isDarkMode = false;
+  bool _isDarkMode = false;
+  final int _modeValue = 1;
 
   ThemeProvider() {
-    _colorScheme = themeSwitcher(_isDarkMode, 0);
+    _colorScheme = themeSwitcher(_isDarkMode, _modeValue);
   }
 
-  get isDarkMode => _isDarkMode;
+  bool get isDarkMode => _isDarkMode;
+
+  set isDarkMode(bool value){
+    _isDarkMode = value;
+    notifyListeners();
+  }
 
   get colorScheme => _colorScheme;
+
+  get modeValue => _modeValue;
+
+  
 
   themeSwitcher(bool isDarMode, int value) {
     if (!isDarMode) {
@@ -47,19 +57,15 @@ class ThemeProvider extends ChangeNotifier {
     }
   }
 
-  void themeSelector(bool isDarkMode, int mode) {
-    _colorScheme = themeSwitcher(isDarkMode, mode);
+  void themeSelector(int mode) {
+    _colorScheme = themeSwitcher(_isDarkMode, mode);
     notifyListeners();
   }
 
-  modeSwitcher(bool isDarkMode) {
-    switch (isDarkMode) {
-      case false:
-        return 1;
-      case true:
-        return 2;
-      default:
-        return 1;
-    }
+  void modeSelector(bool isDarkMode){
+    _colorScheme = themeSwitcher(isDarkMode, _modeValue);
+    notifyListeners();
   }
+
+
 }
