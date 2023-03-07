@@ -1,5 +1,5 @@
 class SqlModel {
-  final int id;
+  final int? id;
   final String title;
   final String content;
   final String author;
@@ -9,8 +9,8 @@ class SqlModel {
   final DateTime expireOn;
   final DateTime? completeAt;
 
-  SqlModel({
-      required this.id,
+  SqlModel(
+      {this.id,
       required this.title,
       required this.content,
       required this.author,
@@ -18,8 +18,7 @@ class SqlModel {
       required this.createAt,
       required this.startOn,
       required this.expireOn,
-      this.completeAt
-      });
+      this.completeAt});
 
   Map<String, dynamic> toMap() {
     return {

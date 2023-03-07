@@ -67,10 +67,13 @@ class _NaviHomeState extends State<NaviHome> {
         extendBody: true,
         bottomNavigationBar: NavigationBarTheme(
           data: NavigationBarThemeData(
-            elevation: 12.0,
+            elevation: 5.0,
             indicatorColor: scheme.onPrimary,
             labelTextStyle: MaterialStateProperty.all(
-              const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.5),
+              const TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.5),
             ),
           ),
           child: Padding(
@@ -79,7 +82,8 @@ class _NaviHomeState extends State<NaviHome> {
               borderRadius: const BorderRadius.all(Radius.circular(20)),
               child: NavigationBar(
                 animationDuration: const Duration(milliseconds: 500),
-                labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+                labelBehavior:
+                    NavigationDestinationLabelBehavior.onlyShowSelected,
                 selectedIndex: _selectedIndex,
                 height: 70,
                 onDestinationSelected: (index) {
@@ -90,15 +94,18 @@ class _NaviHomeState extends State<NaviHome> {
                 },
                 destinations: [
                   NavigationDestination(
-                      selectedIcon: Icon(Icons.task_sharp, color: scheme.primary),
+                      selectedIcon:
+                          Icon(Icons.task_sharp, color: scheme.primary),
                       icon: const Icon(Icons.task_outlined),
                       label: 'TODO'),
                   NavigationDestination(
-                      selectedIcon: Icon(Icons.supervisor_account_outlined, color: scheme.primary),
+                      selectedIcon: Icon(Icons.supervisor_account_outlined,
+                          color: scheme.primary),
                       icon: const Icon(Icons.supervisor_account_rounded),
                       label: 'DO WITH'),
                   NavigationDestination(
-                      selectedIcon: Icon(Icons.settings_applications, color: scheme.primary),
+                      selectedIcon: Icon(Icons.settings_applications,
+                          color: scheme.primary),
                       icon: const Icon(Icons.settings_applications_outlined),
                       label: 'SETTINGS'),
                 ],

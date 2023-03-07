@@ -7,6 +7,7 @@ version: 1.0.0+1
 environment:
   sdk: '>=2.18.4 <3.0.0'
 dependencies:
+  calendar_timeline: ^1.1.1
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter

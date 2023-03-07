@@ -15,7 +15,7 @@ class SqlData {
 
   Future<Database> _dataBase() async {
     Directory docDir = await getApplicationDocumentsDirectory();
-    String path = join(docDir.path, 'todoDatabase.db');
+    String path = join(docDir.path, 'testTwo.db');
     return await openDatabase(path,
         version: 1, onCreate: initDB, onUpgrade: onUpgrade);
   }
@@ -26,10 +26,10 @@ class SqlData {
             'id INTEGER PRIMARY KEY AUTOINCREMENT, '
             'title TEXT, '
             'author TEXT, '
-            'comment TEXT, '
+            'content TEXT, '
             'state INTEGER, '
             'createAt INTEGER, '
-            'startsOn INTEGER, '
+            'startOn INTEGER, '
             'expireOn INTEGER, '
             'completeAt INTEGER'
             ')')
@@ -42,7 +42,7 @@ class SqlData {
 
   Future<void> onUpgrade(Database db, int oldVersion, int newVersion) async {
     // ** If you add a column, you must change the version. **
-    if (oldVersion < newVersion){
+    if (oldVersion < newVersion) {
       // ignore: todo
       // TODO: columns update.
     }
