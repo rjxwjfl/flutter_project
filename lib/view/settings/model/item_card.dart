@@ -24,7 +24,7 @@ class ItemCard extends StatelessWidget {
           child: Row(
             children: [
               Expanded(child: Text(title, style: const TextStyle(fontSize: 15),)),
-              const Icon(Icons.arrow_forward_ios_rounded),
+              const Icon(Icons.keyboard_arrow_right_rounded),
             ],
           ),
         ),

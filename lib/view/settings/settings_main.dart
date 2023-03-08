@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dowith/main.dart';
+import 'package:flutter_dowith/view/settings/model/animated_card.dart';
 import 'package:flutter_dowith/view/settings/model/item_card.dart';
 import 'package:flutter_dowith/view/settings/model/item_switcher.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -41,40 +42,44 @@ class SettingsMain extends StatelessWidget {
   }
 
   Widget themeSettingTab() {
-    return Consumer(
-      builder: (context, ref, child) {
-        return Padding(
-          padding: const EdgeInsets.only(left: 12, right: 12),
-          child: Column(
-            children: [
-              SizedBox(
-                  height: 60,
-                  child: Row(
-                    children: const [
-                      Text("Theme Settings", style: TextStyle(fontSize: 22, letterSpacing: 1.2),),
+    return SingleChildScrollView(
+      child: Consumer(
+        builder: (context, ref, child) {
+          return Padding(
+            padding: const EdgeInsets.only(left: 12, right: 12),
+            child: Column(
+              children: [
+                SizedBox(
+                    height: 60,
+                    child: Row(
+                      children: const [
+                        Text("Theme Settings", style: TextStyle(fontSize: 22, letterSpacing: 1.2),),
+                      ],
+                    )),
+                ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  child: Column(
+                    children: [
+                      ItemCard(title: "색상 설정", callback: () {}),
+                      const Divider(height: 1),
+                      const AnimatedCard(),
+                      const Divider(height: 1),
+                      ItemSwitcher(
+                          title: "다크모드 설정",
+                          callback: (value) {
+                            ref.watch(themeProv).isDarkMode = value;
+          
+                            ref.watch(themeProv).modeSelector(value);
+                          },
+                          value: ref.watch(themeProv).isDarkMode),
                     ],
-                  )),
-              ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                child: Column(
-                  children: [
-                    ItemCard(title: "색상 설정", callback: () {}),
-                    const Divider(height: 1),
-                    ItemSwitcher(
-                        title: "다크모드 설정",
-                        callback: (value) {
-                          ref.watch(themeProv).isDarkMode = value;
-        
-                          ref.watch(themeProv).modeSelector(value);
-                        },
-                        value: ref.watch(themeProv).isDarkMode),
-                  ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-        );
-      },
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

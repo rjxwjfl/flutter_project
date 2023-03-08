@@ -15,7 +15,9 @@ dependencies:
   intl: ^0.18.0
   path: ^1.8.2
   path_provider: ^2.0.13
+  shared_preferences: ^2.0.18
   sqflite: ^2.2.5
+  table_calendar: ^3.0.9
 
 dev_dependencies:
   flutter_lints: ^2.0.0

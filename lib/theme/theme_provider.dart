@@ -4,7 +4,7 @@ import 'theme_palette.dart';
 class ThemeProvider extends ChangeNotifier {
   late ColorScheme _colorScheme;
   bool _isDarkMode = false;
-  final int _modeValue = 1;
+  int _modeValue = 0;
 
   ThemeProvider() {
     _colorScheme = themeSwitcher(_isDarkMode, _modeValue);
@@ -12,7 +12,7 @@ class ThemeProvider extends ChangeNotifier {
 
   bool get isDarkMode => _isDarkMode;
 
-  set isDarkMode(bool value){
+  set isDarkMode(bool value) {
     _isDarkMode = value;
     notifyListeners();
   }
@@ -21,51 +21,56 @@ class ThemeProvider extends ChangeNotifier {
 
   get modeValue => _modeValue;
 
-  
-
   themeSwitcher(bool isDarMode, int value) {
     if (!isDarMode) {
       switch (value) {
         case 1:
-          return lightPaleScheme;
+          return coralVelvetRedL;
         case 2:
-          return lightPurpleTheme;
+          return carrotOrangeL;
         case 3:
-          return lightPinkScheme;
+          return canaryL;
         case 4:
-          return lightAmberScheme;
+          return mossGreenL;
         case 5:
-          return lightWoodScheme;
+          return indigoL;
+        case 6:
+          return navyL;
+        case 7:
+          return deeperVioletL;
         default:
-          return lightPaleScheme;
+          return indigoL;
       }
     } else {
       switch (value) {
         case 1:
-          return darkPaleScheme;
+          return coralVelvetRedD;
         case 2:
-          return darkPurpleTheme;
+          return carrotOrangeD;
         case 3:
-          return darkPinkScheme;
+          return canaryD;
         case 4:
-          return darkAmberScheme;
+          return mossGreenD;
         case 5:
-          return darkWoodScheme;
+          return indigoD;
+        case 6:
+          return navyD;
+        case 7:
+          return deeperVioletD;
         default:
-          return darkPaleScheme;
+          return indigoD;
       }
     }
   }
 
   void themeSelector(int mode) {
+    _modeValue = mode;
     _colorScheme = themeSwitcher(_isDarkMode, mode);
     notifyListeners();
   }
 
-  void modeSelector(bool isDarkMode){
+  void modeSelector(bool isDarkMode) {
     _colorScheme = themeSwitcher(isDarkMode, _modeValue);
     notifyListeners();
   }
-
-
 }
