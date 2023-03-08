@@ -67,7 +67,6 @@ class _NaviHomeState extends State<NaviHome> {
         extendBody: true,
         bottomNavigationBar: NavigationBarTheme(
           data: NavigationBarThemeData(
-            elevation: 5.0,
             indicatorColor: scheme.onPrimary,
             labelTextStyle: MaterialStateProperty.all(
               const TextStyle(
@@ -76,41 +75,36 @@ class _NaviHomeState extends State<NaviHome> {
                   letterSpacing: 1.5),
             ),
           ),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 8, right: 8, bottom: 12),
-            child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(20)),
-              child: NavigationBar(
-                animationDuration: const Duration(milliseconds: 500),
-                labelBehavior:
-                    NavigationDestinationLabelBehavior.onlyShowSelected,
-                selectedIndex: _selectedIndex,
-                height: 70,
-                onDestinationSelected: (index) {
-                  setState(() {
-                    _selectedIndex = index;
-                    _pageController.jumpToPage(index);
-                  });
-                },
-                destinations: [
-                  NavigationDestination(
-                      selectedIcon:
-                          Icon(Icons.task_sharp, color: scheme.primary),
-                      icon: const Icon(Icons.task_outlined),
-                      label: 'TODO'),
-                  NavigationDestination(
-                      selectedIcon: Icon(Icons.supervisor_account_outlined,
-                          color: scheme.primary),
-                      icon: const Icon(Icons.supervisor_account_rounded),
-                      label: 'DO WITH'),
-                  NavigationDestination(
-                      selectedIcon: Icon(Icons.settings_applications,
-                          color: scheme.primary),
-                      icon: const Icon(Icons.settings_applications_outlined),
-                      label: 'SETTINGS'),
-                ],
-              ),
-            ),
+          child: NavigationBar(
+            elevation: 12.0,
+            animationDuration: const Duration(milliseconds: 500),
+            labelBehavior:
+                NavigationDestinationLabelBehavior.onlyShowSelected,
+            selectedIndex: _selectedIndex,
+            height: 70,
+            onDestinationSelected: (index) {
+              setState(() {
+                _selectedIndex = index;
+                _pageController.jumpToPage(index);
+              });
+            },
+            destinations: [
+              NavigationDestination(
+                  selectedIcon:
+                      Icon(Icons.task_sharp, color: scheme.primary),
+                  icon: const Icon(Icons.task_outlined),
+                  label: 'TODO'),
+              NavigationDestination(
+                  selectedIcon: Icon(Icons.supervisor_account_outlined,
+                      color: scheme.primary),
+                  icon: const Icon(Icons.supervisor_account_rounded),
+                  label: 'DO WITH'),
+              NavigationDestination(
+                  selectedIcon: Icon(Icons.settings_applications,
+                      color: scheme.primary),
+                  icon: const Icon(Icons.settings_applications_outlined),
+                  label: 'SETTINGS'),
+            ],
           ),
         ),
       ),

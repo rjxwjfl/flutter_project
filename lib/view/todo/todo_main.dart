@@ -15,7 +15,7 @@ class _TodoMainState extends State<TodoMain> {
   late final DateTime today = DateTime.now();
   late DateTime _selectedDay;
   late DateTime _focusedDay;
-  late CalendarFormat _calendarFormat = CalendarFormat.twoWeeks;
+  late CalendarFormat _calendarFormat = CalendarFormat.week;
   late final Bloc bloc;
   late final ScrollController _scrollController = ScrollController();
 
@@ -51,10 +51,28 @@ class _TodoMainState extends State<TodoMain> {
     return Scaffold(
       body: Column(
         children: [
-          returnCalendar(),
+          Stack(
+            children: [
+              returnCalendar(),
+              appBarUI("TITLE"),
+            ],
+          ),
           Expanded(child: todoListView()),
         ],
       ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 70),
+        child: FloatingActionButton(onPressed: (){}, child: const Icon(Icons.add),),
+      ),
+    );
+  }
+
+  Widget appBarUI(String title){
+    return Container(
+      height: kToolbarHeight,
+      width: MediaQuery.of(context).size.width,
+      color: Theme.of(context).colorScheme.background,
+      child: Center(child: Text(title)),
     );
   }
 
@@ -109,20 +127,31 @@ class _TodoMainState extends State<TodoMain> {
   Widget returnCalendar() {
     ColorScheme scheme = Theme.of(context).colorScheme;
     return Padding(
-      padding: const EdgeInsets.only(top: 12, right: 12, left: 12),
+      padding: const EdgeInsets.only(top:kToolbarHeight),
       child: Container(
         decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            border: Border.all(color: scheme.onPrimaryContainer)),
+          color: scheme.background,
+          borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10),),
+          boxShadow: [
+            BoxShadow(
+              color: scheme.shadow,
+              offset: const Offset(1, 2),
+              blurRadius: 2,
+              spreadRadius: 1,
+            ),
+            BoxShadow(
+              color: scheme.background,
+              offset: const Offset(-2, -1),
+              blurRadius: 2,
+              spreadRadius: 1,
+            ),
+          ],
+        ),
         child: TableCalendar(
           focusedDay: _focusedDay,
           calendarFormat: _calendarFormat,
           formatAnimationDuration: const Duration(milliseconds: 100),
-          availableCalendarFormats: const {
-            CalendarFormat.month: "2주간",
-            CalendarFormat.week: "월간",
-            CalendarFormat.twoWeeks: "주간"
-          },
+          availableCalendarFormats: const {CalendarFormat.month: "2주간", CalendarFormat.week: "월간", CalendarFormat.twoWeeks: "주간"},
           firstDay: DateTime(2000, 1, 1),
           lastDay: DateTime(2100, 12, 31),
           selectedDayPredicate: (day) {
@@ -140,18 +169,10 @@ class _TodoMainState extends State<TodoMain> {
             });
           },
           calendarStyle: CalendarStyle(
-              todayDecoration:
-                  BoxDecoration(color: scheme.secondary, shape: BoxShape.circle),
-              todayTextStyle: TextStyle(
-                  color: scheme.background,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w400),
-              selectedDecoration:
-                  BoxDecoration(color: scheme.primary, shape: BoxShape.circle),
-              selectedTextStyle: TextStyle(
-                  color: scheme.background,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w400)),
+              todayDecoration: BoxDecoration(color: scheme.secondary, shape: BoxShape.circle),
+              todayTextStyle: TextStyle(color: scheme.background, fontSize: 18, fontWeight: FontWeight.w400),
+              selectedDecoration: BoxDecoration(color: scheme.primary, shape: BoxShape.circle),
+              selectedTextStyle: TextStyle(color: scheme.background, fontSize: 18, fontWeight: FontWeight.w400)),
         ),
       ),
     );
