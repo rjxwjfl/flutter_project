@@ -49,7 +49,7 @@ class _AnimatedCardState extends ConsumerState<AnimatedCard>
       },
       child: AnimatedContainer(
         duration: duration,
-        height: _isExpanded ? 150 : 60,
+        height: _isExpanded ? 150 : 50,
         color: Theme.of(context).colorScheme.secondaryContainer,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(17, 8, 17, 8),

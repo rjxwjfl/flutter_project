@@ -17,7 +17,7 @@ class ItemCard extends StatelessWidget {
     return GestureDetector(
       onTap: callback,
       child: Container(
-        height: 60,
+        height: 50,
         color: color ?? Theme.of(context).colorScheme.secondaryContainer,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(17,8,17,8),

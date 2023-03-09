@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dowith/bloc/bloc.dart';
 import 'package:flutter_dowith/bloc/sql_dao.dart';
-import 'package:flutter_dowith/model/database/sql_model.dart';
+import 'package:flutter_dowith/bloc/model/sql_model.dart';
+import 'package:flutter_dowith/view/todo/model/todo_list_view.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class TodoMain extends StatefulWidget {
@@ -16,6 +17,7 @@ class _TodoMainState extends State<TodoMain> {
   late DateTime _selectedDay;
   late DateTime _focusedDay;
   late CalendarFormat _calendarFormat = CalendarFormat.week;
+  late double _flexibleSize = 175.0;
   late final Bloc bloc;
   late final ScrollController _scrollController = ScrollController();
 
@@ -41,33 +43,41 @@ class _TodoMainState extends State<TodoMain> {
         author: "author",
         state: TodoState.scheduled,
         createAt: DateTime.now(),
-        startOn: DateTime.now(),
-        expireOn: DateTime.now());
+        startOn: _selectedDay,
+        expireOn: _selectedDay);
     bloc.insertData(sqlModel);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Stack(
         children: [
-          Stack(
+          Column(
             children: [
-              returnCalendar(),
-              appBarUI("TITLE"),
+              SizedBox(height: _flexibleSize),
+              Expanded(child: todoListView()),
             ],
           ),
-          Expanded(child: todoListView()),
+          Column(
+            children: [
+              appBarUI("TITLE"),
+              returnCalendar(),
+            ],
+          ),
         ],
       ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 70),
-        child: FloatingActionButton(onPressed: (){}, child: const Icon(Icons.add),),
+        child: FloatingActionButton(
+          onPressed: () {addSql();},
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }
 
-  Widget appBarUI(String title){
+  Widget appBarUI(String title) {
     return Container(
       height: kToolbarHeight,
       width: MediaQuery.of(context).size.width,
@@ -78,7 +88,7 @@ class _TodoMainState extends State<TodoMain> {
 
   Widget todoListView() {
     return StreamBuilder(
-      stream: bloc.todoListStream,
+      stream: bloc.dailyStream,
       builder: (context, AsyncSnapshot<List<SqlModel>> snapshot) {
         if (!snapshot.hasData) {
           return const Center(
@@ -88,15 +98,20 @@ class _TodoMainState extends State<TodoMain> {
           var data = snapshot.data;
           if (data!.isEmpty) {
             return Center(
-              child: Column(
-                children: [
-                  const Text("Empty..."),
-                  ElevatedButton(
-                      onPressed: () {
-                        addSql();
-                      },
-                      child: const Text("새 데이터 추가하기")),
-                ],
+              child: SizedBox(
+                width: 170,
+                child: ElevatedButton(
+                    onPressed: () {
+                      addSql();
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.note_add_rounded),
+                        SizedBox(width: 10),
+                        Text("새 일정 추가하기"),
+                      ],
+                    )),
               ),
             );
           } else {
@@ -113,8 +128,11 @@ class _TodoMainState extends State<TodoMain> {
                 itemCount: data.length,
                 controller: _scrollController,
                 itemBuilder: (BuildContext context, int index) {
-                  SqlModel sqlData = data[index];
-                  return Text("${sqlData.id}");
+                  SqlModel? sqlData = data[index];
+                  if (sqlData == null){
+                    return null;
+                  }
+                  return TodoListView(bloc:bloc, data: sqlData);
                 },
               ),
             );
@@ -126,53 +144,64 @@ class _TodoMainState extends State<TodoMain> {
 
   Widget returnCalendar() {
     ColorScheme scheme = Theme.of(context).colorScheme;
-    return Padding(
-      padding: const EdgeInsets.only(top:kToolbarHeight),
-      child: Container(
-        decoration: BoxDecoration(
-          color: scheme.background,
-          borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10),),
-          boxShadow: [
-            BoxShadow(
-              color: scheme.shadow,
-              offset: const Offset(1, 2),
-              blurRadius: 2,
-              spreadRadius: 1,
-            ),
-            BoxShadow(
-              color: scheme.background,
-              offset: const Offset(-2, -1),
-              blurRadius: 2,
-              spreadRadius: 1,
-            ),
-          ],
-        ),
-        child: TableCalendar(
-          focusedDay: _focusedDay,
-          calendarFormat: _calendarFormat,
-          formatAnimationDuration: const Duration(milliseconds: 100),
-          availableCalendarFormats: const {CalendarFormat.month: "2주간", CalendarFormat.week: "월간", CalendarFormat.twoWeeks: "주간"},
-          firstDay: DateTime(2000, 1, 1),
-          lastDay: DateTime(2100, 12, 31),
-          selectedDayPredicate: (day) {
-            return isSameDay(_selectedDay, day);
-          },
-          onDaySelected: (selectedDay, focusedDay) {
-            setState(() {
-              _selectedDay = selectedDay;
-              _focusedDay = focusedDay;
-            });
-          },
-          onFormatChanged: (format) {
-            setState(() {
-              _calendarFormat = format;
-            });
-          },
-          calendarStyle: CalendarStyle(
-              todayDecoration: BoxDecoration(color: scheme.secondary, shape: BoxShape.circle),
-              todayTextStyle: TextStyle(color: scheme.background, fontSize: 18, fontWeight: FontWeight.w400),
-              selectedDecoration: BoxDecoration(color: scheme.primary, shape: BoxShape.circle),
-              selectedTextStyle: TextStyle(color: scheme.background, fontSize: 18, fontWeight: FontWeight.w400)),
+    return Card(
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+      margin: const EdgeInsets.only(left: 0, right: 0),
+      elevation: 5.0,
+      child: ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        child: Container(
+          decoration: BoxDecoration(
+            color: scheme.background,
+          ),
+          child: TableCalendar(
+            focusedDay: _focusedDay,
+            calendarFormat: _calendarFormat,
+            formatAnimationDuration: const Duration(milliseconds: 100),
+            availableCalendarFormats: const {
+              CalendarFormat.month: "2주 보기",
+              CalendarFormat.week: "달력 보기",
+              CalendarFormat.twoWeeks: "1주 보기"
+            },
+            firstDay: DateTime(2000, 1, 1),
+            lastDay: DateTime(2100, 12, 31),
+            selectedDayPredicate: (day) {
+              return isSameDay(_selectedDay, day);
+            },
+            onDaySelected: (selectedDay, focusedDay) {
+              print("Select date : $_selectedDay");
+              setState(() {
+                _selectedDay = selectedDay;
+                _focusedDay = focusedDay;
+              });
+              bloc.today = _selectedDay;
+            },
+            onFormatChanged: (format) {
+              setState(() {
+                _calendarFormat = format;
+                if (format.index == 0) {
+                  _flexibleSize = 380;
+                } else if (format.index == 1) {
+                  _flexibleSize = 225;
+                } else {
+                  _flexibleSize = 175;
+                }
+              });
+            },
+            calendarStyle: CalendarStyle(
+                todayDecoration:
+                    BoxDecoration(color: scheme.secondary, shape: BoxShape.circle),
+                todayTextStyle: TextStyle(
+                    color: scheme.background,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400),
+                selectedDecoration:
+                    BoxDecoration(color: scheme.primary, shape: BoxShape.circle),
+                selectedTextStyle: TextStyle(
+                    color: scheme.background,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400)),
+          ),
         ),
       ),
     );

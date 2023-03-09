@@ -1,5 +1,5 @@
-import '../model/database/sql_data.dart';
-import '../model/database/sql_model.dart';
+import 'model/sql_data.dart';
+import 'model/sql_model.dart';
 
 class SqlDao {
   final sqlData = SqlData.sqlData;
