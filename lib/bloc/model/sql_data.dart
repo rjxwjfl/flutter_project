@@ -15,7 +15,7 @@ class SqlData {
 
   Future<Database> _dataBase() async {
     Directory docDir = await getApplicationDocumentsDirectory();
-    String path = join(docDir.path, 'testTwo.db');
+    String path = join(docDir.path, 'testThree.db');
     return await openDatabase(path,
         version: 1, onCreate: initDB, onUpgrade: onUpgrade);
   }

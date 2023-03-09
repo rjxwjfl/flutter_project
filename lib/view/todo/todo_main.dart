@@ -17,7 +17,7 @@ class _TodoMainState extends State<TodoMain> {
   late DateTime _selectedDay;
   late DateTime _focusedDay;
   late CalendarFormat _calendarFormat = CalendarFormat.week;
-  late double _flexibleSize = 175.0;
+  late double _flexibleSize = 167.0;
   late final Bloc bloc;
   late final ScrollController _scrollController = ScrollController();
 
@@ -61,7 +61,7 @@ class _TodoMainState extends State<TodoMain> {
           ),
           Column(
             children: [
-              appBarUI("TITLE"),
+              // appBarUI("TITLE"),
               returnCalendar(),
             ],
           ),
@@ -70,7 +70,9 @@ class _TodoMainState extends State<TodoMain> {
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 70),
         child: FloatingActionButton(
-          onPressed: () {addSql();},
+          onPressed: () {
+            addSql();
+          },
           child: const Icon(Icons.add),
         ),
       ),
@@ -99,14 +101,14 @@ class _TodoMainState extends State<TodoMain> {
           if (data!.isEmpty) {
             return Center(
               child: SizedBox(
-                width: 170,
+                width: MediaQuery.of(context).size.width / 2.1,
                 child: ElevatedButton(
                     onPressed: () {
                       addSql();
                     },
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
+                      children: [
                         Icon(Icons.note_add_rounded),
                         SizedBox(width: 10),
                         Text("새 일정 추가하기"),
@@ -126,13 +128,9 @@ class _TodoMainState extends State<TodoMain> {
               child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: data.length,
-                controller: _scrollController,
                 itemBuilder: (BuildContext context, int index) {
                   SqlModel? sqlData = data[index];
-                  if (sqlData == null){
-                    return null;
-                  }
-                  return TodoListView(bloc:bloc, data: sqlData);
+                  return TodoListView(bloc: bloc, data: sqlData);
                 },
               ),
             );
@@ -142,66 +140,70 @@ class _TodoMainState extends State<TodoMain> {
     );
   }
 
+  // 132 184 340
+
   Widget returnCalendar() {
     ColorScheme scheme = Theme.of(context).colorScheme;
     return Card(
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))),
       margin: const EdgeInsets.only(left: 0, right: 0),
       elevation: 5.0,
       child: ClipRRect(
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-        child: Container(
-          decoration: BoxDecoration(
-            color: scheme.background,
-          ),
-          child: TableCalendar(
-            focusedDay: _focusedDay,
-            calendarFormat: _calendarFormat,
-            formatAnimationDuration: const Duration(milliseconds: 100),
-            availableCalendarFormats: const {
-              CalendarFormat.month: "2주 보기",
-              CalendarFormat.week: "달력 보기",
-              CalendarFormat.twoWeeks: "1주 보기"
-            },
-            firstDay: DateTime(2000, 1, 1),
-            lastDay: DateTime(2100, 12, 31),
-            selectedDayPredicate: (day) {
-              return isSameDay(_selectedDay, day);
-            },
-            onDaySelected: (selectedDay, focusedDay) {
-              print("Select date : $_selectedDay");
-              setState(() {
-                _selectedDay = selectedDay;
-                _focusedDay = focusedDay;
-              });
-              bloc.today = _selectedDay;
-            },
-            onFormatChanged: (format) {
-              setState(() {
-                _calendarFormat = format;
-                if (format.index == 0) {
-                  _flexibleSize = 380;
-                } else if (format.index == 1) {
-                  _flexibleSize = 225;
-                } else {
-                  _flexibleSize = 175;
-                }
-              });
-            },
-            calendarStyle: CalendarStyle(
-                todayDecoration:
-                    BoxDecoration(color: scheme.secondary, shape: BoxShape.circle),
-                todayTextStyle: TextStyle(
-                    color: scheme.background,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400),
-                selectedDecoration:
-                    BoxDecoration(color: scheme.primary, shape: BoxShape.circle),
-                selectedTextStyle: TextStyle(
-                    color: scheme.background,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400)),
-          ),
+        borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
+        child: Column(
+          children: [
+            Container(
+              height: kToolbarHeight,
+              width: MediaQuery.of(context).size.width,
+              color: Theme.of(context).colorScheme.background,
+              child: const Center(child: Text("Text")),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: scheme.background,
+              ),
+              child: TableCalendar(
+                focusedDay: _focusedDay,
+                calendarFormat: _calendarFormat,
+                formatAnimationDuration: const Duration(milliseconds: 100),
+                availableCalendarFormats: const {
+                  CalendarFormat.month: "2주 보기",
+                  CalendarFormat.week: "달력 보기",
+                  CalendarFormat.twoWeeks: "1주 보기"
+                },
+                firstDay: DateTime(2000, 1, 1),
+                lastDay: DateTime(2100, 12, 31),
+                selectedDayPredicate: (day) {
+                  return isSameDay(_selectedDay, day);
+                },
+                onDaySelected: (selectedDay, focusedDay) {
+                  setState(() {
+                    _selectedDay = selectedDay;
+                    _focusedDay = focusedDay;
+                  });
+                  bloc.today = _selectedDay;
+                },
+                onFormatChanged: (format) {
+                  setState(() {
+                    _calendarFormat = format;
+                    if (format.index == 0) {
+                      _flexibleSize = 375;
+                    } else if (format.index == 1) {
+                      _flexibleSize = 219;
+                    } else {
+                      _flexibleSize = 167;
+                    }
+                  });
+                },
+                calendarStyle: CalendarStyle(
+                    todayDecoration: BoxDecoration(color: scheme.secondary, shape: BoxShape.circle),
+                    todayTextStyle: TextStyle(color: scheme.background, fontSize: 18, fontWeight: FontWeight.w400),
+                    selectedDecoration: BoxDecoration(color: scheme.primary, shape: BoxShape.circle),
+                    selectedTextStyle: TextStyle(color: scheme.background, fontSize: 18, fontWeight: FontWeight.w400)),
+              ),
+            ),
+          ],
         ),
       ),
     );
