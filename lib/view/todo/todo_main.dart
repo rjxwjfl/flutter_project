@@ -1,5 +1,10 @@
+import 'dart:async';
+import 'dart:isolate';
+
 import 'package:flutter/material.dart';
+import 'package:workmanager/workmanager.dart';
 import 'package:flutter_dowith/bloc/bloc.dart';
+
 import 'package:flutter_dowith/bloc/sql_dao.dart';
 import 'package:flutter_dowith/bloc/model/sql_model.dart';
 import 'package:flutter_dowith/view/todo/model/todo_list_view.dart';
@@ -106,9 +111,9 @@ class _TodoMainState extends State<TodoMain> {
                     onPressed: () {
                       addSql();
                     },
-                    child: const Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                      children: const [
                         Icon(Icons.note_add_rounded),
                         SizedBox(width: 10),
                         Text("새 일정 추가하기"),

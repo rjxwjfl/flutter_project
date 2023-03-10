@@ -18,6 +18,9 @@ class _TodoListViewState extends State<TodoListView> {
   double offsetX = 0.0;
   bool _isDraggable = false;
 
+  String formatter(DateTime date){
+    return DateFormat("hh:mm a, EEE").format(date);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +30,14 @@ class _TodoListViewState extends State<TodoListView> {
         children: [
           SizedBox(
               width: 50,
-              child: Text(DateFormat("EEE, hh:mm").format(widget.data.startOn))),
+              child:
+                  Text(DateFormat("a hh:mm").format(widget.data.startOn))),
           Expanded(
             child: SizedBox(
               height: 100,
-              width: MediaQuery.of(context).size.width > 318? 318: MediaQuery.of(context).size.width,
+              width: MediaQuery.of(context).size.width > 318
+                  ? 318
+                  : MediaQuery.of(context).size.width,
               child: GestureDetector(
                 onLongPress: () {
                   SnackBar snackBar = const SnackBar(
@@ -58,7 +64,7 @@ class _TodoListViewState extends State<TodoListView> {
                   }
                 },
                 onLongPressUp: () {
-                  if (_isDraggable && offsetX > 300.0) {
+                  if (_isDraggable && offsetX > 200.0) {
                     widget.bloc.deleteTodo(widget.data.id!);
                   }
                   setState(() {
@@ -73,22 +79,24 @@ class _TodoListViewState extends State<TodoListView> {
                   // *** If the last item is swiped, there is a problem that the afterimage of the letter remains. ***
                   offset: Offset(offsetX, 0),
                   child: Card(
-                    elevation:  offsetX == 0.0? 3.0 : 0.0,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text("${widget.data.id}"),
-                            Text(widget.data.title)
-                          ],
-                        ),
-                        IconButton(
-                            onPressed: () {
-                              widget.bloc.deleteTodo(widget.data.id!);
-                            },
-                            icon: const Icon(Icons.delete_forever_rounded))
-                      ],
+                    elevation: offsetX == 0.0 ? 3.0 : 0.0,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [Text(widget.data.title)],
+                            ),
+                          ),
+                          widget.data.completeAt == null
+                              ? const Text("완료되지 않음")
+                              : Text("${widget.data.completeAt}"),
+                          Text("${widget.data.expireOn}"),
+                          Text("${widget.data.state}")
+                        ],
+                      ),
                     ),
                   ),
                 ),

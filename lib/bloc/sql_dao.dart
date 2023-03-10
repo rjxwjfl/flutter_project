@@ -19,12 +19,34 @@ class SqlDao {
 
   Future<void> updateDB(SqlModel todo) async {
     final db = await sqlData.database;
-    await db.update(sqlTable, todo.toMap(),
-        where: 'id = ?', whereArgs: [todo.id]);
+    await db
+        .update(sqlTable, todo.toMap(), where: 'id = ?', whereArgs: [todo.id]);
   }
 
   Future<void> deleteDB(int no) async {
     final db = await sqlData.database;
     await db.delete('database', where: 'id = ?', whereArgs: [no]);
+  }
+
+
+// add schedule reminders to expire in notification bar
+
+
+  Future<bool> checkExpire() async {
+    bool isUpdate = false;
+    final db = await sqlData.database;
+    final currentTime = DateTime.now();
+    var toDo = await db.query(sqlTable);
+    List<SqlModel> todoList =
+        toDo.isNotEmpty ? toDo.map((e) => SqlModel.fromMap(e)).toList() : [];
+    for (SqlModel todo in todoList) {
+      if (currentTime.isAfter(todo.expireOn) && todo.state.index != 3) {
+        todo.state = TodoState.expired;
+        await updateDB(todo);
+        isUpdate = true;
+      }
+    }
+    print(isUpdate? "expired data changed.":"check progress...");
+    return isUpdate;
   }
 }

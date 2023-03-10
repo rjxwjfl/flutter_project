@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:flutter_dowith/navi_home.dart';
 import 'package:flutter_dowith/theme/theme_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+
 final themeProv = ChangeNotifierProvider((ref) => ThemeProvider());
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

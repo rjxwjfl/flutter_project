@@ -14,7 +14,7 @@ class Bloc {
   get todoListStream => _todoController.stream;
   get dailyStream => _dailyController.stream;
 
-  set today(DateTime date){
+  set today(DateTime date) {
     _today = date;
     getTodoList();
   }
@@ -26,6 +26,7 @@ class Bloc {
 
   Bloc(this._sqlDao) {
     _today = DateTime.now();
+    checkExpire();
     getTodoList();
   }
 
@@ -34,9 +35,11 @@ class Bloc {
     _todoController.sink.add(todoList);
 
     int startOfDay =
-        DateTime(_today.year, _today.month, _today.day, 0, 0, 0, 000).millisecondsSinceEpoch;
+        DateTime(_today.year, _today.month, _today.day, 0, 0, 0, 000)
+            .millisecondsSinceEpoch;
     int endOfDay =
-        DateTime(_today.year, _today.month, _today.day, 23, 59, 59, 999).millisecondsSinceEpoch;
+        DateTime(_today.year, _today.month, _today.day, 23, 59, 59, 999)
+            .millisecondsSinceEpoch;
 
     List<SqlModel> dailyList = todoList.where((todo) {
       int startOn = todo.startOn.millisecondsSinceEpoch;
@@ -52,12 +55,19 @@ class Bloc {
 
   deleteTodo(int id) async {
     await _sqlDao.deleteDB(id);
-    print("row : $id was deleted.");
     getTodoList();
   }
 
   updateTodo(SqlModel todo) async {
     await _sqlDao.updateDB(todo);
     getTodoList();
+  }
+
+  checkExpire() async {
+    Timer.periodic(const Duration(seconds: 10), (timer) async {
+      if (await _sqlDao.checkExpire()) {
+        getTodoList();
+      }
+    });
   }
 }

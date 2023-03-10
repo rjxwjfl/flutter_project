@@ -61,9 +61,9 @@ class SettingsMain extends StatelessWidget {
                   child: Column(
                     children: [
                       ItemCard(title: "색상 설정", callback: () {}),
-                      const Divider(height: 1),
+                      
                       const AnimatedCard(),
-                      const Divider(height: 1),
+                      
                       ItemSwitcher(
                           title: "다크모드 설정",
                           callback: (value) {

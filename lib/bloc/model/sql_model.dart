@@ -1,13 +1,13 @@
 class SqlModel {
-  final int? id;
-  final String title;
-  final String content;
-  final String author;
-  final TodoState state;
-  final DateTime createAt;
-  final DateTime startOn;
-  final DateTime expireOn;
-  final DateTime? completeAt;
+  int? id;
+  String title;
+  String content;
+  String author;
+  TodoState state;
+  DateTime createAt;
+  DateTime startOn;
+  DateTime expireOn;
+  DateTime? completeAt;
 
   SqlModel(
       {this.id,
