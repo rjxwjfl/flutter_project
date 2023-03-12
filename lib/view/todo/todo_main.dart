@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:isolate';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:flutter_dowith/bloc/bloc.dart';
 
@@ -10,6 +11,8 @@ import 'package:flutter_dowith/bloc/model/sql_model.dart';
 import 'package:flutter_dowith/view/todo/model/todo_list_view.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../main.dart';
+
 class TodoMain extends StatefulWidget {
   const TodoMain({Key? key}) : super(key: key);
 
@@ -17,26 +20,23 @@ class TodoMain extends StatefulWidget {
   State<TodoMain> createState() => _TodoMainState();
 }
 
-class _TodoMainState extends State<TodoMain> {
+class _TodoMainState extends State<TodoMain> with AutomaticKeepAliveClientMixin {
   late final DateTime today = DateTime.now();
   late DateTime _selectedDay;
   late DateTime _focusedDay;
   late CalendarFormat _calendarFormat = CalendarFormat.week;
   late double _flexibleSize = 167.0;
-  late final Bloc bloc;
   late final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    bloc = Bloc(SqlDao());
     _focusedDay = today;
     _selectedDay = _focusedDay;
   }
 
   @override
   void dispose() {
-    bloc.dispose();
     _scrollController.dispose();
     super.dispose();
   }
@@ -55,6 +55,7 @@ class _TodoMainState extends State<TodoMain> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -111,9 +112,9 @@ class _TodoMainState extends State<TodoMain> {
                     onPressed: () {
                       addSql();
                     },
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
+                      children: [
                         Icon(Icons.note_add_rounded),
                         SizedBox(width: 10),
                         Text("새 일정 추가하기"),
@@ -133,9 +134,29 @@ class _TodoMainState extends State<TodoMain> {
               child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: data.length,
-                itemBuilder: (BuildContext context, int index) {
+                itemBuilder: (context, index) {
                   SqlModel? sqlData = data[index];
-                  return TodoListView(bloc: bloc, data: sqlData);
+                  return Row(
+                    children: [
+                      SizedBox(
+                        width: 50,
+                        height: 100,
+                        child: Center(child: Text(DateFormat("hh:mm").format(sqlData.startOn))),
+                      ),
+                      Dismissible(
+                          key: ValueKey(sqlData.id),
+                          direction: DismissDirection.startToEnd,
+                          onDismissed: (dir) {
+                            setState(() {
+                              if (dir == DismissDirection.startToEnd) {
+                                bloc.deleteTodo(sqlData.id!);
+                                data.remove(sqlData);
+                              }
+                            });
+                          },
+                          child: TodoListView(data: sqlData)),
+                    ],
+                  );
                 },
               ),
             );
@@ -213,4 +234,8 @@ class _TodoMainState extends State<TodoMain> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

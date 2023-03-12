@@ -20,6 +20,7 @@ class Bloc {
   }
 
   dispose() {
+    print("Bloc Dispose");
     _todoController.close();
     _dailyController.close();
   }

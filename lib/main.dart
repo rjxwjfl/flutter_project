@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dowith/bloc/bloc.dart';
+import 'package:flutter_dowith/bloc/sql_dao.dart';
 
 import 'package:flutter_dowith/navi_home.dart';
 import 'package:flutter_dowith/theme/theme_provider.dart';
@@ -7,7 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
 final themeProv = ChangeNotifierProvider((ref) => ThemeProvider());
-
+final bloc = Bloc(SqlDao());
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
