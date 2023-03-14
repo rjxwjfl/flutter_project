@@ -4,7 +4,7 @@ import 'dart:isolate';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:workmanager/workmanager.dart';
-import 'package:flutter_dowith/bloc/bloc.dart';
+import 'package:flutter_dowith/bloc/internal_db_bloc.dart';
 
 import 'package:flutter_dowith/bloc/sql_dao.dart';
 import 'package:flutter_dowith/bloc/model/sql_model.dart';

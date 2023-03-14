@@ -1,18 +1,22 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_dowith/bloc/bloc.dart';
+import 'package:flutter_dowith/bloc/internal_db_bloc.dart';
 import 'package:flutter_dowith/bloc/sql_dao.dart';
+import 'package:flutter_dowith/firebase_options.dart';
 
 import 'package:flutter_dowith/navi_home.dart';
 import 'package:flutter_dowith/theme/theme_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
+
 final themeProv = ChangeNotifierProvider((ref) => ThemeProvider());
-final bloc = Bloc(SqlDao());
+final bloc = InternalDbBloc(SqlDao());
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await SystemChrome.setPreferredOrientations(
     <DeviceOrientation>[
       DeviceOrientation.portraitUp,
