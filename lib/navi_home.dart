@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dowith/view/dowith/dowith_main.dart';
+import 'package:flutter_dowith/view/outline/todo_outline.dart';
 import 'package:flutter_dowith/view/settings/settings_main.dart';
 import 'package:flutter_dowith/view/todo/todo_main.dart';
 
@@ -20,6 +21,7 @@ class _NaviHomeState extends State<NaviHome> {
     super.initState();
     _selectedIndex = 0;
     _pageList = const [
+      TodoOutline(),
       TodoMain(),
       DoWithMain(),
       SettingsMain(),
@@ -89,6 +91,11 @@ class _NaviHomeState extends State<NaviHome> {
               });
             },
             destinations: [
+              NavigationDestination(
+                  selectedIcon:
+                  Icon(Icons.assessment_rounded, color: scheme.primary),
+                  icon: const Icon(Icons.assessment_outlined),
+                  label: 'OUTLINE'),
               NavigationDestination(
                   selectedIcon:
                       Icon(Icons.task_sharp, color: scheme.primary),

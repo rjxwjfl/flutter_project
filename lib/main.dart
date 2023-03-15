@@ -1,15 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:flutter_dowith/bloc/internal_db_bloc.dart';
 import 'package:flutter_dowith/bloc/sql_dao.dart';
 import 'package:flutter_dowith/firebase_options.dart';
-
 import 'package:flutter_dowith/navi_home.dart';
 import 'package:flutter_dowith/theme/theme_provider.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-
 
 final themeProv = ChangeNotifierProvider((ref) => ThemeProvider());
 final bloc = InternalDbBloc(SqlDao());

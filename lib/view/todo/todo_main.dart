@@ -1,12 +1,6 @@
-import 'dart:async';
-import 'dart:isolate';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_dowith/view/todo/model/create_todo.dart';
 import 'package:intl/intl.dart';
-import 'package:workmanager/workmanager.dart';
-import 'package:flutter_dowith/bloc/internal_db_bloc.dart';
-
-import 'package:flutter_dowith/bloc/sql_dao.dart';
 import 'package:flutter_dowith/bloc/model/sql_model.dart';
 import 'package:flutter_dowith/view/todo/model/todo_list_view.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -20,8 +14,9 @@ class TodoMain extends StatefulWidget {
   State<TodoMain> createState() => _TodoMainState();
 }
 
-class _TodoMainState extends State<TodoMain> with AutomaticKeepAliveClientMixin {
-  late final DateTime today = DateTime.now();
+class _TodoMainState extends State<TodoMain>
+    with AutomaticKeepAliveClientMixin {
+  late DateTime today = DateTime.now();
   late DateTime _selectedDay;
   late DateTime _focusedDay;
   late CalendarFormat _calendarFormat = CalendarFormat.week;
@@ -41,16 +36,8 @@ class _TodoMainState extends State<TodoMain> with AutomaticKeepAliveClientMixin 
     super.dispose();
   }
 
-  void addSql() {
-    SqlModel sqlModel = SqlModel(
-        title: "title",
-        content: "content",
-        author: "author",
-        state: TodoState.scheduled,
-        createAt: DateTime.now(),
-        startOn: _selectedDay,
-        expireOn: _selectedDay);
-    bloc.insertData(sqlModel);
+  bool dayCheck() {
+    return DateTime(today.year, today.month, today.day).isAfter(_selectedDay);
   }
 
   @override
@@ -73,15 +60,21 @@ class _TodoMainState extends State<TodoMain> with AutomaticKeepAliveClientMixin 
           ),
         ],
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 70),
-        child: FloatingActionButton(
-          onPressed: () {
-            addSql();
-          },
-          child: const Icon(Icons.add),
-        ),
-      ),
+      floatingActionButton: dayCheck()
+          ? const SizedBox()
+          : Padding(
+              padding: const EdgeInsets.only(bottom: 70),
+              child: FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              CreateTodo(today: _selectedDay)));
+                },
+                child: const Icon(Icons.add),
+              ),
+            ),
     );
   }
 
@@ -105,30 +98,34 @@ class _TodoMainState extends State<TodoMain> with AutomaticKeepAliveClientMixin 
         } else {
           var data = snapshot.data;
           if (data!.isEmpty) {
-            return Center(
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width / 2.1,
-                child: ElevatedButton(
-                    onPressed: () {
-                      addSql();
-                    },
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.note_add_rounded),
-                        SizedBox(width: 10),
-                        Text("새 일정 추가하기"),
-                      ],
-                    )),
-              ),
-            );
+            if (dayCheck()) {
+              return const Center(
+                child: Text("Schedule is 텅"),
+              );
+            } else {
+              return Center(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width / 2.1,
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    CreateTodo(today: _selectedDay)));
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.note_add_rounded),
+                          SizedBox(width: 10),
+                          Text("새 일정 추가하기"),
+                        ],
+                      )),
+                ),
+              );
+            }
           } else {
-            // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-            //   _scrollController.animateTo(
-            //       _scrollController.position.maxScrollExtent,
-            //       duration: const Duration(milliseconds: 100),
-            //       curve: Curves.easeIn);
-            // });
             return Align(
               alignment: Alignment.topCenter,
               child: ListView.builder(
@@ -141,7 +138,9 @@ class _TodoMainState extends State<TodoMain> with AutomaticKeepAliveClientMixin 
                       SizedBox(
                         width: 50,
                         height: 100,
-                        child: Center(child: Text(DateFormat("hh:mm").format(sqlData.startOn))),
+                        child: Center(
+                            child: Text(
+                                DateFormat("hh:mm").format(sqlData.startOn))),
                       ),
                       Dismissible(
                           key: ValueKey(sqlData.id),
@@ -172,11 +171,14 @@ class _TodoMainState extends State<TodoMain> with AutomaticKeepAliveClientMixin 
     ColorScheme scheme = Theme.of(context).colorScheme;
     return Card(
       shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))),
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(10),
+              bottomRight: Radius.circular(10))),
       margin: const EdgeInsets.only(left: 0, right: 0),
       elevation: 5.0,
       child: ClipRRect(
-        borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
+        borderRadius: const BorderRadius.only(
+            bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
         child: Column(
           children: [
             Container(
@@ -223,10 +225,18 @@ class _TodoMainState extends State<TodoMain> with AutomaticKeepAliveClientMixin 
                   });
                 },
                 calendarStyle: CalendarStyle(
-                    todayDecoration: BoxDecoration(color: scheme.secondary, shape: BoxShape.circle),
-                    todayTextStyle: TextStyle(color: scheme.background, fontSize: 18, fontWeight: FontWeight.w400),
-                    selectedDecoration: BoxDecoration(color: scheme.primary, shape: BoxShape.circle),
-                    selectedTextStyle: TextStyle(color: scheme.background, fontSize: 18, fontWeight: FontWeight.w400)),
+                    todayDecoration: BoxDecoration(
+                        color: scheme.secondary, shape: BoxShape.circle),
+                    todayTextStyle: TextStyle(
+                        color: scheme.background,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400),
+                    selectedDecoration: BoxDecoration(
+                        color: scheme.primary, shape: BoxShape.circle),
+                    selectedTextStyle: TextStyle(
+                        color: scheme.background,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400)),
               ),
             ),
           ],
@@ -239,3 +249,10 @@ class _TodoMainState extends State<TodoMain> with AutomaticKeepAliveClientMixin 
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }
+// *** Scroll tracker ***
+// WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+//   _scrollController.animateTo(
+//       _scrollController.position.maxScrollExtent,
+//       duration: const Duration(milliseconds: 100),
+//       curve: Curves.easeIn);
+// });
