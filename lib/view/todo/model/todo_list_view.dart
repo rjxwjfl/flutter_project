@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../bloc/internal_db_bloc.dart';
 import '../../../bloc/model/sql_model.dart';
 
 class TodoListView extends StatefulWidget {

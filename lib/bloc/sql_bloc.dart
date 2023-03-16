@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter_dowith/bloc/sql_dao.dart';
 import 'package:flutter_dowith/bloc/model/sql_model.dart';
 
-class InternalDbBloc {
+class SqlBloc {
   final SqlDao _sqlDao;
   final StreamController<List<SqlModel>> _todoController =
       StreamController<List<SqlModel>>.broadcast();
@@ -20,12 +20,11 @@ class InternalDbBloc {
   }
 
   dispose() {
-    print("Bloc Dispose");
     _todoController.close();
     _dailyController.close();
   }
 
-  InternalDbBloc(this._sqlDao) {
+  SqlBloc(this._sqlDao) {
     _today = DateTime.now();
     checkExpire();
     getTodoList();
