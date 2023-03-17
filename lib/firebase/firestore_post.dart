@@ -4,21 +4,35 @@ import 'package:flutter_dowith/firebase/auth.dart';
 import 'package:flutter_dowith/firebase/model/post_model.dart';
 import 'package:uuid/uuid.dart';
 
-class FireStorePost{
+class FireStorePost {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final User _user = Auth().auth.currentUser!;
 
-  void createPost(PostModel data) async{
+  Stream<QuerySnapshot<Map<String, dynamic>>> streamPosts() {
     final postPath = _firestore.collection("post");
-    postPath.doc(data.id).set(data.toMap());
+    return postPath
+        .orderBy('createdAt', descending: true)
+        .limit(20)
+        .snapshots();
   }
 
-  void editPost(PostModel data) async{
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getPosts() async {
     final postPath = _firestore.collection("post");
-
+    final snapshot =
+        await postPath.orderBy('createdAt', descending: true).limit(20).get();
+    return snapshot.docs;
   }
 
-  String generateUuid(){
+  void createPost(PostModel post) async {
+    final postPath = _firestore.collection("post");
+    postPath.doc(post.id).set(post.toMap());
+  }
+
+  void editPost(PostModel data) async {
+    final postPath = _firestore.collection("post");
+  }
+
+  String generateUuid() {
     var uuid = const Uuid().v4();
     String genUuid = uuid.replaceAll('-', '');
     return genUuid;
