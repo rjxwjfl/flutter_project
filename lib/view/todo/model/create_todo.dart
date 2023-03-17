@@ -167,8 +167,6 @@ class _CreateTodoState extends State<CreateTodo> {
             minute: int.parse(_startAtString.split(":")[1].split(" ")[0])));
   }
 
-  _validateDate() {}
-
   _addScheduleToDb() {
     final task = SqlModel(
         title: _titleEditController.text,
