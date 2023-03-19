@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dowith/firebase/auth.dart';
-import 'package:flutter_dowith/view/splash/login_screen.dart';
+import 'package:flutter_dowith/view/splash/login_signup_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:flutter_dowith/bloc/sql_bloc.dart';
