@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dowith/view/splash/login_view.dart';
-import 'package:flutter_dowith/view/splash/signup_view.dart';
+import 'package:flutter_dowith/view/splash/model/custom_extension_button.dart';
 
 class LoginSignUpScreen extends StatefulWidget {
   const LoginSignUpScreen({super.key});
@@ -9,26 +8,34 @@ class LoginSignUpScreen extends StatefulWidget {
   State<LoginSignUpScreen> createState() => _LoginSignUpScreenState();
 }
 
-class _LoginSignUpScreenState extends State<LoginSignUpScreen> with TickerProviderStateMixin {
-  late AnimationController _animationController;
+class _LoginSignUpScreenState extends State<LoginSignUpScreen>
+    with TickerProviderStateMixin {
+  late AnimationController _signUpAnimationController;
+  late AnimationController _signInAnimationController;
   late Animation<double> _animation;
   bool _isSignup = false;
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
-    _animation = Tween<double>(begin: 0, end: 1).animate(_animationController);
+    _signUpAnimationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 1000));
+    _signInAnimationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 1000));
+    _animation =
+        Tween<double>(begin: 0, end: 1).animate(_signUpAnimationController);
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _signUpAnimationController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    Size _size = MediaQuery.of(context).size;
+    ColorScheme _scheme = Theme.of(context).colorScheme;
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
@@ -42,17 +49,20 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> with TickerProvid
                 FocusScope.of(context).unfocus();
               },
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Placeholder(
-                    fallbackHeight: 200,
-                  ),
-                  TextButton(onPressed: (){
-                    setState(() {
-                      _isSignup = !_isSignup;
-                    });
-                  }, child: const Text("Switch")),
-                  _isSignup? const SignUpView(): const LoginView() ,
-                  SizedBox(height: kToolbarHeight)
+                  CustomExtensionButton(
+                      splashColor: Colors.white,
+                      highLightColor: Colors.white,
+                      controller: _signUpAnimationController,
+                      content: "Sign Up",
+                      color: const Color(0xff3964c3)),
+                  CustomExtensionButton(
+                      splashColor: const Color(0xff3964c3),
+                      highLightColor: const Color(0xff3964c3),
+                      controller: _signInAnimationController,
+                      content: "Sign In",
+                      color: const Color(0xfffbfbff))
                 ],
               )),
         ),
@@ -60,3 +70,14 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> with TickerProvid
     );
   }
 }
+
+// Placeholder(
+//                     fallbackHeight: 200,
+//                   ),
+//                   TextButton(onPressed: (){
+//                     setState(() {
+//                       _isSignup = !_isSignup;
+//                     });
+//                   }, child: const Text("Switch")),
+//                   _isSignup? const SignUpView(): const LoginView() ,
+//                   SizedBox(height: kToolbarHeight)
