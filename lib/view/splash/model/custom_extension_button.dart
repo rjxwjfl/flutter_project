@@ -7,6 +7,8 @@ class CustomExtensionButton extends StatefulWidget {
       required this.splashColor,
       required this.highLightColor,
       required this.content,
+      required this.callback,
+      required this.animation,
       Key? key})
       : super(key: key);
 
@@ -15,6 +17,8 @@ class CustomExtensionButton extends StatefulWidget {
   final Color splashColor;
   final Color highLightColor;
   final String content;
+  final Animation animation;
+  final void Function() callback;
 
   @override
   State<CustomExtensionButton> createState() => _CustomExtensionButtonState();
@@ -33,19 +37,24 @@ class _CustomExtensionButtonState extends State<CustomExtensionButton>
           borderRadius: BorderRadius.all(Radius.circular(5)),
         ),
         child: InkWell(
-          onTap: () {},
+          onTap: widget.callback,
           borderRadius: const BorderRadius.all(Radius.circular(5)),
           splashColor: widget.splashColor,
-          focusColor: Colors.transparent,
-          hoverColor: Colors.transparent,
           highlightColor: widget.highLightColor,
-          overlayColor: null,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 15, bottom: 15),
-            child: Center(
-              child: Container(
+          child: Ink(
+            decoration: BoxDecoration(
                 color: widget.color,
-                child: Text(widget.content),
+                borderRadius: const BorderRadius.all(Radius.circular(5))),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 10, bottom: 10),
+                child: Text(
+                  widget.content,
+                  style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.w400,
+                      color: widget.splashColor),
+                ),
               ),
             ),
           ),
