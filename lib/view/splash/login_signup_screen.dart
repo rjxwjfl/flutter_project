@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dowith/firebase/auth.dart';
+import 'package:flutter_dowith/utils/glow_remover.dart';
 import 'package:flutter_dowith/view/splash/login_view.dart';
 import 'package:flutter_dowith/view/splash/model/circle_button.dart';
 import 'package:flutter_dowith/view/splash/model/custom_extension_button.dart';
@@ -23,25 +24,26 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Material(
-        color: const Color(0xFFEDF0F2),
-        child: InkWell(
-          splashColor: Colors.transparent,
-          focusColor: Colors.transparent,
-          hoverColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          overlayColor: null,
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
+      body: InkWell(
+        splashColor: Colors.transparent,
+        focusColor: Colors.transparent,
+        hoverColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: ScrollConfiguration(
+          behavior: ScrollGlowRemove(),
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Placeholder(
-                    fallbackHeight:
-                        _size.height > 800 ? 240 : _size.height * 0.3),
+                Placeholder(fallbackHeight: _size.height > 800 ? 240 : _size.height * 0.3),
                 const SizedBox(height: 10),
-                LoginView(formKey: _formKey, emailController: _emailController, passwordController: _passwordController,),
+                LoginView(
+                  formKey: _formKey,
+                  emailController: _emailController,
+                  passwordController: _passwordController,
+                ),
                 const SizedBox(height: 10),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -55,7 +57,6 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                             _isSignInLoad = !_isSignInLoad;
                           });
                           Auth().signInWithEmail(context, _emailController.text, _passwordController.text);
-
                         }
                       },
                       splashColor: const Color(0xff3964c3),
@@ -84,17 +85,17 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
-                      const Divider(),
+                      Divider(color: Theme.of(context).colorScheme.onBackground),
                       Container(
-                        width: _size.width*0.1,
-                          color: const Color(0xFFEDF0F2),
-                          child: const Text("OR",textAlign: TextAlign.center))
+                          width: _size.width * 0.15,
+                          color: Theme.of(context).colorScheme.background,
+                          child: const Text("OR", textAlign: TextAlign.center))
                     ],
                   ),
                 ),
                 const SizedBox(height: 20),
                 withPublisher(),
-                SizedBox(height: _size.height*0.25)
+                SizedBox(height: _size.height * 0.25)
               ],
             ),
           ),
@@ -102,6 +103,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
       ),
     );
   }
+
   Widget withPublisher() {
     return Center(
       child: Column(
@@ -112,18 +114,14 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircleButton(
-                  assetPath: "assets/icons/google_logo.png",
-                  isLoad: _isGoogleLoad,
-                  callback: () {
-                    setState(() {
-                      _isGoogleLoad = !_isGoogleLoad;
-                    });
-                    if (Auth().signInUpWithGoogle() != null){
-                      setState(() {
-                        _isGoogleLoad = !_isGoogleLoad;
-                      });
-                    }
-                  },
+                assetPath: "assets/icons/google_logo.png",
+                isLoad: _isGoogleLoad,
+                callback: () {
+                  setState(() {
+                    _isGoogleLoad = !_isGoogleLoad;
+                  });
+                  if (Auth().signInUpWithGoogle() != null) {}
+                },
               ),
             ],
           ),

@@ -1,41 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dowith/view/dowith/dowith_main.dart';
-import 'package:flutter_dowith/view/outline/todo_outline.dart';
-import 'package:flutter_dowith/view/settings/settings_main.dart';
-import 'package:flutter_dowith/view/todo/todo_main.dart';
+import 'package:flutter_dowith/main.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class NaviHome extends StatefulWidget {
-  const NaviHome({Key? key}) : super(key: key);
+class NaviHome extends ConsumerWidget {
+  const NaviHome({super.key});
 
   @override
-  State<NaviHome> createState() => _NaviHomeState();
-}
-
-class _NaviHomeState extends State<NaviHome> {
-  late final List<Widget> _pageList = [
-    const TodoOutline(),
-    const TodoMain(),
-    const DoWithMain(),
-    const SettingsMain(),
-  ];
-  late PageController _pageController;
-  late int _selectedIndex;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedIndex = 0;
-    _pageController = PageController(initialPage: _selectedIndex);
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     ColorScheme scheme = Theme.of(context).colorScheme;
     DateTime onBackKey = DateTime.now();
     return WillPopScope(
@@ -61,9 +32,9 @@ class _NaviHomeState extends State<NaviHome> {
       },
       child: Scaffold(
         body: PageView(
-          controller: _pageController,
+          controller: ref.watch(routeProv).pageController,
           physics: const NeverScrollableScrollPhysics(),
-          children: _pageList,
+          children: ref.watch(routeProv).routes,
         ),
         extendBody: true,
         bottomNavigationBar: NavigationBarTheme(
@@ -77,27 +48,21 @@ class _NaviHomeState extends State<NaviHome> {
             ),
           ),
           child: NavigationBar(
-            elevation: 12.0,
             animationDuration: const Duration(milliseconds: 500),
-            labelBehavior:
-                NavigationDestinationLabelBehavior.onlyShowSelected,
-            selectedIndex: _selectedIndex,
-            height: 70,
+            labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+            selectedIndex: ref.watch(routeProv).selectedIndex,
+            height: 55,
             onDestinationSelected: (index) {
-              setState(() {
-                _selectedIndex = index;
-                _pageController.jumpToPage(index);
-              });
+              ref.watch(routeProv).pageRouteNavigator(index);
             },
             destinations: [
               NavigationDestination(
                   selectedIcon:
-                  Icon(Icons.assessment_rounded, color: scheme.primary),
+                      Icon(Icons.assessment_rounded, color: scheme.primary),
                   icon: const Icon(Icons.assessment_outlined),
                   label: 'OUTLINE'),
               NavigationDestination(
-                  selectedIcon:
-                      Icon(Icons.task_sharp, color: scheme.primary),
+                  selectedIcon: Icon(Icons.task_sharp, color: scheme.primary),
                   icon: const Icon(Icons.task_outlined),
                   label: 'TODO'),
               NavigationDestination(
@@ -106,8 +71,8 @@ class _NaviHomeState extends State<NaviHome> {
                   icon: const Icon(Icons.supervisor_account_rounded),
                   label: 'DO WITH'),
               NavigationDestination(
-                  selectedIcon: Icon(Icons.settings_applications,
-                      color: scheme.primary),
+                  selectedIcon:
+                      Icon(Icons.settings_applications, color: scheme.primary),
                   icon: const Icon(Icons.settings_applications_outlined),
                   label: 'SETTINGS'),
             ],

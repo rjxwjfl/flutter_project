@@ -4,7 +4,7 @@ import 'package:flutter_dowith/view/outline/todo_outline.dart';
 import 'package:flutter_dowith/view/settings/settings_main.dart';
 import 'package:flutter_dowith/view/todo/todo_main.dart';
 
-class PageRouteProvider extends ChangeNotifier{
+class PageRouteProvider extends ChangeNotifier {
   late int _selectedIndex = 0;
   late PageController _pageController;
   final List<Widget> routes = [
@@ -14,19 +14,23 @@ class PageRouteProvider extends ChangeNotifier{
     const SettingsMain(),
   ];
 
-  PageRouteProvider(){
+  PageRouteProvider() {
+    print("PageRouteProvider initialized");
     _pageController = PageController(initialPage: _selectedIndex);
   }
 
-  PageController get pageController => _pageController;
+  get pageController => _pageController;
+  get selectedIndex => _selectedIndex;
 
-  set pageController(PageController value) {
-    _pageController = value;
+  void pageRouteNavigator(index) {
+    _selectedIndex = index;
+    print("select= $index, provider= $_selectedIndex");
+    _pageController.jumpToPage(_selectedIndex);
+    notifyListeners();
   }
 
-  int get selectedIndex => _selectedIndex;
-
-  set selectedIndex(int value) {
-    _selectedIndex = value;
+  void keepPage(){
+    _pageController.jumpToPage(_selectedIndex);
+    notifyListeners();
   }
 }

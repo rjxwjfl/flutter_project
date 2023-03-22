@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dowith/firebase/firestore_user.dart';
@@ -43,12 +44,12 @@ class Auth {
     return null;
   }
 
-  Future<User?> signInUpWithGoogle() async {
+  Future<void> signInUpWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
       if (googleUser == null) {
-        return null;
+        return;
       }
 
       final GoogleSignInAuthentication googleAuth =
@@ -60,14 +61,15 @@ class Auth {
 
       final UserCredential userCredential =
           await _auth.signInWithCredential(credential);
-      FireStoreUser store = FireStoreUser();
-      if (!await store.userExistCheck()) {
-        store.createUserData();
+      FireStoreUser fireStoreUser = FireStoreUser();
+      if (await fireStoreUser.userExistCheck(userCredential.user!.uid)){
+        print("Already Exist.");
+      } else {
+        print("Not Exist");
+        fireStoreUser.createUserData();
       }
-      return userCredential.user;
     } catch (e) {
       print(e);
-      return null;
     }
   }
 

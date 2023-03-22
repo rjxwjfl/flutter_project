@@ -13,7 +13,9 @@ class SettingsMain extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("SETTINGS", style: TextStyle(fontSize: 25)), // replaced with RichText widget. ex) S ETTINGS.
+        title: const Text("SETTINGS",
+            style: TextStyle(
+                fontSize: 25)), // replaced with RichText widget. ex) S ETTINGS.
       ),
       body: Material(
         color: Theme.of(context).colorScheme.background,
@@ -29,14 +31,13 @@ class SettingsMain extends StatelessWidget {
     );
   }
 
-  Widget getUserProfile(Size size){
+  Widget getUserProfile(Size size) {
     return Container(
       height: 210,
       width: size.width * 0.95,
       decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-        border: Border.all()
-      ),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          border: Border.all()),
       child: const Placeholder(),
     );
   }
@@ -49,11 +50,14 @@ class SettingsMain extends StatelessWidget {
             padding: const EdgeInsets.only(left: 12, right: 12),
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                     height: 60,
                     child: Row(
-                      children: const [
-                        Text("Theme Settings", style: TextStyle(fontSize: 22, letterSpacing: 1.2),),
+                      children: [
+                        Text(
+                          "Theme Settings",
+                          style: TextStyle(fontSize: 22, letterSpacing: 1.2),
+                        ),
                       ],
                     )),
                 ClipRRect(

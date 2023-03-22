@@ -3,16 +3,16 @@ import 'package:intl/intl.dart';
 
 import '../../../bloc/model/sql_model.dart';
 
-class TodoListView extends StatefulWidget {
-  const TodoListView({super.key, required this.data});
+class TodoItemView extends StatefulWidget {
+  const TodoItemView({super.key, required this.data});
 
   final SqlModel data;
 
   @override
-  State<TodoListView> createState() => _TodoListViewState();
+  State<TodoItemView> createState() => _TodoItemViewState();
 }
 
-class _TodoListViewState extends State<TodoListView> {
+class _TodoItemViewState extends State<TodoItemView> {
 
   String formatter(DateTime date){
     return DateFormat("hh:mm a, EEE").format(date);
@@ -21,7 +21,7 @@ class _TodoListViewState extends State<TodoListView> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 12, right: 12),
+      padding: const EdgeInsets.only(left: 12, right: 12, top: 12),
       child: SizedBox(
         height: 100,
         width: MediaQuery.of(context).size.width > 318

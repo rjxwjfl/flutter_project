@@ -6,19 +6,20 @@ class FireStoreUser {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final User _user = Auth().auth.currentUser!;
 
-  Future<bool> userExistCheck() async{
-    final path = _firestore.collection("user").doc(_user.uid);
-    final snapShot = await path.get();
-    return snapShot.exists;
+  Future<bool> userExistCheck(path) async {
+    DocumentSnapshot<Map<String, dynamic>> docs =
+        await _firestore.collection('user').doc(path).collection('userData').doc('userEssential').get();
+    if (docs.exists) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  void createUserData() async {
+  Future createUserData() async {
     final userDataPath = _firestore.collection("user").doc(_user.uid);
 
-    Map<String, dynamic> userEssentialData = {
-      "uId": _user.uid,
-      "joinDate": DateTime.now().millisecondsSinceEpoch
-    };
+    Map<String, dynamic> userEssentialData = {"uId": _user.uid, "joinDate": DateTime.now().millisecondsSinceEpoch};
 
     Map<String, dynamic> userDetails = {
       "displayName": _user.displayName,
@@ -34,17 +35,14 @@ class FireStoreUser {
     await userDataPathLow.doc("userDetails").set(userDetails);
     await groupIDsPath.doc("groupIDs").set({});
     await postIDsPath.doc("postIDs").set({});
+
+    return null;
   }
 
   void configUserDtl(String displayName, String url, String comment) async {
-    final userDtlPath = _firestore
-        .collection("user")
-        .doc(_user.uid)
-        .collection("userData")
-        .doc("userDetails");
+    final userDtlPath = _firestore.collection("user").doc(_user.uid).collection("userData").doc("userDetails");
 
     Map<String, dynamic> data = (await userDtlPath.get()).data()!;
-
 
     data["displayName"] = displayName;
     data["image"] = url;

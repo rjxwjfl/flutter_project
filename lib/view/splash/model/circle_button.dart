@@ -24,7 +24,8 @@ class CircleButton extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(color: Theme.of(context).colorScheme.primary)),
+            border: Border.all(color: Theme.of(context).colorScheme.primary),
+        ),
         child: Padding(
           padding: const EdgeInsets.all(3.0),
           child: isLoad

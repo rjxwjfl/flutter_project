@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dowith/utils/glow_remover.dart';
 import 'package:flutter_dowith/view/todo/model/create_todo.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_dowith/bloc/model/sql_model.dart';
@@ -14,12 +15,12 @@ class TodoMain extends StatefulWidget {
   State<TodoMain> createState() => _TodoMainState();
 }
 
-class _TodoMainState extends State<TodoMain> {
+class _TodoMainState extends State<TodoMain>
+    with AutomaticKeepAliveClientMixin {
   late DateTime today;
   late DateTime _selectedDay;
   late DateTime _focusedDay;
   late CalendarFormat _calendarFormat = CalendarFormat.week;
-  late double _flexibleSize = 167.0;
   late final ScrollController _scrollController = ScrollController();
 
   @override
@@ -43,6 +44,7 @@ class _TodoMainState extends State<TodoMain> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: Column(
         children: [
@@ -119,35 +121,38 @@ class _TodoMainState extends State<TodoMain> {
           } else {
             return Align(
               alignment: Alignment.topCenter,
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: data.length,
-                itemBuilder: (context, index) {
-                  SqlModel? sqlData = data[index];
-                  return Row(
-                    children: [
-                      SizedBox(
-                        width: 50,
-                        height: 100,
-                        child: Center(
-                            child: Text(
-                                DateFormat("hh:mm").format(sqlData.startOn))),
-                      ),
-                      Dismissible(
-                          key: ValueKey(sqlData.id),
-                          direction: DismissDirection.startToEnd,
-                          onDismissed: (dir) {
-                            setState(() {
-                              if (dir == DismissDirection.startToEnd) {
-                                bloc.deleteTodo(sqlData.id!);
-                                data.remove(sqlData);
-                              }
-                            });
-                          },
-                          child: TodoListView(data: sqlData)),
-                    ],
-                  );
-                },
+              child: ScrollConfiguration(
+                behavior: ScrollGlowRemove(),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    SqlModel? sqlData = data[index];
+                    return Row(
+                      children: [
+                        SizedBox(
+                          width: 50,
+                          height: 100,
+                          child: Center(
+                              child: Text(
+                                  DateFormat("hh:mm").format(sqlData.startOn))),
+                        ),
+                        Dismissible(
+                            key: ValueKey(sqlData.id),
+                            direction: DismissDirection.startToEnd,
+                            onDismissed: (dir) {
+                              setState(() {
+                                if (dir == DismissDirection.startToEnd) {
+                                  bloc.deleteTodo(sqlData.id!);
+                                  data.remove(sqlData);
+                                }
+                              });
+                            },
+                            child: TodoItemView(data: sqlData)),
+                      ],
+                    );
+                  },
+                ),
               ),
             );
           }
@@ -155,8 +160,6 @@ class _TodoMainState extends State<TodoMain> {
       },
     );
   }
-
-  // 132 184 340
 
   Widget returnCalendar() {
     ColorScheme scheme = Theme.of(context).colorScheme;
@@ -206,13 +209,6 @@ class _TodoMainState extends State<TodoMain> {
                 onFormatChanged: (format) {
                   setState(() {
                     _calendarFormat = format;
-                    if (format.index == 0) {
-                      _flexibleSize = 375;
-                    } else if (format.index == 1) {
-                      _flexibleSize = 219;
-                    } else {
-                      _flexibleSize = 167;
-                    }
                   });
                 },
                 calendarStyle: CalendarStyle(
@@ -236,6 +232,8 @@ class _TodoMainState extends State<TodoMain> {
     );
   }
 
+  @override
+  bool get wantKeepAlive => true;
 }
 // *** Scroll tracker ***
 // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
