@@ -14,9 +14,8 @@ class TodoMain extends StatefulWidget {
   State<TodoMain> createState() => _TodoMainState();
 }
 
-class _TodoMainState extends State<TodoMain>
-    with AutomaticKeepAliveClientMixin {
-  late DateTime today = DateTime.now();
+class _TodoMainState extends State<TodoMain> {
+  late DateTime today;
   late DateTime _selectedDay;
   late DateTime _focusedDay;
   late CalendarFormat _calendarFormat = CalendarFormat.week;
@@ -26,6 +25,8 @@ class _TodoMainState extends State<TodoMain>
   @override
   void initState() {
     super.initState();
+    today = DateTime.now();
+    bloc.today = today;
     _focusedDay = today;
     _selectedDay = _focusedDay;
   }
@@ -42,22 +43,12 @@ class _TodoMainState extends State<TodoMain>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return Scaffold(
-      body: Stack(
+      body: Column(
         children: [
-          Column(
-            children: [
-              SizedBox(height: _flexibleSize),
-              Expanded(child: todoListView()),
-            ],
-          ),
-          Column(
-            children: [
-              // appBarUI("TITLE"),
-              returnCalendar(),
-            ],
-          ),
+          // SizedBox(height: _flexibleSize),
+          returnCalendar(),
+          Expanded(child: todoListView()),
         ],
       ),
       floatingActionButton: dayCheck()
@@ -245,9 +236,6 @@ class _TodoMainState extends State<TodoMain>
     );
   }
 
-  @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
 }
 // *** Scroll tracker ***
 // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {

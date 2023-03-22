@@ -46,8 +46,6 @@ class _SignUpViewState extends State<SignUpView> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            withPublisher(),
-            const SizedBox(height: 5),
             Card(
               elevation: 4.0,
               child: Padding(
@@ -120,23 +118,6 @@ class _SignUpViewState extends State<SignUpView> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget withPublisher() {
-    return Center(
-      child: Column(
-        children: [
-          const Text("간편 회원가입"),
-          const SizedBox(height: 15),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [CircleButton(assetPath: "assets/icons/google_logo.png", callback: () {})],
-          ),
-          const SizedBox(height: 15),
-          const Text("또는 개인 이메일주소로 가입하세요."),
-        ],
       ),
     );
   }

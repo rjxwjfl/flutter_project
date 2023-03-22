@@ -1,20 +1,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dowith/firebase/firestore_user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class Auth {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  static final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   get auth => _auth;
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
-  Future<void> signUpWithEmail(context, String email, String password) async{
-    try{
-      await _auth.createUserWithEmailAndPassword(email: email, password: password);
+  Future<void> signUpWithEmail(context, String email, String password) async {
+    try {
+      await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
       await sendEmailVerification(context);
-    } on FirebaseAuthException catch(e) {
+    } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         showSnackBar(context, '이미 사용중인 이메일입니다.');
       }
@@ -49,13 +51,19 @@ class Auth {
         return null;
       }
 
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
-      final UserCredential userCredential = await _auth.signInWithCredential(credential);
+      final UserCredential userCredential =
+          await _auth.signInWithCredential(credential);
+      FireStoreUser store = FireStoreUser();
+      if (!await store.userExistCheck()) {
+        store.createUserData();
+      }
       return userCredential.user;
     } catch (e) {
       print(e);
@@ -84,11 +92,12 @@ class Auth {
   void showSnackBar(context, String text) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(text),
+        content: Text(text, textAlign: TextAlign.center),
         behavior: SnackBarBehavior.floating,
-        margin: const EdgeInsets.fromLTRB(20, 0, 20, 30),
+        margin: const EdgeInsets.fromLTRB(20, 0, 20, 50),
         elevation: 30,
-        shape: const StadiumBorder(),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(5))),
       ),
     );
   }

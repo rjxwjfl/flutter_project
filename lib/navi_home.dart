@@ -12,7 +12,12 @@ class NaviHome extends StatefulWidget {
 }
 
 class _NaviHomeState extends State<NaviHome> {
-  late List<Widget> _pageList;
+  late final List<Widget> _pageList = [
+    const TodoOutline(),
+    const TodoMain(),
+    const DoWithMain(),
+    const SettingsMain(),
+  ];
   late PageController _pageController;
   late int _selectedIndex;
 
@@ -20,12 +25,6 @@ class _NaviHomeState extends State<NaviHome> {
   void initState() {
     super.initState();
     _selectedIndex = 0;
-    _pageList = const [
-      TodoOutline(),
-      TodoMain(),
-      DoWithMain(),
-      SettingsMain(),
-    ];
     _pageController = PageController(initialPage: _selectedIndex);
   }
 

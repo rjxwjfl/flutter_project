@@ -2,34 +2,31 @@ import 'package:flutter/material.dart';
 
 class CustomExtensionButton extends StatefulWidget {
   const CustomExtensionButton(
-      {required this.controller,
-      required this.color,
+      {required this.color,
       required this.splashColor,
       required this.highLightColor,
       required this.content,
       required this.callback,
-      required this.animation,
+      required this.isLoading,
       Key? key})
       : super(key: key);
 
-  final AnimationController controller;
   final Color color;
   final Color splashColor;
   final Color highLightColor;
   final String content;
-  final Animation animation;
+  final bool isLoading;
   final void Function() callback;
 
   @override
   State<CustomExtensionButton> createState() => _CustomExtensionButtonState();
 }
 
-class _CustomExtensionButtonState extends State<CustomExtensionButton>
-    with TickerProviderStateMixin {
+class _CustomExtensionButtonState extends State<CustomExtensionButton> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(40, 3, 40, 3),
+      padding: const EdgeInsets.fromLTRB(37, 3, 37, 3),
       child: Card(
         elevation: 5.0,
         color: widget.color,
@@ -48,13 +45,9 @@ class _CustomExtensionButtonState extends State<CustomExtensionButton>
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.only(top: 10, bottom: 10),
-                child: Text(
-                  widget.content,
-                  style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.w400,
-                      color: widget.splashColor),
-                ),
+                child: widget.isLoading
+                    ? const CircularProgressIndicator()
+                    : Text(widget.content),
               ),
             ),
           ),

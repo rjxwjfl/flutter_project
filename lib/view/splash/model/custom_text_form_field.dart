@@ -37,8 +37,6 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       obscureText: widget.switchVisible? !_isVisible : false,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
-        filled: true,
-        fillColor: _scheme.onPrimary,
         prefixIcon: widget.icon,
         suffixIcon: widget.switchVisible? switchVisible(): null,
         labelText: widget.label,
@@ -46,21 +44,21 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         labelStyle: TextStyle(color: _scheme.primary),
         contentPadding: const EdgeInsets.only(left: 40, top: 12, bottom: 12),
         border: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          borderRadius: const BorderRadius.all(Radius.circular(5)),
           borderSide: BorderSide(
               color: _scheme.inversePrimary,
               width: 1.0
           ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          borderRadius: const BorderRadius.all(Radius.circular(5)),
           borderSide: BorderSide(
             color: _scheme.inversePrimary,
             width: 1.0
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          borderRadius: const BorderRadius.all(Radius.circular(5)),
           borderSide: BorderSide(
               color: _scheme.primary,
               width: 1.0

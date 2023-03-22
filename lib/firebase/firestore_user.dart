@@ -6,12 +6,17 @@ class FireStoreUser {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final User _user = Auth().auth.currentUser!;
 
+  Future<bool> userExistCheck() async{
+    final path = _firestore.collection("user").doc(_user.uid);
+    final snapShot = await path.get();
+    return snapShot.exists;
+  }
+
   void createUserData() async {
     final userDataPath = _firestore.collection("user").doc(_user.uid);
 
     Map<String, dynamic> userEssentialData = {
       "uId": _user.uid,
-      "email": _user.email,
       "joinDate": DateTime.now().millisecondsSinceEpoch
     };
 

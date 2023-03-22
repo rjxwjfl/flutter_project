@@ -61,15 +61,11 @@ class SettingsMain extends StatelessWidget {
                   child: Column(
                     children: [
                       ItemCard(title: "색상 설정", callback: () {}),
-                      
                       const AnimatedCard(),
-                      
                       ItemSwitcher(
                           title: "다크모드 설정",
                           callback: (value) {
                             ref.watch(themeProv).isDarkMode = value;
-          
-                            ref.watch(themeProv).modeSelector(value);
                           },
                           value: ref.watch(themeProv).isDarkMode),
                     ],

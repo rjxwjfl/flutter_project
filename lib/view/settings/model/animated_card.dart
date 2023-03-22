@@ -107,7 +107,7 @@ class _AnimatedCardState extends ConsumerState<AnimatedCard>
         children: [
           GestureDetector(
             onTap: () {
-              ref.watch(themeProv).themeSelector(code);
+              ref.watch(themeProv).schemeSelector(code);
             },
             child: Container(
               height: 60,
