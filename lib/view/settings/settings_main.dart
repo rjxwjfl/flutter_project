@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dowith/firebase/auth.dart';
+import 'package:flutter_dowith/firebase/firestore_stream_controller.dart';
 import 'package:flutter_dowith/main.dart';
 import 'package:flutter_dowith/view/settings/model/animated_card.dart';
 import 'package:flutter_dowith/view/settings/model/item_card.dart';
@@ -13,32 +16,33 @@ class SettingsMain extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("SETTINGS",
-            style: TextStyle(
-                fontSize: 25)), // replaced with RichText widget. ex) S ETTINGS.
+        title: const Text("SETTINGS", style: TextStyle(fontSize: 25)), // replaced with RichText widget. ex) S ETTINGS.
       ),
-      body: Material(
-        color: Theme.of(context).colorScheme.background,
-        child: Center(
-          child: Column(
-            children: [
-              getUserProfile(size),
-              themeSettingTab(),
-            ],
-          ),
+      body: Center(
+        child: Column(
+          children: [
+            getUserProfile(size),
+            themeSettingTab(),
+          ],
         ),
       ),
     );
   }
 
   Widget getUserProfile(Size size) {
+    User? user = Auth().auth.currentUser;
     return Container(
       height: 210,
       width: size.width * 0.95,
-      decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-          border: Border.all()),
-      child: const Placeholder(),
+      decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(10)), border: Border.all()),
+      child: StreamBuilder(
+        stream: user != null? FireStoreStreamController(user.uid).userDataStream : null,
+        builder: (context, snapshot) {
+          var data = snapshot.data;
+          print("in stream : ${data?.data()}");
+          return Container();
+        },
+      ),
     );
   }
 
@@ -50,10 +54,10 @@ class SettingsMain extends StatelessWidget {
             padding: const EdgeInsets.only(left: 12, right: 12),
             child: Column(
               children: [
-                const SizedBox(
+                SizedBox(
                     height: 60,
                     child: Row(
-                      children: [
+                      children: const [
                         Text(
                           "Theme Settings",
                           style: TextStyle(fontSize: 22, letterSpacing: 1.2),

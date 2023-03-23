@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dowith/firebase/firestore_user.dart';
@@ -14,8 +13,7 @@ class Auth {
 
   Future<void> signUpWithEmail(context, String email, String password) async {
     try {
-      await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+      await _auth.createUserWithEmailAndPassword(email: email, password: password);
       await sendEmailVerification(context);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
@@ -52,20 +50,15 @@ class Auth {
         return;
       }
 
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
-      final UserCredential userCredential =
-          await _auth.signInWithCredential(credential);
+      final UserCredential userCredential = await _auth.signInWithCredential(credential);
       FireStoreUser fireStoreUser = FireStoreUser();
-      if (await fireStoreUser.userExistCheck(userCredential.user!.uid)){
-        print("Already Exist.");
-      } else {
-        print("Not Exist");
+      if (!await fireStoreUser.userExistCheck(userCredential.user!.uid)) {
         fireStoreUser.createUserData();
       }
     } catch (e) {
@@ -98,8 +91,7 @@ class Auth {
         behavior: SnackBarBehavior.floating,
         margin: const EdgeInsets.fromLTRB(20, 0, 20, 50),
         elevation: 30,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(5))),
+        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
       ),
     );
   }
