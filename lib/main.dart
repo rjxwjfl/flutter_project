@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dowith/firebase/auth.dart';
 import 'package:flutter_dowith/navi_home.dart';
+import 'package:flutter_dowith/utils/glow_remover.dart';
 import 'package:flutter_dowith/utils/riverpod/page_route_provider.dart';
 import 'package:flutter_dowith/utils/theme/theme_provider.dart';
 import 'package:flutter_dowith/view/splash/login_signup_screen.dart';
@@ -44,6 +45,7 @@ class AppInit extends ConsumerWidget {
       theme: ThemeData.from(colorScheme: ref.watch(themeProv).lightColorScheme),
       darkTheme: ThemeData.from(colorScheme: ref.watch(themeProv).darkColorScheme),
       themeMode: ref.watch(themeProv).themeMode,
+      scrollBehavior: ScrollGlowRemove(),
       home: const SafeArea(
         child: NaviHome()
       ),

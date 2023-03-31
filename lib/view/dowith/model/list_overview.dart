@@ -13,18 +13,7 @@ class ListOverView extends StatelessWidget {
         child: InkWell(
           borderRadius: const BorderRadius.all(Radius.circular(12)),
           onTap: () {
-            Navigator.of(context).push(PageRouteBuilder(
-              opaque: false, // 배경 투명화 여부
-              pageBuilder: (BuildContext context, _, __) {
-                return const ProjectHome(); // 새로운 페이지
-              },
-              transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-                return FadeTransition(
-                  opacity: animation,
-                  child: child, // 새로운 페이지 애니메이션
-                );
-              },
-            ),);
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const ProjectHome()));
           },
           child: Ink(
             width: MediaQuery.of(context).size.width,

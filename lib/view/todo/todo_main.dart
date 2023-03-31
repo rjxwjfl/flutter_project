@@ -107,9 +107,9 @@ class _TodoMainState extends State<TodoMain>
                                 builder: (context) =>
                                     CreateTodo(today: _selectedDay)));
                       },
-                      child: const Row(
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                        children: const <Widget>[
                           Icon(Icons.note_add_rounded),
                           SizedBox(width: 10),
                           Text("새 일정 추가하기"),
