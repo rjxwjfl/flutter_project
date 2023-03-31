@@ -31,53 +31,62 @@ class NaviHome extends ConsumerWidget {
         }
       },
       child: Scaffold(
+        appBar: AppBar(
+          title: Text(ref.watch(routeProv).title),
+          elevation: 0.0,
+          backgroundColor: scheme.background,
+          foregroundColor: scheme.onBackground,
+        ),
+        drawer: Drawer(
+          child: ListView(
+            children: [
+              Container(),
+              const Divider(),
+              Column(
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.home_outlined),
+                    title: const Text("HOME"),
+                    onTap: (){
+                      ref.watch(routeProv).pageRouteNavigator(0);
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.task_outlined),
+                    title: const Text("PERSONAL TASK"),
+                    onTap: (){
+                      ref.watch(routeProv).pageRouteNavigator(1);
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.supervisor_account_outlined),
+                    title: const Text("DO WITH"),
+                    onTap: (){
+                      ref.watch(routeProv).pageRouteNavigator(2);
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.settings_outlined),
+                    title: const Text("SETTINGS"),
+                    onTap: (){
+                      ref.watch(routeProv).pageRouteNavigator(3);
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
         body: PageView(
           controller: ref.watch(routeProv).pageController,
           physics: const NeverScrollableScrollPhysics(),
           children: ref.watch(routeProv).routes,
         ),
         extendBody: true,
-        bottomNavigationBar: NavigationBarTheme(
-          data: NavigationBarThemeData(
-            indicatorColor: scheme.onPrimary,
-            labelTextStyle: MaterialStateProperty.all(
-              const TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.5),
-            ),
-          ),
-          child: NavigationBar(
-            animationDuration: const Duration(milliseconds: 500),
-            labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-            selectedIndex: ref.watch(routeProv).selectedIndex,
-            height: 55,
-            onDestinationSelected: (index) {
-              ref.watch(routeProv).pageRouteNavigator(index);
-            },
-            destinations: [
-              NavigationDestination(
-                  selectedIcon:
-                      Icon(Icons.assessment_rounded, color: scheme.primary),
-                  icon: const Icon(Icons.assessment_outlined),
-                  label: 'OUTLINE'),
-              NavigationDestination(
-                  selectedIcon: Icon(Icons.task_sharp, color: scheme.primary),
-                  icon: const Icon(Icons.task_outlined),
-                  label: 'TODO'),
-              NavigationDestination(
-                  selectedIcon: Icon(Icons.supervisor_account_outlined,
-                      color: scheme.primary),
-                  icon: const Icon(Icons.supervisor_account_rounded),
-                  label: 'DO WITH'),
-              NavigationDestination(
-                  selectedIcon:
-                      Icon(Icons.settings_applications, color: scheme.primary),
-                  icon: const Icon(Icons.settings_applications_outlined),
-                  label: 'SETTINGS'),
-            ],
-          ),
-        ),
       ),
     );
   }

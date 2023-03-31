@@ -107,9 +107,9 @@ class _TodoMainState extends State<TodoMain>
                                 builder: (context) =>
                                     CreateTodo(today: _selectedDay)));
                       },
-                      child: Row(
+                      child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Icon(Icons.note_add_rounded),
                           SizedBox(width: 10),
                           Text("새 일정 추가하기"),
@@ -173,60 +173,50 @@ class _TodoMainState extends State<TodoMain>
       child: ClipRRect(
         borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
-        child: Column(
-          children: [
-            Container(
-              height: kToolbarHeight,
-              width: MediaQuery.of(context).size.width,
-              color: Theme.of(context).colorScheme.background,
-              child: const Center(child: Text("Text")),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: scheme.background,
-              ),
-              child: TableCalendar(
-                focusedDay: _focusedDay,
-                calendarFormat: _calendarFormat,
-                formatAnimationDuration: const Duration(milliseconds: 100),
-                availableCalendarFormats: const {
-                  CalendarFormat.month: "2주 보기",
-                  CalendarFormat.week: "달력 보기",
-                  CalendarFormat.twoWeeks: "1주 보기"
-                },
-                firstDay: DateTime(2000, 1, 1),
-                lastDay: DateTime(2100, 12, 31),
-                selectedDayPredicate: (day) {
-                  return isSameDay(_selectedDay, day);
-                },
-                onDaySelected: (selectedDay, focusedDay) {
-                  setState(() {
-                    _selectedDay = selectedDay;
-                    _focusedDay = focusedDay;
-                  });
-                  bloc.today = _selectedDay;
-                },
-                onFormatChanged: (format) {
-                  setState(() {
-                    _calendarFormat = format;
-                  });
-                },
-                calendarStyle: CalendarStyle(
-                    todayDecoration: BoxDecoration(
-                        color: scheme.secondary, shape: BoxShape.circle),
-                    todayTextStyle: TextStyle(
-                        color: scheme.background,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400),
-                    selectedDecoration: BoxDecoration(
-                        color: scheme.primary, shape: BoxShape.circle),
-                    selectedTextStyle: TextStyle(
-                        color: scheme.background,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400)),
-              ),
-            ),
-          ],
+        child: Container(
+          decoration: BoxDecoration(
+            color: scheme.background,
+          ),
+          child: TableCalendar(
+            focusedDay: _focusedDay,
+            calendarFormat: _calendarFormat,
+            formatAnimationDuration: const Duration(milliseconds: 100),
+            availableCalendarFormats: const {
+              CalendarFormat.month: "2주 보기",
+              CalendarFormat.week: "달력 보기",
+              CalendarFormat.twoWeeks: "1주 보기"
+            },
+            firstDay: DateTime(2000, 1, 1),
+            lastDay: DateTime(2100, 12, 31),
+            selectedDayPredicate: (day) {
+              return isSameDay(_selectedDay, day);
+            },
+            onDaySelected: (selectedDay, focusedDay) {
+              setState(() {
+                _selectedDay = selectedDay;
+                _focusedDay = focusedDay;
+              });
+              bloc.today = _selectedDay;
+            },
+            onFormatChanged: (format) {
+              setState(() {
+                _calendarFormat = format;
+              });
+            },
+            calendarStyle: CalendarStyle(
+                todayDecoration: BoxDecoration(
+                    color: scheme.secondary, shape: BoxShape.circle),
+                todayTextStyle: TextStyle(
+                    color: scheme.background,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400),
+                selectedDecoration: BoxDecoration(
+                    color: scheme.primary, shape: BoxShape.circle),
+                selectedTextStyle: TextStyle(
+                    color: scheme.background,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400)),
+          ),
         ),
       ),
     );

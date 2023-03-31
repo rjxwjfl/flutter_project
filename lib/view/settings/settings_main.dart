@@ -14,19 +14,14 @@ class SettingsMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("SETTINGS", style: TextStyle(fontSize: 25)), // replaced with RichText widget. ex) S ETTINGS.
-      ),
-      body: Center(
+    return Center(
         child: Column(
           children: [
             getUserProfile(size),
             themeSettingTab(),
           ],
         ),
-      ),
-    );
+      );
   }
 
   Widget getUserProfile(Size size) {
@@ -36,10 +31,8 @@ class SettingsMain extends StatelessWidget {
       width: size.width * 0.95,
       decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(10)), border: Border.all()),
       child: StreamBuilder(
-        stream: user != null? FireStoreStreamController(user.uid).userDataStream : null,
+        stream: null,
         builder: (context, snapshot) {
-          var data = snapshot.data;
-          print("in stream : ${data?.data()}");
           return Container();
         },
       ),
