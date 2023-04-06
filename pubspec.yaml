@@ -12,11 +12,16 @@ dependencies:
   cupertino_icons: ^1.0.5
   firebase_auth: ^4.2.2
   firebase_core: ^2.7.1
+  firebase_messaging: ^14.4.0
   flutter:
     sdk: flutter
+  flutter_local_notifications: ^8.2.0
   flutter_riverpod: ^2.3.0
+  font_awesome_flutter: ^10.4.0
   google_sign_in: ^6.0.2
+  http: ^0.13.5
   intl: ^0.18.0
+  line_icons: ^2.0.1
   path: ^1.8.2
   path_provider: ^2.0.13
   shared_preferences: ^2.0.18

@@ -1,7 +1,7 @@
 import 'model/sql_data.dart';
 import 'model/sql_model.dart';
 
-class SqlDao {
+class SqlRepository {
   final sqlData = SqlData.sqlData;
 
   Future<List<SqlModel>> getTodoDB() async {

@@ -1,11 +1,17 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dowith/firebase/firestore_user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
 
 class Auth {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseMessaging _messaging = FirebaseMessaging.instance;
+  String baseUrl = "";
 
   get auth => _auth;
 
@@ -14,7 +20,9 @@ class Auth {
   Future<void> signUpWithEmail(context, String email, String password) async {
     try {
       await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      await sendEmailVerification(context);
+      // 서버로 데이터 전송 => username : email, password : password, name: name, fb_uid : _auth.currentUser!.uid, device_token: _messaging.getToken()
+      // name 설정하는 페이지 추가해야함.
+      await sendEmailVerification(context); // 이메일 인증은 그냥 빼버리는게 나을지도?
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         showSnackBar(context, '이미 사용중인 이메일입니다.');
@@ -28,6 +36,7 @@ class Auth {
       if (!_auth.currentUser!.emailVerified) {
         await sendEmailVerification(context);
       } else {
+        // 응답에 따라 처리 혹은 반려
         showSnackBar(context, "${_auth.currentUser!.displayName}님 환영합니다.");
         return _auth.currentUser;
       }
@@ -57,10 +66,12 @@ class Auth {
       );
 
       final UserCredential userCredential = await _auth.signInWithCredential(credential);
-      FireStoreUser fireStoreUser = FireStoreUser();
-      if (!await fireStoreUser.userExistCheck(userCredential.user!.uid)) {
-        fireStoreUser.createUserData();
-      }
+      // username : userCredential.user!.email, name : userCredential.user!.displayName, fb_uid : _auth.currentUser.uid;
+
+      // FireStoreUser fireStoreUser = FireStoreUser();
+      // if (!await fireStoreUser.userExistCheck(userCredential.user!.uid)) {
+      //   fireStoreUser.createUserData();
+      // }
     } catch (e) {
       print(e);
     }

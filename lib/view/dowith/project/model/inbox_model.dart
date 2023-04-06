@@ -26,10 +26,10 @@ class InboxModel extends StatelessWidget {
                     width: 75,
                     height: MediaQuery.of(context).size.height,
                   ),
-                  Expanded(
+                  const Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [Text("Chat Contents"), Text("lately"), Text("A : what?"), Text("Time : 23-03-31 17:42")],
+                      children: [Text("Chat Contents"), Text("lately"), Text("A : what?"), Text("Time : 23-03-31 17:42")],
                     ),
                   ),
                 ],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dowith/view/dowith/model/inbox_model.dart';
+import 'package:flutter_dowith/view/dowith/project/model/inbox_model.dart';
 
 class ProjectInbox extends StatelessWidget {
   const ProjectInbox({Key? key}) : super(key: key);

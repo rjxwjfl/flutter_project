@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dowith/bloc/sqflite_bloc/model/sql_model.dart';
 import 'package:intl/intl.dart';
 
-import '../../../bloc/model/sql_model.dart';
 
 class TodoItemView extends StatefulWidget {
   const TodoItemView({super.key, required this.data});

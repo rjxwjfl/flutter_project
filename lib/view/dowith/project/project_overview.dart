@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dowith/utils/glow_remover.dart';
+import 'package:flutter_dowith/view/dowith/project/model/title_view.dart';
 
 class ProjectOverView extends StatelessWidget {
   const ProjectOverView({Key? key}) : super(key: key);
@@ -8,19 +8,20 @@ class ProjectOverView extends StatelessWidget {
     return CustomScrollView(
       shrinkWrap: true,
       slivers: [
-        SliverPadding(
-          padding: const EdgeInsets.only(left: 12, right: 12),
+        const SliverPadding(
+          padding: EdgeInsets.only(left: 12, right: 12),
           sliver: SliverToBoxAdapter(
             child: Card(
+              elevation: 5.0,
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+                padding: EdgeInsets.fromLTRB(12, 8, 12, 8),
                 child: Column(
                   children: [
                     Row(
                       children: [
                         Expanded(
                           child: Column(
-                            children: const [
+                            children: [
                               Text("TITLE"),
                               SizedBox(height: 20),
                               Text("PROJECT PERIOD")
@@ -28,7 +29,7 @@ class ProjectOverView extends StatelessWidget {
                           ),
                         ),
                         Column(
-                          children: const [
+                          children: [
                             Text("PROGRESS"),
                             Placeholder(
                               fallbackHeight: 100,
@@ -38,9 +39,9 @@ class ProjectOverView extends StatelessWidget {
                         )
                       ],
                     ),
-                    const Divider(),
-                    const Text("RULE"),
-                    const Placeholder(
+                    Divider(),
+                    Text("RULE"),
+                    Placeholder(
                       fallbackWidth: 300,
                       fallbackHeight: 100,
                     )
@@ -50,14 +51,14 @@ class ProjectOverView extends StatelessWidget {
             ),
           ),
         ),
-        SliverToBoxAdapter(
-          child: getTitleUI("CONTRIBUTION"),
+        const SliverToBoxAdapter(
+          child: TitleView(titleText: "CONTRIBUTION"),
         ),
         SliverToBoxAdapter(
           child: getContribution(),
         ),
-        SliverToBoxAdapter(
-          child: getTitleUI("MY TASK"),
+        const SliverToBoxAdapter(
+          child: TitleView(titleText: "MY TASK"),
         ),
         SliverToBoxAdapter(
           child: getMyTaskOverView(context),
@@ -82,18 +83,21 @@ class ProjectOverView extends StatelessWidget {
     return SingleChildScrollView(
       child: SizedBox(
         height: 110,
-        child: ListView.builder(
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          itemCount: 5,
-            itemBuilder: (context, index) {
-          return const Padding(
-            padding: EdgeInsets.all(5),
-            child: Placeholder(
-              fallbackWidth: 100,
-            ),
-          );
-        }),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 12, right: 12),
+          child: ListView.builder(
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemCount: 5,
+              itemBuilder: (context, index) {
+            return const Padding(
+              padding: EdgeInsets.all(5),
+              child: Placeholder(
+                fallbackWidth: 100,
+              ),
+            );
+          }),
+        ),
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dowith/main.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class NaviHome extends ConsumerWidget {
   const NaviHome({super.key});
@@ -8,12 +9,12 @@ class NaviHome extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ColorScheme scheme = Theme.of(context).colorScheme;
+    Size size = MediaQuery.of(context).size;
     DateTime onBackKey = DateTime.now();
     return WillPopScope(
       onWillPop: () async {
         final delayedTime = DateTime.now().difference(onBackKey);
         final cantExit = delayedTime >= const Duration(seconds: 2);
-        onBackKey = DateTime.now();
         if (cantExit) {
           const snackBar = SnackBar(
             margin: EdgeInsets.fromLTRB(20, 0, 20, 5),
@@ -37,54 +38,28 @@ class NaviHome extends ConsumerWidget {
           backgroundColor: scheme.background,
           foregroundColor: scheme.onBackground,
         ),
-        drawer: Drawer(
-          child: ListView(
-            children: [
-              Container(),
-              const Divider(),
-              Column(
-                children: [
-                  ListTile(
-                    leading: const Icon(Icons.home_outlined),
-                    title: const Text("HOME"),
-                    onTap: (){
-                      ref.watch(routeProv).pageRouteNavigator(0);
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.task_outlined),
-                    title: const Text("PERSONAL TASK"),
-                    onTap: (){
-                      ref.watch(routeProv).pageRouteNavigator(1);
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.supervisor_account_outlined),
-                    title: const Text("DO WITH"),
-                    onTap: (){
-                      ref.watch(routeProv).pageRouteNavigator(2);
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.settings_outlined),
-                    title: const Text("SETTINGS"),
-                    onTap: (){
-                      ref.watch(routeProv).pageRouteNavigator(3);
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
         body: PageView(
           controller: ref.watch(routeProv).pageController,
           physics: const NeverScrollableScrollPhysics(),
           children: ref.watch(routeProv).routes,
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: scheme.primary,
+          unselectedItemColor: scheme.secondary,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          unselectedIconTheme: const IconThemeData(size: 20),
+          type: BottomNavigationBarType.fixed,
+          currentIndex: ref.watch(routeProv).selectedIndex,
+          onTap: (index) {
+            ref.watch(routeProv).pageRouteNavigator(index);
+          },
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.house), label: "Home"),
+            BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.calendarXmark), label: "ToDo"),
+            BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.users), label: "Do With"),
+            BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.gears), label: "Setting"),
+          ],
         ),
         extendBody: true,
       ),

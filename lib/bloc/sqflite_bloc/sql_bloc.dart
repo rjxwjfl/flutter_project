@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:flutter_dowith/bloc/sql_dao.dart';
-import 'package:flutter_dowith/bloc/model/sql_model.dart';
+import 'model/sql_model.dart';
+import 'sql_repository.dart';
 
 class SqlBloc {
-  final SqlDao _sqlDao;
+  final SqlRepository _sqlDao;
   final StreamController<List<SqlModel>> _todoController =
       StreamController<List<SqlModel>>.broadcast();
   final StreamController<List<SqlModel>> _dailyController =
