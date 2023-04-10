@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dowith/bloc/server_bloc/model/project_model.dart';
+import 'package:flutter_dowith/bloc/server_bloc/model/project/project_overview_model.dart';
 import 'package:flutter_dowith/bloc/server_bloc/project_bloc.dart';
 import 'package:flutter_dowith/bloc/server_bloc/project_repository.dart';
 import 'package:flutter_dowith/view/dowith/model/overview_ui.dart';

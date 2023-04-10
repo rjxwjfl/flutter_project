@@ -1,8 +1,12 @@
 import 'dart:convert';
+import 'package:flutter_dowith/bloc/server_bloc/model/project/project_member_model.dart';
+import 'package:flutter_dowith/bloc/server_bloc/model/project/project_overview_model.dart';
+import 'package:flutter_dowith/bloc/server_bloc/model/project/project_rule_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_dowith/bloc/server_bloc/model/project_model.dart';
+import 'package:flutter_dowith/bloc/server_bloc/model/project/project_model.dart';
 
 class ProjectRepository {
+
   Future<List<ProjectOverViewModel>> getProjectList(int? page, String? searchKeyword, List<int>? categories, String? sort) async {
     String baseUrl = 'http://10.0.2.2:8080/project';
     if (searchKeyword != null) {
@@ -64,4 +68,5 @@ class ProjectRepository {
       throw Exception('Failed to load project');
     }
   }
+
 }

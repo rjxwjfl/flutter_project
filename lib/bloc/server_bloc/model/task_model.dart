@@ -3,25 +3,33 @@ import 'dart:convert';
 
 // Task Model
 class TaskModel {
-  int? taskId;
+  int taskId;
   int projectId;
   int authorId;
+  int? managerId;
   String title;
   String? description;
   DateTime createAt;
   DateTime updateAt;
+  DateTime? completeAt;
   DateTime startOn;
-  DateTime deadline;
+  DateTime expireOn;
+  int taskState;
+  String? taskAtt;
   TaskModel({
-    this.taskId,
+    required this.taskId,
     required this.projectId,
     required this.authorId,
+    this.managerId,
     required this.title,
     this.description,
     required this.createAt,
     required this.updateAt,
+    this.completeAt,
     required this.startOn,
-    required this.deadline,
+    required this.expireOn,
+    required this.taskState,
+    this.taskAtt,
   });
 
   Map<String, dynamic> toMap() {
@@ -29,27 +37,37 @@ class TaskModel {
       'task_id': taskId,
       'project_id': projectId,
       'author_id': authorId,
+      'manager_id': managerId,
       'title': title,
       'description': description,
       'create_at': createAt.millisecondsSinceEpoch,
       'update_at': updateAt.millisecondsSinceEpoch,
+      'complete_at': completeAt?.millisecondsSinceEpoch,
       'start_on': startOn.millisecondsSinceEpoch,
-      'deadline': deadline.millisecondsSinceEpoch,
+      'expire_on': expireOn.millisecondsSinceEpoch,
+      'task_state': taskState,
+      'task_att': taskAtt,
     };
   }
 
   factory TaskModel.fromMap(Map<String, dynamic> map) {
     return TaskModel(
-      taskId: map['task_id'] != null ? map['task_id'] as int : null,
+      taskId: map['task_id'] as int,
       projectId: map['project_id'] as int,
       authorId: map['author_id'] as int,
+      managerId: map['manager_id'] != null ? map['manager_id'] as int : null,
       title: map['title'] as String,
       description:
           map['description'] != null ? map['description'] as String : null,
       createAt: DateTime.fromMillisecondsSinceEpoch(map['create_at'] as int),
       updateAt: DateTime.fromMillisecondsSinceEpoch(map['update_at'] as int),
+      completeAt: map['complete_at'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['complete_at'] as int)
+          : null,
       startOn: DateTime.fromMillisecondsSinceEpoch(map['start_on'] as int),
-      deadline: DateTime.fromMillisecondsSinceEpoch(map['deadline'] as int),
+      expireOn: DateTime.fromMillisecondsSinceEpoch(map['expire_on'] as int),
+      taskState: map['task_state'] as int,
+      taskAtt: map['task_att'] != null ? map['task_att'] as String : null,
     );
   }
 
@@ -60,98 +78,8 @@ class TaskModel {
 
   @override
   String toString() {
-    return 'TaskModel(task_id: $taskId, project_id: $projectId, author_id: $authorId, title: $title, description: $description, create_at: $createAt, update_at: $updateAt, start_on: $startOn, deadline: $deadline)';
+    return 'TaskModel(task_id: $taskId, project_id: $projectId, author_id: $authorId, manager_id: $managerId, title: $title, description: $description, create_at: $createAt, update_at: $updateAt, complete_at: $completeAt, start_on: $startOn, expire_on: $expireOn, task_state: $taskState, task_att: $taskAtt)';
   }
 }
 
-// Task Member Model
-class TaskMemberModel {
-  int? tmembersId;
-  int taskId;
-  int userId;
-  int progress;
-  int evaluation;
-  TaskMemberModel({
-    this.tmembersId,
-    required this.taskId,
-    required this.userId,
-    required this.progress,
-    required this.evaluation,
-  });
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'tmembers_id': tmembersId,
-      'task_id': taskId,
-      'user_id': userId,
-      'progress': progress,
-      'evaluation': evaluation,
-    };
-  }
-
-  factory TaskMemberModel.fromMap(Map<String, dynamic> map) {
-    return TaskMemberModel(
-      tmembersId:
-          map['tmembers_id'] != null ? map['tmembers_id'] as int : null,
-      taskId: map['task_id'] as int,
-      userId: map['user_id'] as int,
-      progress: map['progress'] as int,
-      evaluation: map['evaluation'] as int,
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory TaskMemberModel.fromJson(String source) =>
-      TaskMemberModel.fromMap(json.decode(source) as Map<String, dynamic>);
-
-  @override
-  String toString() {
-    return 'TaskMemberModel(tmembers_id: $tmembersId, task_id: $taskId, user_id: $userId, progress: $progress, evaluation: $evaluation)';
-  }
-}
-
-// Task Comment Model
-class TaskCommentModel {
-  int? tcommentsId;
-  int taskId;
-  String content;
-  DateTime createAt;
-  DateTime updateAt;
-  TaskCommentModel({
-    this.tcommentsId,
-    required this.taskId,
-    required this.content,
-    required this.createAt,
-    required this.updateAt,
-  });
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'tcomments_id': tcommentsId,
-      'task_id': taskId,
-      'content': content,
-      'create_at': createAt.millisecondsSinceEpoch,
-      'update_at': updateAt.millisecondsSinceEpoch,
-    };
-  }
-
-  factory TaskCommentModel.fromMap(Map<String, dynamic> map) {
-    return TaskCommentModel(
-      tcommentsId: map['tcomments_id'] != null ? map['tcomments_id'] as int : null,
-      taskId: map['task_id'] as int,
-      content: map['content'] as String,
-      createAt: DateTime.fromMillisecondsSinceEpoch(map['create_at'] as int),
-      updateAt: DateTime.fromMillisecondsSinceEpoch(map['update_at'] as int),
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory TaskCommentModel.fromJson(String source) => TaskCommentModel.fromMap(json.decode(source) as Map<String, dynamic>);
-
-  @override
-  String toString() {
-    return 'TaskCommentModel(tcomments_id: $tcommentsId, task_id: $taskId, content: $content, create_at: $createAt, update_at: $updateAt)';
-  }
-}

@@ -1,9 +1,11 @@
 import 'dart:async';
 
-import 'package:flutter_dowith/bloc/server_bloc/model/project_model.dart';
+import 'package:flutter_dowith/bloc/server_bloc/model/project/project_overview_model.dart';
 import 'package:flutter_dowith/bloc/server_bloc/project_repository.dart';
+import 'package:flutter_dowith/main.dart';
 
 class ProjectBloc {
+  int? userId = prefs.getInt("userId");
   final ProjectRepository _projectRepository;
   final StreamController<List<ProjectOverViewModel>> _overViewController =
       StreamController<List<ProjectOverViewModel>>.broadcast();
@@ -24,8 +26,8 @@ class ProjectBloc {
     _overViewController.sink.add(entireList);
   }
 
-  getMyOverView(int userId) async{
-    List<ProjectOverViewModel> myList = await _projectRepository.getMyProjectList(userId);
+  getMyOverView() async{
+    List<ProjectOverViewModel> myList = await _projectRepository.getMyProjectList(userId!);
     _myOverViewController.sink.add(myList);
   }
 }
