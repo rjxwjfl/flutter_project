@@ -5,18 +5,18 @@ import 'dart:convert';
 
 class ProjectRuleModel {
   int? ruleId;
-  int projectId;
+  int prjId;
   String rule;
   ProjectRuleModel({
     this.ruleId,
-    required this.projectId,
+    required this.prjId,
     required this.rule,
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'rule_id': ruleId,
-      'project_id': projectId,
+      'prj_id': prjId,
       'rule': rule,
     };
   }
@@ -24,7 +24,7 @@ class ProjectRuleModel {
   factory ProjectRuleModel.fromMap(Map<String, dynamic> map) {
     return ProjectRuleModel(
       ruleId: map['rule_id'] != null ? map['rule_id'] as int : null,
-      projectId: map['project_id'] as int,
+      prjId: map['prj_id'] as int,
       rule: map['rule'] as String,
     );
   }
@@ -36,5 +36,5 @@ class ProjectRuleModel {
 
   @override
   String toString() =>
-      'ProjectRuleModel(rule_id: $ruleId, project_id: $projectId, rule: $rule)';
+      'ProjectRuleModel(rule_id: $ruleId, prj_id: $prjId, rule: $rule)';
 }

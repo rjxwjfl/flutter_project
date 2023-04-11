@@ -78,7 +78,7 @@ class _SearchTabViewState extends State<SearchTabView> {
         children: [
           Row(
             children: <Widget>[
-              const Expanded(
+              Expanded(
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Column(
@@ -106,7 +106,7 @@ class _SearchTabViewState extends State<SearchTabView> {
                   Radius.circular(4.0),
                 ),
                 onTap: () {},
-                child: const Padding(
+                child: Padding(
                   padding: EdgeInsets.only(left: 8),
                   child: Row(
                     children: <Widget>[

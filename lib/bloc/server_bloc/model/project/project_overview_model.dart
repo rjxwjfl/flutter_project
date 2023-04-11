@@ -1,45 +1,46 @@
-
 // Project Overview Model
 
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
+
 class ProjectOverViewModel {
-  final int projectId;
+  final int prjId;
   final String title;
   final int category;
-  final String description;
+  final String prjDesc;
   final String goal;
-  final DateTime startOn;
-  final DateTime expireOn;
+  final DateTime? startOn;
+  final DateTime? expireOn;
   final int memberCount;
   final String masterName;
   final String? masterIntroduce;
   final String? masterImageUrl;
 
   ProjectOverViewModel({
-    required this.projectId,
+    required this.prjId,
     required this.title,
     required this.category,
-    required this.description,
+    required this.prjDesc,
     required this.goal,
-    required this.startOn,
-    required this.expireOn,
+    this.startOn,
+    this.expireOn,
     required this.memberCount,
     required this.masterName,
     required this.masterIntroduce,
     required this.masterImageUrl,
   });
 
-
   Map<String, dynamic> toMap() {
+    DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
     return <String, dynamic>{
-      'project_id': projectId,
+      'prj_id': prjId,
       'title': title,
       'category': category,
-      'description': description,
+      'prj_desc': prjDesc,
       'goal': goal,
-      'start_on': startOn.millisecondsSinceEpoch,
-      'expire_on': expireOn.millisecondsSinceEpoch,
+      'start_on': formatter.format(startOn!),
+      'expire_on': formatter.format(expireOn!),
       'member_count': memberCount,
       'master_name': masterName,
       'master_introduce': masterIntroduce,
@@ -49,22 +50,22 @@ class ProjectOverViewModel {
 
   factory ProjectOverViewModel.fromMap(Map<String, dynamic> json) {
     return ProjectOverViewModel(
-      projectId: json['project_id'] as int,
+      prjId: json['prj_id'] as int,
       title: json['title'] as String,
       category: json['category'] as int,
-      description: json['description'] as String,
+      prjDesc: json['prj_desc'] as String,
       goal: json['goal'] as String,
-      startOn: DateTime.parse(json['start_on']),
-      expireOn: DateTime.parse(json['expire_on']),
+      startOn: json['start_on'] != null ?  DateTime.parse(json['start_on']) : null,
+      expireOn: json['expire_on'] != null ? DateTime.parse(json['expire_on']) : null,
       memberCount: json['member_count'] as int,
       masterName: json['master_name'] as String,
-      masterIntroduce: json['master_introduce']?? "",
-      masterImageUrl: json['master_imageUrl']?? "",
+      masterIntroduce: json['master_introduce'] ?? "",
+      masterImageUrl: json['master_imageUrl'] ?? "",
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory ProjectOverViewModel.fromJson(String source) => ProjectOverViewModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory ProjectOverViewModel.fromJson(String source) =>
+      ProjectOverViewModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }
-

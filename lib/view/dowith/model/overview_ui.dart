@@ -43,7 +43,7 @@ class OverViewUI extends StatelessWidget {
                             children: [
                               Text("Author : ${data.masterName}"),
                               const SizedBox(height: 10),
-                              Text("Detail : ${data.description}"),
+                              Text("Detail : ${data.prjDesc}"),
                               const SizedBox(height: 7),
                               Text("Goal : ${data.goal}"),
                             ],

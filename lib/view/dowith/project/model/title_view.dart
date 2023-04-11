@@ -28,7 +28,7 @@ class TitleView extends StatelessWidget {
             borderRadius:
             const BorderRadius.all(Radius.circular(4.0)),
             onTap: () {},
-            child: const Padding(
+            child: Padding(
               padding: EdgeInsets.only(left: 8),
               child: Row(
                 children: <Widget>[

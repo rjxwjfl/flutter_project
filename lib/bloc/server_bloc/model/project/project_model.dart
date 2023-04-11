@@ -1,59 +1,71 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
+
 // Project Model
 
 class ProjectModel {
-  int? projectId;
+  int? prjId;
   String title;
   String category;
-  String description;
+  String prjDesc;
   String goal;
-  DateTime startOn;
+  DateTime createAt;
+  DateTime? startOn;
   DateTime? expireOn;
+  int pvt;
+  String? prjPw;
   ProjectModel({
-    this.projectId,
+    this.prjId,
     required this.title,
     required this.category,
-    required this.description,
+    required this.prjDesc,
     required this.goal,
-    required this.startOn,
+    required this.createAt,
+    this.startOn,
     this.expireOn,
+    required this.pvt,
+    this.prjPw,
   });
 
   Map<String, dynamic> toMap() {
+    DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
     return <String, dynamic>{
-      'project_id': projectId,
+      'prj_id': prjId,
       'title': title,
       'category': category,
-      'description': description,
+      'prj_desc': prjDesc,
       'goal': goal,
-      'start_on': startOn.millisecondsSinceEpoch,
-      'expire_on': expireOn?.millisecondsSinceEpoch,
+      'create_at': formatter.format(createAt),
+      'start_on': formatter.format(startOn!),
+      'expire_on': formatter.format(expireOn!),
+      'pvt': pvt,
+      'prj_pw': prjPw,
     };
   }
 
   factory ProjectModel.fromMap(Map<String, dynamic> map) {
     return ProjectModel(
-      projectId: map['project_id'] != null ? map['project_id'] as int : null,
+      prjId: map['prj_id'] != null ? map['prj_id'] as int : null,
       title: map['title'] as String,
       category: map['category'] as String,
-      description: map['description'] as String,
+      prjDesc: map['prj_desc'] as String,
       goal: map['goal'] as String,
-      startOn: DateTime.fromMillisecondsSinceEpoch(map['start_on'] as int),
-      expireOn: map['expire_on'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['expire_on'] as int)
-          : null,
+      createAt: DateTime.parse(map['create_at']),
+      startOn: map['start_on'] != null ?  DateTime.parse(map['start_on']) : null,
+      expireOn: map['expire_on'] != null ? DateTime(map['expire_on']) : null,
+      pvt: map['pvt'] as int,
+      prjPw: map['prj_pw'] != null ? map['prj_pw'] as String : null,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory ProjectModel.fromJson(String source) =>
-      ProjectModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory ProjectModel.fromJson(String source) => ProjectModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'ProjectModel(project_id: $projectId, title: $title, category: $category, description: $description, goal: $goal, start_on: $startOn, expire_on: $expireOn)';
+    return 'ProjectModel(prj_id: $prjId, title: $title, category: $category, prj_desc: $prjDesc, goal: $goal, create_at: $createAt, start_on: $startOn, expire_on: $expireOn, pvt: $pvt, prj_pw: $prjPw)';
   }
 }

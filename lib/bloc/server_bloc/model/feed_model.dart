@@ -1,46 +1,49 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
+
 // Feed Model
 class FeedModel {
   int? feedId;
-  int projectId;
+  int prjId;
   int authorId;
   String title;
-  String content;
+  String feedCnt;
   DateTime createAt;
   DateTime updateAt;
   FeedModel({
     this.feedId,
-    required this.projectId,
+    required this.prjId,
     required this.authorId,
     required this.title,
-    required this.content,
+    required this.feedCnt,
     required this.createAt,
     required this.updateAt,
   });
 
   Map<String, dynamic> toMap() {
+    DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
     return <String, dynamic>{
       'feed_id': feedId,
-      'project_id': projectId,
+      'prj_id': prjId,
       'author_id': authorId,
       'title': title,
-      'content': content,
-      'create_at': createAt.millisecondsSinceEpoch,
-      'update_at': updateAt.millisecondsSinceEpoch,
+      'feed_cnt': feedCnt,
+      'create_at': formatter.format(createAt),
+      'update_at': formatter.format(updateAt),
     };
   }
 
   factory FeedModel.fromMap(Map<String, dynamic> map) {
     return FeedModel(
       feedId: map['feed_id'] != null ? map['feed_id'] as int : null,
-      projectId: map['project_id'] as int,
+      prjId: map['prj_id'] as int,
       authorId: map['author_id'] as int,
       title: map['title'] as String,
-      content: map['content'] as String,
-      createAt: DateTime.fromMillisecondsSinceEpoch(map['create_at'] as int),
-      updateAt: DateTime.fromMillisecondsSinceEpoch(map['update_at'] as int),
+      feedCnt: map['feed_cnt'] as String,
+      createAt: DateTime.parse(map['create_at']),
+      updateAt: DateTime.parse(map['update_at']),
     );
   }
 
@@ -51,6 +54,6 @@ class FeedModel {
 
   @override
   String toString() {
-    return 'FeedModel(feed_id: $feedId, project_id: $projectId, author_id: $authorId, title: $title, content: $content, create_at: $createAt, update_at: $updateAt)';
+    return 'FeedModel(feed_id: $feedId, project_id: $prjId, author_id: $authorId, title: $title, content: $feedCnt, create_at: $createAt, update_at: $updateAt)';
   }
 }

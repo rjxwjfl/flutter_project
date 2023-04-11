@@ -1,41 +1,44 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
+
 class TaskReplyModel {
-  int taskReplyId;
-  int taskCommentId;
+  int? taskReplyId;
+  int taskCmtId;
   int authorId;
-  String content;
+  String taskReplyCnt;
   DateTime createAt;
   DateTime updateAt;
   TaskReplyModel({
-    required this.taskReplyId,
-    required this.taskCommentId,
+    this.taskReplyId,
+    required this.taskCmtId,
     required this.authorId,
-    required this.content,
+    required this.taskReplyCnt,
     required this.createAt,
     required this.updateAt,
   });
 
   Map<String, dynamic> toMap() {
+    DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
     return <String, dynamic>{
       'task_reply_id': taskReplyId,
-      'task_comment_id': taskCommentId,
+      'task_cmt_id': taskCmtId,
       'author_id': authorId,
-      'content': content,
-      'create_at': createAt.millisecondsSinceEpoch,
-      'update_at': updateAt.millisecondsSinceEpoch,
+      'task_reply_cnt': taskReplyCnt,
+      'create_at': formatter.format(createAt),
+      'update_at': formatter.format(updateAt),
     };
   }
 
   factory TaskReplyModel.fromMap(Map<String, dynamic> map) {
     return TaskReplyModel(
-      taskReplyId: map['task_reply_id'] as int,
-      taskCommentId: map['task_comment_id'] as int,
+      taskReplyId: map['task_reply_id'] != null ? map['task_reply_id'] as int : null,
+      taskCmtId: map['task_cmt_id'] as int,
       authorId: map['author_id'] as int,
-      content: map['content'] as String,
-      createAt: DateTime.fromMillisecondsSinceEpoch(map['create_at'] as int),
-      updateAt: DateTime.fromMillisecondsSinceEpoch(map['update_at'] as int),
+      taskReplyCnt: map['task_reply_cnt'] as String,
+      createAt: DateTime.parse(map['create_at']),
+      updateAt: DateTime.parse(map['update_at']),
     );
   }
 
@@ -45,45 +48,46 @@ class TaskReplyModel {
 
   @override
   String toString() {
-    return 'TaskReplyModel(task_reply_id: $taskReplyId, task_comment_id: $taskCommentId, author_id: $authorId, content: $content, create_at: $createAt, update_at: $updateAt)';
+    return 'TaskReplyModel(task_reply_id: $taskReplyId, task_comment_id: $taskCmtId, author_id: $authorId, content: $taskReplyCnt, create_at: $createAt, update_at: $updateAt)';
   }
 }
 
 class FeedReplyModel {
-  int feedReplyId;
+  int? feedReplyId;
   int feedCommentId;
   int authorId;
-  String content;
+  String feedReplyCnt;
   DateTime createAt;
   DateTime updateAt;
   FeedReplyModel({
-    required this.feedReplyId,
+    this.feedReplyId,
     required this.feedCommentId,
     required this.authorId,
-    required this.content,
+    required this.feedReplyCnt,
     required this.createAt,
     required this.updateAt,
   });
 
   Map<String, dynamic> toMap() {
+    DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
     return <String, dynamic>{
       'feed_reply_id': feedReplyId,
-      'feed_comment_id': feedCommentId,
+      'feed_cmt_id': feedCommentId,
       'author_id': authorId,
-      'content': content,
-      'create_at': createAt.millisecondsSinceEpoch,
-      'update_at': updateAt.millisecondsSinceEpoch,
+      'feed_reply_cnt': feedReplyCnt,
+      'create_at': formatter.format(createAt),
+      'update_at': formatter.format(updateAt),
     };
   }
 
   factory FeedReplyModel.fromMap(Map<String, dynamic> map) {
     return FeedReplyModel(
-      feedReplyId: map['feed_reply_id'] as int,
-      feedCommentId: map['feed_comment_id'] as int,
+      feedReplyId: map['feed_reply_id'] != null ? map['feed_reply_id'] as int : null,
+      feedCommentId: map['feed_cmt_id'] as int,
       authorId: map['author_id'] as int,
-      content: map['content'] as String,
-      createAt: DateTime.fromMillisecondsSinceEpoch(map['create_at'] as int),
-      updateAt: DateTime.fromMillisecondsSinceEpoch(map['update_at'] as int),
+      feedReplyCnt: map['feed_reply_cnt'] as String,
+      createAt: DateTime.parse(map['create_at']),
+      updateAt: DateTime.parse(map['update_at']),
     );
   }
 
@@ -93,6 +97,6 @@ class FeedReplyModel {
 
   @override
   String toString() {
-    return 'FeedReplyModel(feed_reply_id: $feedReplyId, feed_comment_id: $feedCommentId, author_id: $authorId, content: $content, create_at: $createAt, update_at: $updateAt)';
+    return 'FeedReplyModel(feed_reply_id: $feedReplyId, feed_comment_id: $feedCommentId, author_id: $authorId, content: $feedReplyCnt, create_at: $createAt, update_at: $updateAt)';
   }
 }

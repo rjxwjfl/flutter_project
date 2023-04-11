@@ -8,7 +8,7 @@ class ProjectOverView extends StatelessWidget {
     return CustomScrollView(
       shrinkWrap: true,
       slivers: [
-        const SliverPadding(
+        SliverPadding(
           padding: EdgeInsets.only(left: 12, right: 12),
           sliver: SliverToBoxAdapter(
             child: Card(

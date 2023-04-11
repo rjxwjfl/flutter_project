@@ -36,7 +36,7 @@ class _DoWithMainState extends State<DoWithMain> with TickerProviderStateMixin, 
     }
   }
 
-  List<Widget> tabList = [const Tab(text: "SEARCH"), const Tab(text: "MY PROJECT")];
+  List<Widget> tabList = [const Tab(text: "MY PROJECT"), const Tab(text: "SEARCH")];
 
   @override
   Widget build(BuildContext context) {
@@ -66,8 +66,8 @@ class _DoWithMainState extends State<DoWithMain> with TickerProviderStateMixin, 
           body: TabBarView(
             controller: _tabController,
             children: [
+              ProjectTabView(),
               SearchTabView(textEditingController: _textEditingController, focusNode: _focusNode, materialColor: setMaterialColor()),
-              ProjectTabView()
             ],
           ),
         ),

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dowith/firebase/firestore_user.dart';
+import 'package:flutter_dowith/main.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 
@@ -11,7 +11,7 @@ class Auth {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
-  String baseUrl = "";
+  String baseUrl = "http://10.0.2.2:8080/user";
 
   get auth => _auth;
 
@@ -19,10 +19,27 @@ class Auth {
 
   Future<void> signUpWithEmail(context, String email, String password) async {
     try {
-      await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      await _auth.createUserWithEmailAndPassword(email: email, password: password).then((value) async {
+        String? token = await _messaging.getToken();
+        Map<String, dynamic> body = {
+          "username": "Test@test.com",
+          "user_pw": "TEST PW",
+          "name": "Test@test.com",
+          "contact": "",
+          "device_token": token,
+          "fb_uid": "TEST UID"
+        };
+        final response =
+        await http.post(Uri.parse(baseUrl), headers: {"Content-Type": "application/json"}, body: jsonEncode(body));
+        if (response.statusCode == 200) {
+          Map<String, dynamic> data = jsonDecode(response.body);
+          prefs.setInt("user_id", data.values as int);
+        } else {
+          throw Exception('Failed to fetch projects');
+        }
+      });
       // 서버로 데이터 전송 => username : email, password : password, name: name, fb_uid : _auth.currentUser!.uid, device_token: _messaging.getToken()
       // name 설정하는 페이지 추가해야함.
-      await sendEmailVerification(context); // 이메일 인증은 그냥 빼버리는게 나을지도?
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         showSnackBar(context, '이미 사용중인 이메일입니다.');
@@ -105,5 +122,25 @@ class Auth {
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
       ),
     );
+  }
+
+  Future<void> test() async {
+    String? token = await _messaging.getToken();
+    Map<String, dynamic> body = {
+      "username": "Test@test.com",
+      "user_pw": "TEST PW",
+      "name": "Test@test.com",
+      "contact": null,
+      "device_token": token,
+      "fb_uid": "TEST UID"
+    };
+    final response =
+        await http.post(Uri.parse(baseUrl), headers: {"Content-Type": "application/json"}, body: jsonEncode(body));
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = jsonDecode(response.body);
+      prefs.setInt("user_id", data["user_id"]);
+    } else {
+      throw Exception('Failed to fetch projects');
+    }
   }
 }
