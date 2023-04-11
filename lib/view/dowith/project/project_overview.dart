@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dowith/bloc/server_bloc/model/project/project_model.dart';
 import 'package:flutter_dowith/view/dowith/project/model/title_view.dart';
 
 class ProjectOverView extends StatelessWidget {
-  const ProjectOverView({Key? key}) : super(key: key);
+  const ProjectOverView({required this.data, Key? key}) : super(key: key);
+
+  final ProjectModel data;
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
       shrinkWrap: true,
       slivers: [
         SliverPadding(
-          padding: EdgeInsets.only(left: 12, right: 12),
+          padding: const EdgeInsets.only(left: 12, right: 12),
           sliver: SliverToBoxAdapter(
             child: Card(
               elevation: 5.0,
               child: Padding(
-                padding: EdgeInsets.fromLTRB(12, 8, 12, 8),
+                padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
                 child: Column(
                   children: [
                     Row(
@@ -22,13 +25,13 @@ class ProjectOverView extends StatelessWidget {
                         Expanded(
                           child: Column(
                             children: [
-                              Text("TITLE"),
-                              SizedBox(height: 20),
-                              Text("PROJECT PERIOD")
+                              Text(data.title),
+                              const SizedBox(height: 20),
+                              Text("${data.createAt}")
                             ],
                           ),
                         ),
-                        Column(
+                        const Column(
                           children: [
                             Text("PROGRESS"),
                             Placeholder(
@@ -39,9 +42,9 @@ class ProjectOverView extends StatelessWidget {
                         )
                       ],
                     ),
-                    Divider(),
-                    Text("RULE"),
-                    Placeholder(
+                    const Divider(),
+                    const Text("RULE"),
+                    const Placeholder(
                       fallbackWidth: 300,
                       fallbackHeight: 100,
                     )

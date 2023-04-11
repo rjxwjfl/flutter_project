@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dowith/bloc/server_bloc/model/project/project_model.dart';
 import 'package:flutter_dowith/view/dowith/project/project_entire.dart';
 import 'package:flutter_dowith/view/dowith/project/project_inbox.dart';
 import 'package:flutter_dowith/view/dowith/project/project_overview.dart';
 
 class ProjectHome extends StatefulWidget {
-  const ProjectHome({Key? key}) : super(key: key);
+  const ProjectHome({required this.data, Key? key}) : super(key: key);
+
+  final ProjectModel data;
 
   @override
   State<ProjectHome> createState() => _ProjectHomeState();
@@ -23,7 +26,14 @@ class _ProjectHomeState extends State<ProjectHome> with TickerProviderStateMixin
     _selectedIndex = 0;
     _title = _setTitle(0);
     _tabController = TabController(length: 3, vsync: this);
-    _widgetOptions = <Widget>[const ProjectOverView(), ProjectEntire(controller: _tabController,), const Text('FEED'), const ProjectInbox()];
+    _widgetOptions = <Widget>[
+      ProjectOverView(data: widget.data),
+      ProjectEntire(
+        controller: _tabController,
+      ),
+      const Text('FEED'),
+      const ProjectInbox()
+    ];
   }
 
   @override

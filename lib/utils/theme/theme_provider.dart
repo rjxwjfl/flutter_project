@@ -46,45 +46,23 @@ class ThemeProvider extends ChangeNotifier {
   }
 
   lightSchemeSwitcher(int value) {
-    switch (value) {
-      case 1:
-        return coralVelvetRedL;
-      case 2:
-        return carrotOrangeL;
-      case 3:
-        return canaryL;
-      case 4:
-        return mossGreenL;
-      case 5:
-        return indigoL;
-      case 6:
-        return navyL;
-      case 7:
-        return deeperVioletL;
-      default:
-        return indigoL;
-    }
+    ColorScheme scheme;
+
+    const map = {1: coralVelvetRedL, 2: carrotOrangeL, 3: canaryL, 4: mossGreenL, 5: indigoL, 6: navyL, 7: deeperVioletL};
+
+    scheme = map[value] ?? indigoL;
+
+    return scheme;
   }
 
   darkSchemeSwitcher(int value) {
-    switch (value) {
-      case 1:
-        return coralVelvetRedD;
-      case 2:
-        return carrotOrangeD;
-      case 3:
-        return canaryD;
-      case 4:
-        return mossGreenD;
-      case 5:
-        return indigoD;
-      case 6:
-        return navyD;
-      case 7:
-        return deeperVioletD;
-      default:
-        return indigoD;
-    }
+    ColorScheme scheme;
+
+    const map = {1: coralVelvetRedD, 2: carrotOrangeD, 3: canaryD, 4: mossGreenD, 5: indigoD, 6: navyD, 7: deeperVioletD};
+
+    scheme = map[value] ?? indigoD;
+
+    return scheme;
   }
 
   _loadFromPrefs() {

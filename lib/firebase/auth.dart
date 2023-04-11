@@ -3,15 +3,17 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dowith/bloc/server_bloc/model/project/project_model.dart';
 import 'package:flutter_dowith/main.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class Auth {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
-  String baseUrl = "http://10.0.2.2:8080/user";
+  String baseUrl = "http://10.0.2.2:8080";
 
   get auth => _auth;
 
@@ -30,7 +32,7 @@ class Auth {
           "fb_uid": "TEST UID"
         };
         final response =
-        await http.post(Uri.parse(baseUrl), headers: {"Content-Type": "application/json"}, body: jsonEncode(body));
+            await http.post(Uri.parse("$baseUrl/user"), headers: {"Content-Type": "application/json"}, body: jsonEncode(body));
         if (response.statusCode == 200) {
           Map<String, dynamic> data = jsonDecode(response.body);
           prefs.setInt("user_id", data.values as int);
@@ -125,22 +127,36 @@ class Auth {
   }
 
   Future<void> test() async {
-    String? token = await _messaging.getToken();
     Map<String, dynamic> body = {
-      "username": "Test@test.com",
-      "user_pw": "TEST PW",
-      "name": "Test@test.com",
-      "contact": null,
-      "device_token": token,
-      "fb_uid": "TEST UID"
+      "title": "Test Title 10",
+      "category": 1,
+      "prj_desc": "Test project description 10",
+      "goal": "Build complete Ten"
     };
     final response =
-        await http.post(Uri.parse(baseUrl), headers: {"Content-Type": "application/json"}, body: jsonEncode(body));
-    if (response.statusCode == 200) {
-      Map<String, dynamic> data = jsonDecode(response.body);
-      prefs.setInt("user_id", data["user_id"]);
+        await http.post(Uri.parse("$baseUrl/project?uid=${prefs.getInt("user_id")}&private=0"), headers: {"Content-Type": "application/json"}, body: jsonEncode(body));
+    if (response.statusCode == 200){
+      print(response.body);
     } else {
       throw Exception('Failed to fetch projects');
     }
   }
 }
+// // register user
+// String? token = await _messaging.getToken();
+// Map<String, dynamic> body = {
+//   "username": "Test@test.com",
+//   "user_pw": "TEST PW",
+//   "name": "Test@test.com",
+//   "contact": null,
+//   "device_token": token,
+//   "fb_uid": "TEST UID"
+// };
+// final response =
+//     await http.post(Uri.parse(baseUrl), headers: {"Content-Type": "application/json"}, body: jsonEncode(body));
+// if (response.statusCode == 200) {
+// Map<String, dynamic> data = jsonDecode(response.body);
+// prefs.setInt("user_id", data["user_id"]);
+// } else {
+// throw Exception('Failed to fetch projects');
+// }

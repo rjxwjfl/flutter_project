@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dowith/view/dowith/dowith_main.dart';
+import 'package:flutter_dowith/view/dowith/dw_navi_home.dart';
 import 'package:flutter_dowith/view/outline/todo_outline.dart';
 import 'package:flutter_dowith/view/settings/settings_main.dart';
 import 'package:flutter_dowith/view/todo/todo_main.dart';
@@ -11,7 +11,7 @@ class PageRouteProvider extends ChangeNotifier {
   final List<Widget> routes = [
     const TodoOutline(),
     const TodoMain(),
-    const DoWithMain(),
+    const DwNaviHome(),
     const SettingsMain(),
   ];
 
@@ -38,17 +38,14 @@ class PageRouteProvider extends ChangeNotifier {
   }
 
   String setTitle(index){
-    switch(index){
-      case 0:
-        return "HOME";
-      case 1:
-        return "TODO LIST";
-      case 2:
-        return "DO WITH";
-      case 3:
-        return "SETTINGS";
-      default:
-        return "HOME";
-    }
+    String title;
+    const map = {
+      0: "홈",
+      1: "할 일",
+      2: "Do With",
+      3: "설정"
+    };
+    title = map[index] ?? "홈";
+    return title;
   }
 }

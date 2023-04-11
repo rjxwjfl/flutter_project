@@ -17,7 +17,7 @@ class SearchTabView extends StatefulWidget {
   State<SearchTabView> createState() => _SearchTabViewState();
 }
 
-class _SearchTabViewState extends State<SearchTabView> {
+class _SearchTabViewState extends State<SearchTabView> with AutomaticKeepAliveClientMixin{
   int? page;
   String? searchKeyword;
   List<int>? categories;
@@ -33,6 +33,7 @@ class _SearchTabViewState extends State<SearchTabView> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Column(
       children: [
         Padding(
@@ -78,7 +79,7 @@ class _SearchTabViewState extends State<SearchTabView> {
         children: [
           Row(
             children: <Widget>[
-              Expanded(
+              const Expanded(
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Column(
@@ -106,7 +107,7 @@ class _SearchTabViewState extends State<SearchTabView> {
                   Radius.circular(4.0),
                 ),
                 onTap: () {},
-                child: Padding(
+                child: const Padding(
                   padding: EdgeInsets.only(left: 8),
                   child: Row(
                     children: <Widget>[
@@ -130,4 +131,6 @@ class _SearchTabViewState extends State<SearchTabView> {
       ),
     );
   }
+  @override
+  bool get wantKeepAlive => true;
 }

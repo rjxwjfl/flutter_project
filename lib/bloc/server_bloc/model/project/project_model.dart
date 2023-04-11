@@ -8,7 +8,8 @@ import 'package:intl/intl.dart';
 class ProjectModel {
   int? prjId;
   String title;
-  String category;
+  int category;
+  int mstId;
   String prjDesc;
   String goal;
   DateTime createAt;
@@ -20,6 +21,7 @@ class ProjectModel {
     this.prjId,
     required this.title,
     required this.category,
+    required this.mstId,
     required this.prjDesc,
     required this.goal,
     required this.createAt,
@@ -35,6 +37,7 @@ class ProjectModel {
       'prj_id': prjId,
       'title': title,
       'category': category,
+      'mst_id': mstId,
       'prj_desc': prjDesc,
       'goal': goal,
       'create_at': formatter.format(createAt),
@@ -49,7 +52,8 @@ class ProjectModel {
     return ProjectModel(
       prjId: map['prj_id'] != null ? map['prj_id'] as int : null,
       title: map['title'] as String,
-      category: map['category'] as String,
+      category: map['category'] as int,
+      mstId: map['mst_id'] as int,
       prjDesc: map['prj_desc'] as String,
       goal: map['goal'] as String,
       createAt: DateTime.parse(map['create_at']),

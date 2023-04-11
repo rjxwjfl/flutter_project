@@ -3,11 +3,16 @@ import 'package:flutter_dowith/main.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class NaviHome extends ConsumerWidget {
-  const NaviHome({super.key});
+class NaviHome extends StatefulWidget {
+  const NaviHome({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  State<NaviHome> createState() => _NaviHomeState();
+}
+
+class _NaviHomeState extends State<NaviHome> {
+  @override
+  Widget build(BuildContext context) {
     ColorScheme scheme = Theme.of(context).colorScheme;
     Size size = MediaQuery.of(context).size;
     DateTime onBackKey = DateTime.now();
@@ -31,37 +36,57 @@ class NaviHome extends ConsumerWidget {
           return true;
         }
       },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(ref.watch(routeProv).title),
-          elevation: 0.0,
-          backgroundColor: scheme.background,
-          foregroundColor: scheme.onBackground,
-        ),
-        body: PageView(
-          controller: ref.watch(routeProv).pageController,
-          physics: const NeverScrollableScrollPhysics(),
-          children: ref.watch(routeProv).routes,
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: scheme.primary,
-          unselectedItemColor: scheme.secondary,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          unselectedIconTheme: const IconThemeData(size: 20),
-          type: BottomNavigationBarType.fixed,
-          currentIndex: ref.watch(routeProv).selectedIndex,
-          onTap: (index) {
-            ref.watch(routeProv).pageRouteNavigator(index);
+      child: GestureDetector(
+        onTap: () {
+          FocusManager.instance.primaryFocus!.unfocus();
+        },
+        child: Consumer(
+          builder: (BuildContext context, WidgetRef ref, Widget? child) {
+            var refs = ref.watch(routeProv);
+            return Scaffold(
+              appBar: AppBar(
+                title: Text(refs.title),
+                elevation: 0.0,
+                backgroundColor: scheme.background,
+                foregroundColor: scheme.onBackground,
+                actions: refs.selectedIndex == 2
+                    ? [
+                        IconButton(onPressed: () {}, icon: const FaIcon(FontAwesomeIcons.magnifyingGlass)),
+                        IconButton(onPressed: () {}, icon: const FaIcon(FontAwesomeIcons.calendarPlus)),
+                        const SizedBox(width: 5)
+                      ]
+                    : [],
+              ),
+              body: PageView(
+                controller: refs.pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: refs.routes,
+              ),
+              bottomNavigationBar: SizedBox(
+                height: 55,
+                child: BottomNavigationBar(
+                  selectedItemColor: scheme.primary,
+                  unselectedItemColor: scheme.secondary,
+                  showSelectedLabels: false,
+                  showUnselectedLabels: false,
+                  unselectedIconTheme: const IconThemeData(size: 18),
+                  type: BottomNavigationBarType.fixed,
+                  currentIndex: refs.selectedIndex,
+                  onTap: (index) {
+                    refs.pageRouteNavigator(index);
+                  },
+                  items: const <BottomNavigationBarItem>[
+                    BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.house), label: "Home"),
+                    BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.calendarXmark), label: "ToDo"),
+                    BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.users), label: "Do With"),
+                    BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.gears), label: "Setting"),
+                  ],
+                ),
+              ),
+              extendBody: true,
+            );
           },
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.house), label: "Home"),
-            BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.calendarXmark), label: "ToDo"),
-            BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.users), label: "Do With"),
-            BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.gears), label: "Setting"),
-          ],
         ),
-        extendBody: true,
       ),
     );
   }
