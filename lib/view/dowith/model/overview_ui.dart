@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dowith/bloc/server_bloc/model/project/project_overview_model.dart';
+import 'package:flutter_dowith/bloc/database_bloc/model/project/project_overview_model.dart';
 import 'package:flutter_dowith/bloc/test_code.dart';
 import 'package:flutter_dowith/view/dowith/project/project_home.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

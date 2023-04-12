@@ -15,6 +15,7 @@ class UserDtlModel {
   String? imageUrl;
   bool subState;
   DateTime? subDeadLine;
+
   UserDtlModel({
     this.userDtlId,
     required this.userId,
@@ -41,7 +42,7 @@ class UserDtlModel {
       'contact': contact,
       'introduce': introduce,
       'image_url': imageUrl,
-      'sub_state': subState,
+      'sub_state': setInt(subState),
       'sub_deadLine': formatter.format(subDeadLine!),
     };
   }
@@ -57,7 +58,7 @@ class UserDtlModel {
       contact: map['contact'] != null ? map['contact'] as String : null,
       introduce: map['introduce'] != null ? map['introduce'] as String : null,
       imageUrl: map['image_url'] != null ? map['image_url'] as String : null,
-      subState: map['sub_state'] as bool,
+      subState: setBool(map['sub_state']),
       subDeadLine: map['sub_deadLine'] != null ? DateTime.parse(map['sub_deadLine']) : null,
     );
   }
@@ -70,4 +71,18 @@ class UserDtlModel {
   String toString() {
     return 'UserDtlModel(user_dtl_id: $userDtlId, user_id: $userId, create_at: $createAt, update_at: $updateAt, latest_access: $latestAccess, name: $name, contact: $contact, introduce: $introduce, image_url: $imageUrl, sub_state: $subState, sub_deadLine: $subDeadLine)';
   }
+}
+
+bool setBool(int state) {
+  bool state;
+  const map = {0: false, 1: true};
+  state = map["state"] ?? false;
+  return state;
+}
+
+int setInt(bool state) {
+  int state;
+  const map = {false: 0, true: 1};
+  state = map["state"] ?? 0;
+  return state;
 }

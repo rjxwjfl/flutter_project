@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dowith/bloc/server_bloc/model/project/project_overview_model.dart';
-import 'package:flutter_dowith/bloc/server_bloc/project_bloc.dart';
-import 'package:flutter_dowith/bloc/server_bloc/project_repository.dart';
+import 'package:flutter_dowith/bloc/database_bloc/model/project/project_overview_model.dart';
+import 'package:flutter_dowith/bloc/database_bloc/project/project_bloc.dart';
+import 'package:flutter_dowith/bloc/database_bloc/project/project_repository.dart';
 import 'package:flutter_dowith/view/dowith/model/overview_ui.dart';
 import 'package:flutter_dowith/view/dowith/project/model/search_model.dart';
 
@@ -79,9 +79,9 @@ class _SearchTabViewState extends State<SearchTabView> with AutomaticKeepAliveCl
         children: [
           Row(
             children: <Widget>[
-              const Expanded(
+              Expanded(
                 child: Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -107,8 +107,8 @@ class _SearchTabViewState extends State<SearchTabView> with AutomaticKeepAliveCl
                   Radius.circular(4.0),
                 ),
                 onTap: () {},
-                child: const Padding(
-                  padding: EdgeInsets.only(left: 8),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8),
                   child: Row(
                     children: <Widget>[
                       Text(

@@ -1,11 +1,14 @@
 import 'dart:convert';
-import 'package:flutter_dowith/bloc/server_bloc/model/project/project_member_model.dart';
-import 'package:flutter_dowith/bloc/server_bloc/model/project/project_overview_model.dart';
-import 'package:flutter_dowith/bloc/server_bloc/model/project/project_rule_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_dowith/bloc/server_bloc/model/project/project_model.dart';
+
+import '../model/project/project_member_model.dart';
+import '../model/project/project_model.dart';
+import '../model/project/project_overview_model.dart';
+import '../model/project/project_rule_model.dart';
+import '../model/user/user_dtl_model.dart';
 
 class ProjectRepository {
+  String baseUrl = "http://10.0.2.2:8080";
 
   Future<List<ProjectOverViewModel>> getProjectList(int? page, String? searchKeyword, List<int>? categories, String? sort) async {
     String baseUrl = 'http://10.0.2.2:8080/project';
@@ -40,12 +43,14 @@ class ProjectRepository {
   }
 
   Future<ProjectModel> getProject(int projectId) async {
-    final response = await http.get(Uri.parse('http://localhost:8080/project/dtl?pid=$projectId'));
-    if (response.statusCode == 200) {
-      final json = jsonDecode(response.body)[0];
-      return ProjectModel.fromMap(json);
+    final response = await http.get(Uri.parse("$baseUrl/project/dtl?pid=$projectId"));
+    if (response.statusCode == 200){
+      List<dynamic> data = jsonDecode(response.body);
+      Map<String, dynamic> projectMap = data[0]; // get the first project object as a map
+      ProjectModel model = ProjectModel.fromMap(projectMap);
+      return model;
     } else {
-      throw Exception('Failed to load project');
+      throw Exception('Failed to fetch projects');
     }
   }
 
@@ -69,4 +74,15 @@ class ProjectRepository {
     }
   }
 
+  Future<UserDtlModel> getUser(int userId) async{
+    final response = await http.get(Uri.parse("$baseUrl/user/info?uid=$userId"));
+    if (response.statusCode == 200){
+      List<dynamic> data = jsonDecode(response.body);
+      Map<String, dynamic> userData = data[0];
+      UserDtlModel model = UserDtlModel.fromMap(userData);
+      return model;
+    } else {
+      throw Exception('Failed to fetch projects');
+    }
+  }
 }

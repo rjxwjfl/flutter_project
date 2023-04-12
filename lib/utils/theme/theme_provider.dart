@@ -76,4 +76,12 @@ class ThemeProvider extends ChangeNotifier {
     prefs.setBool('isDarkMode', _isDarkMode);
     prefs.setInt('schemeValue', _schemeValue);
   }
+
+  Color setMaterialColor(context) {
+    if (Theme.of(context).brightness == Brightness.dark) {
+      return Theme.of(context).colorScheme.background.withRed(25).withGreen(25).withBlue(25);
+    } else {
+      return Theme.of(context).colorScheme.background.withRed(240).withGreen(240).withBlue(240);
+    }
+  }
 }

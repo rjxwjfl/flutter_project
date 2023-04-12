@@ -3,11 +3,9 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dowith/bloc/server_bloc/model/project/project_model.dart';
 import 'package:flutter_dowith/main.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 
 class Auth {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
