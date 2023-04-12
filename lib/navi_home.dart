@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dowith/main.dart';
-import 'package:flutter_dowith/view/dowith/project/model/search_model.dart';
 import 'package:flutter_dowith/view/dowith/project_add_ui.dart';
+import 'package:flutter_dowith/view/dowith/search_view_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -13,12 +14,10 @@ class NaviHome extends StatefulWidget {
 }
 
 class _NaviHomeState extends State<NaviHome> {
-  late final TextEditingController _textEditingController = TextEditingController();
-  late final FocusNode _focusNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     ColorScheme scheme = Theme.of(context).colorScheme;
-    Size size = MediaQuery.of(context).size;
     DateTime onBackKey = DateTime.now();
     return WillPopScope(
       onWillPop: () async {
@@ -57,12 +56,12 @@ class _NaviHomeState extends State<NaviHome> {
                     ? [
                         IconButton(
                             onPressed: () {
-                              callPopUp(context);
+                              Navigator.push(context, CupertinoPageRoute(builder: (context) => const SearchViewUI()));
                             },
                             icon: const FaIcon(FontAwesomeIcons.magnifyingGlass)),
                         IconButton(
                             onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => const ProjectAddUI()));
+                              Navigator.push(context, CupertinoPageRoute(builder: (context) => const ProjectAddUI()));
                             },
                             icon: const FaIcon(FontAwesomeIcons.calendarPlus)),
                         const SizedBox(width: 5)
@@ -100,41 +99,6 @@ class _NaviHomeState extends State<NaviHome> {
           },
         ),
       ),
-    );
-  }
-
-  void callPopUp(context) {
-    Size size = MediaQuery.of(context).size;
-    double verticalPadding = size.width * 0.05;
-    double horizontalPadding = size.height * 0.35;
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          backgroundColor: Colors.transparent,
-          insetPadding: EdgeInsets.fromLTRB(verticalPadding, horizontalPadding, verticalPadding, horizontalPadding),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
-              borderRadius: const BorderRadius.all(Radius.circular(24.0)),
-              boxShadow: <BoxShadow>[
-                BoxShadow(color: Colors.grey.withOpacity(0.2), offset: const Offset(4, 4), blurRadius: 8.0),
-              ],
-            ),
-            child: Column(
-              children: [
-                SearchBarUI(controller: _textEditingController, hintText: "SEARCHING FOR", focusNode: _focusNode),
-                Divider(height: 2,),
-                Expanded(
-                  child: SizedBox(
-                    child: Text("Bottom"),
-                  ),
-                )
-              ],
-            ),
-          ),
-        );
-      },
     );
   }
 }

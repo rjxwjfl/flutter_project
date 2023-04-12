@@ -58,7 +58,7 @@ class ProjectModel {
       goal: map['goal'] as String,
       createAt: DateTime.parse(map['create_at']),
       startOn: map['start_on'] != null ?  DateTime.parse(map['start_on']) : null,
-      expireOn: map['expire_on'] != null ? DateTime(map['expire_on']) : null,
+      expireOn: map['expire_on'] != null ? DateTime.parse(map['expire_on']) : null,
       pvt: map['pvt'] as int,
       prjPw: map['prj_pw'] != null ? map['prj_pw'] as String : null,
     );
