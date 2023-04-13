@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dowith/bloc/database_bloc/model/user/user_model.dart';
 import 'package:flutter_dowith/main.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
@@ -82,13 +83,28 @@ class Auth {
         idToken: googleAuth.idToken,
       );
 
-      final UserCredential userCredential = await _auth.signInWithCredential(credential);
-      // username : userCredential.user!.email, name : userCredential.user!.displayName, fb_uid : _auth.currentUser.uid;
-
-      // FireStoreUser fireStoreUser = FireStoreUser();
-      // if (!await fireStoreUser.userExistCheck(userCredential.user!.uid)) {
-      //   fireStoreUser.createUserData();
-      // }
+      await _auth.signInWithCredential(credential).then((value) async{
+        if (value.additionalUserInfo!.isNewUser){
+          String? token = await _messaging.getToken();
+          Map<String, dynamic> body = {
+            "username": value.user!.email,
+            "name": value.user!.email,
+            "contact": value.user!.phoneNumber,
+            "device_token": token,
+            "fb_uid": value.user!.uid
+          };
+          print(body);
+          final response =
+          await http.post(Uri.parse("$baseUrl/user/google"), headers: {"Content-Type": "application/json"}, body: jsonEncode(body));
+          if (response.statusCode == 200) {
+            Map<String, dynamic> data = jsonDecode(response.body);
+            prefs.setInt("user_id", data.values as int);
+          } else {
+            throw Exception('Failed to fetch projects');
+          }
+        }
+        print("user exist. ${value.user!.phoneNumber}");
+      });
     } catch (e) {
       print(e);
     }

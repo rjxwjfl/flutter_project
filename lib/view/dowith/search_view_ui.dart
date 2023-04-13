@@ -17,8 +17,7 @@ class SearchViewUI extends StatefulWidget {
 class _SearchViewUIState extends State<SearchViewUI> {
   int? page;
   String? searchKeyword;
-  List<int>? categories;
-  String? sort;
+  List<int>? filters;
   final ProjectBloc _bloc = ProjectBloc(ProjectRepository());
   final ProjectRepository repository = ProjectRepository();
   late TextEditingController _textEditingController;
@@ -36,7 +35,7 @@ class _SearchViewUIState extends State<SearchViewUI> {
   @override
   void initState() {
     super.initState();
-    _bloc.getOverView(page, searchKeyword, categories, sort); // Frequent rebuilds should be avoided.
+    _bloc.getOverView(page, searchKeyword, filters); // Frequent rebuilds should be avoided.
     _textEditingController = TextEditingController();
     _focusNode = FocusNode();
   }
@@ -65,6 +64,10 @@ class _SearchViewUIState extends State<SearchViewUI> {
                 callback: (value){
                   if (value != null && value.isNotEmpty){
                     saveKeyword(value);
+                    setState(() {
+                      searchKeyword = _textEditingController.text;
+                    });
+                    _bloc.getOverView(page, searchKeyword, filters);
                   }
                   print(value);
                   FocusScope.of(context).unfocus();
@@ -91,11 +94,14 @@ class _SearchViewUIState extends State<SearchViewUI> {
                               child: Text("프로젝트가 존재하지 않습니다."),
                             );
                           } else {
-                            return ListView.builder(
-                                itemCount: snapshot.data!.length,
-                                itemBuilder: (context, index) {
-                                  return OverViewUI(data: snapshot.data![index]);
-                                });
+                            return RefreshIndicator(
+                              onRefresh: () => _bloc.getOverView(page, searchKeyword, filters),
+                              child: ListView.builder(
+                                  itemCount: snapshot.data!.length,
+                                  itemBuilder: (context, index) {
+                                    return OverViewUI(data: snapshot.data![index]);
+                                  }),
+                            );
                           }
                         }
                       },
@@ -119,7 +125,7 @@ class _SearchViewUIState extends State<SearchViewUI> {
             children: <Widget>[
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

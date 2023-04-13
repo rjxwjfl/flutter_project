@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dowith/bloc/database_bloc/model/project/project_overview_model.dart';
@@ -17,63 +19,79 @@ class OverViewUI extends StatelessWidget {
     ColorScheme scheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
-      child: Card(
-        elevation: 10.0,
-        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
-        child: InkWell(
-          borderRadius: const BorderRadius.all(Radius.circular(5)),
-          onTap: () {
-            TestCode().getProject(data.prjId).then((value) {
-              Navigator.pop(context);
-              Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => ProjectHome(data: value),
-                  ));
-            });
-          },
-          child: Ink(
-            width: MediaQuery.of(context).size.width,
-            height: 160,
-            child: ClipRRect(
+      child: Stack(
+        children: [
+          Card(
+            elevation: 10.0,
+            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
+            child: InkWell(
               borderRadius: const BorderRadius.all(Radius.circular(5)),
-              child: Row(
-                children: [
-                  Container(
-                    color: Theme.of(context).colorScheme.primary,
-                    width: 100,
-                    height: MediaQuery.of(context).size.height,
-                    child: getCategoryTransfer(data.category, context),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Stack(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+              onTap: () {
+                if (data.pvt){
+
+                }
+                TestCode().getProject(data.prjId).then((value) {
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => ProjectHome(data: value),
+                      ));
+                });
+              },
+              child: Ink(
+                width: MediaQuery.of(context).size.width,
+                height: 160,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                  child: Row(
+                    children: [
+                      Container(
+                        color: Theme.of(context).colorScheme.primary,
+                        width: 100,
+                        height: MediaQuery.of(context).size.height,
+                        child: getCategoryTransfer(data.category, context),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Stack(
                             children: [
-                              Text("Title : ${data.title}"),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 10, bottom: 10),
-                                child: Divider(color: scheme.onSurface, height: 1),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(child: Text("Title : ${data.title}")),
+                                      CircleAvatar(
+                                        // backgroundImage: NetworkImage("${data.masterImageUrl}"),
+                                        backgroundColor: Theme.of(context).colorScheme.primary,
+                                        child: data.masterImageUrl == null || data.masterImageUrl == "" ? Text(data.masterName[0].toUpperCase()) : null,
+                                      ),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 10, bottom: 10),
+                                    child: Divider(color: scheme.onSurface, height: 1),
+                                  ),
+                                  Text("${data.masterImageUrl}"),
+                                  const SizedBox(height: 10),
+                                  Text("Detail : ${data.prjDesc}"),
+                                  const SizedBox(height: 7),
+                                  Text("Goal : ${data.goal}"),
+                                ],
                               ),
-                              Text("Author : ${data.masterName}"),
-                              const SizedBox(height: 10),
-                              Text("Detail : ${data.prjDesc}"),
-                              const SizedBox(height: 7),
-                              Text("Goal : ${data.goal}"),
                             ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -121,7 +139,7 @@ class OverViewUI extends StatelessWidget {
             style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.surface),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 5, right: 5),
+            padding: const EdgeInsets.only(left: 5, right: 5, top: 5),
             child: SizedBox(
               child: Column(
                 children: [
@@ -133,7 +151,7 @@ class OverViewUI extends StatelessWidget {
                       fontSize: 12),
                   data.startOn != null
                       ? Padding(
-                          padding: const EdgeInsets.only(left: 4),
+                          padding: const EdgeInsets.only(left: 3),
                           child: Column(
                             children: [
                               ProjectStatusSum(
@@ -141,13 +159,13 @@ class OverViewUI extends StatelessWidget {
                                   icon: FontAwesomeIcons.hourglassStart,
                                   iconSize: 15.0,
                                   text: formatter.format(data.startOn!),
-                                  fontSize: 10.0),
+                                  fontSize: 11.0),
                               ProjectStatusSum(
                                   padding: const EdgeInsets.only(top: 5),
                                   icon: FontAwesomeIcons.hourglassEnd,
                                   iconSize: 15.0,
                                   text: formatter.format(data.expireOn!),
-                                  fontSize: 10.0),
+                                  fontSize: 11.0),
                             ],
                           ),
                         )

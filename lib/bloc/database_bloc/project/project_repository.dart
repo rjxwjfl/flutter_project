@@ -10,19 +10,13 @@ import '../model/user/user_dtl_model.dart';
 class ProjectRepository {
   String baseUrl = "http://10.0.2.2:8080";
 
-  Future<List<ProjectOverViewModel>> getProjectList(int? page, String? searchKeyword, List<int>? categories, String? sort) async {
+  Future<List<ProjectOverViewModel>> getProjectList(int? page, String? searchKeyword) async {
     String baseUrl = 'http://10.0.2.2:8080/project';
     if (searchKeyword != null) {
-      baseUrl += '&searchKeyword=$searchKeyword';
-    }
-    if (categories != null) {
-      baseUrl += '&category=${categories.join(',')}';
-    }
-    if (sort != null) {
-      baseUrl += '&sort=$sort';
+      baseUrl += '?searchKeyword=$searchKeyword';
     }
     final url = Uri.parse(baseUrl);
-    final response = await http.get(url);
+    final response = await http.get(url).timeout(const Duration(milliseconds: 5000));
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
       final List<ProjectOverViewModel> projectList = data.map((json) => ProjectOverViewModel.fromMap(json)).toList();
