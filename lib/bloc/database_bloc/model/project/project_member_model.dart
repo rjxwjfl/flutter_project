@@ -8,38 +8,23 @@ class ProjectMemberModel {
   int prjId;
   int userId;
   String role;
-  ProjectMemberModel({
-    this.prjMbrId,
-    required this.prjId,
-    required this.userId,
-    required this.role,
-  });
+
+  ProjectMemberModel({this.prjMbrId, required this.prjId, required this.userId, required this.role});
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'prj_mbr_id': prjMbrId,
-      'prj_id': prjId,
-      'user_id': userId,
-      'role': role,
-    };
+    return <String, dynamic>{'prj_mbr_id': prjMbrId, 'prj_id': prjId, 'user_id': userId, 'role': role};
   }
 
   factory ProjectMemberModel.fromMap(Map<String, dynamic> map) {
     return ProjectMemberModel(
-      prjMbrId: map['prj_mbr_id'] != null ? map['prj_mbr_id'] as int : null,
-      prjId: map['prj_id'] as int,
-      userId: map['user_id'] as int,
-      role: map['role'] as String,
-    );
+        prjMbrId: map['prj_mbr_id'] != null ? map['prj_mbr_id'] as int : null,
+        prjId: map['prj_id'] as int,
+        userId: map['user_id'] as int,
+        role: map['role'] as String);
   }
 
   String toJson() => json.encode(toMap());
 
-  factory ProjectMemberModel.fromJson(String source) => ProjectMemberModel.fromMap(json.decode(source) as Map<String, dynamic>);
-
-  @override
-  String toString() {
-    return 'ProjectMemberModel(prj_mbr_id: $prjMbrId, prj_id: $prjId, user_id: $userId, role: $role)';
-  }
+  factory ProjectMemberModel.fromJson(String source) =>
+      ProjectMemberModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }
-

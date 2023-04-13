@@ -72,14 +72,19 @@ class _ProjectOverViewState extends State<ProjectOverView> {
                     title: Text(widget.data.title),
                     flexibleSpace: FlexibleSpaceBar(
                       collapseMode: CollapseMode.parallax,
-                      background:
-                          ProjectStatusView(prjData: widget.data, color: setBackGroundColor()),
+                      background: ProjectStatusView(prjData: widget.data, color: setBackGroundColor()),
                     ),
                   ),
                 ];
               },
               body: CustomScrollView(
-                slivers: [],
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 150,
+                    ),
+                  )
+                ],
               ),
             ));
       },

@@ -11,12 +11,16 @@ class ProjectTabView extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
-            ElevatedButton(onPressed: (){
-              Auth().test();
-            }, child: const Text("TEST")),
-            ElevatedButton(onPressed: (){
-              print(prefs.getInt("user_id"));
-            }, child: const Text("TEST 2"))
+            ElevatedButton(
+                onPressed: () {
+                  Auth().test();
+                },
+                child: const Text("TEST")),
+            ElevatedButton(
+                onPressed: () {
+                  print(prefs.getInt("user_id"));
+                },
+                child: const Text("TEST 2")),
           ],
         ),
       ),
