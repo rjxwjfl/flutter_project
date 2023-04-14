@@ -19,6 +19,9 @@ class SettingsMain extends StatelessWidget {
           children: [
             getUserProfile(size),
             themeSettingTab(),
+            ElevatedButton(onPressed: (){
+              Auth().signOutSession();
+            }, child: const Text("SignOut"),),
           ],
         ),
       );

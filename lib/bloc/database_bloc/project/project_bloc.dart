@@ -6,7 +6,6 @@ import '../model/user/user_dtl_model.dart';
 import 'project_repository.dart';
 
 class ProjectBloc {
-  int? userId = prefs.getInt("userId");
   final ProjectRepository _projectRepository;
   final StreamController<List<ProjectOverViewModel>> _overViewController =
       StreamController<List<ProjectOverViewModel>>.broadcast();
@@ -21,13 +20,15 @@ class ProjectBloc {
   }
 
   Stream<List<ProjectOverViewModel>> get overViewController => _overViewController.stream;
+  Stream<List<ProjectOverViewModel>> get myOverViewController => _myOverViewController.stream;
+
 
   Stream<UserDtlModel> get userDtlController => _userDtlController.stream;
 
   ProjectBloc(this._projectRepository);
 
-  getOverView(int? page, String? searchKeyword, List<int>? filters) async {
-    List<ProjectOverViewModel> entireList = await _projectRepository.getProjectList(page, searchKeyword);
+  getOverView(int? page, String? searchKeyword, List<int>? filters, int? sort) async {
+    List<ProjectOverViewModel> entireList = await _projectRepository.getProjectList(page, searchKeyword, sort);
     if (filters != null && filters.isNotEmpty) {
       List<ProjectOverViewModel> filteredList = entireList.where((project) => filters.contains(project.category)).toList();
       _overViewController.sink.add(filteredList);
@@ -36,8 +37,8 @@ class ProjectBloc {
     }
   }
 
-  getMyOverView() async {
-    List<ProjectOverViewModel> myList = await _projectRepository.getMyProjectList(userId!);
+  getMyOverView(int? userId) async {
+    List<ProjectOverViewModel> myList = await _projectRepository.getMyProjectList(userId);
     _myOverViewController.sink.add(myList);
   }
 

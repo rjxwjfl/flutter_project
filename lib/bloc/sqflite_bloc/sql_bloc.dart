@@ -9,10 +9,12 @@ class SqlBloc {
       StreamController<List<SqlModel>>.broadcast();
   final StreamController<List<SqlModel>> _dailyController =
       StreamController<List<SqlModel>>.broadcast();
+  final StreamController<List<SqlModel>> _todoControllerForOverView = StreamController.broadcast();
   late DateTime _today;
 
   get todoListStream => _todoController.stream;
   get dailyStream => _dailyController.stream;
+  get overViewStream => _todoControllerForOverView.stream;
 
   set today(DateTime date) {
     _today = date;
@@ -22,12 +24,31 @@ class SqlBloc {
   dispose() {
     _todoController.close();
     _dailyController.close();
+    _todoControllerForOverView.close();
   }
 
   SqlBloc(this._sqlDao) {
     _today = DateTime.now();
     checkExpire();
     getTodoList();
+    overView();
+  }
+
+  overView() async{
+    DateTime now = DateTime.now();
+    int startOfDay =
+        DateTime(now.year, now.month, now.day, 0, 0, 0, 000)
+            .millisecondsSinceEpoch;
+    int endOfDay =
+        DateTime(now.year, now.month, now.day, 23, 59, 59, 999)
+            .millisecondsSinceEpoch;
+
+    List<SqlModel> data = await _sqlDao.getOverView();
+    List<SqlModel> today = data.where((todo) {
+      int startOn = todo.startOn.millisecondsSinceEpoch;
+      return startOn >= startOfDay && startOn <= endOfDay;;
+    }).toList();
+    _todoControllerForOverView.sink.add(today);
   }
 
   getTodoList() async {

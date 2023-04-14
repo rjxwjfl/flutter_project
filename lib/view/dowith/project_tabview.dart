@@ -13,7 +13,7 @@ class ProjectTabView extends StatelessWidget {
           children: [
             ElevatedButton(
                 onPressed: () {
-                  Auth().test();
+                  print(prefs.getInt("user_id"));
                 },
                 child: const Text("TEST")),
             ElevatedButton(

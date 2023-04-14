@@ -18,6 +18,7 @@ class _SearchViewUIState extends State<SearchViewUI> {
   int? page;
   String? searchKeyword;
   List<int>? filters;
+  int? sort;
   final ProjectBloc _bloc = ProjectBloc(ProjectRepository());
   final ProjectRepository repository = ProjectRepository();
   late TextEditingController _textEditingController;
@@ -35,7 +36,7 @@ class _SearchViewUIState extends State<SearchViewUI> {
   @override
   void initState() {
     super.initState();
-    _bloc.getOverView(page, searchKeyword, filters); // Frequent rebuilds should be avoided.
+    _bloc.getOverView(page, searchKeyword, filters, sort); // Frequent rebuilds should be avoided.
     _textEditingController = TextEditingController();
     _focusNode = FocusNode();
   }
@@ -67,7 +68,7 @@ class _SearchViewUIState extends State<SearchViewUI> {
                     setState(() {
                       searchKeyword = _textEditingController.text;
                     });
-                    _bloc.getOverView(page, searchKeyword, filters);
+                    _bloc.getOverView(page, searchKeyword, filters, sort);
                   }
                   print(value);
                   FocusScope.of(context).unfocus();
@@ -95,7 +96,7 @@ class _SearchViewUIState extends State<SearchViewUI> {
                             );
                           } else {
                             return RefreshIndicator(
-                              onRefresh: () => _bloc.getOverView(page, searchKeyword, filters),
+                              onRefresh: () => _bloc.getOverView(null, searchKeyword, filters, sort),
                               child: ListView.builder(
                                   itemCount: snapshot.data!.length,
                                   itemBuilder: (context, index) {

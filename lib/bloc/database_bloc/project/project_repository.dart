@@ -8,14 +8,15 @@ import '../model/project/project_rule_model.dart';
 import '../model/user/user_dtl_model.dart';
 
 class ProjectRepository {
-  String baseUrl = "http://10.0.2.2:8080";
+  final String baseUrl = "http://10.0.2.2:8080";
 
-  Future<List<ProjectOverViewModel>> getProjectList(int? page, String? searchKeyword) async {
-    String baseUrl = 'http://10.0.2.2:8080/project';
-    if (searchKeyword != null) {
-      baseUrl += '?searchKeyword=$searchKeyword';
+  Future<List<ProjectOverViewModel>> getProjectList(int? pg, String? sk, int? st) async {
+    Uri url;
+    if (pg == null){
+      url = Uri.parse('$baseUrl/project?pg=1');
+    } else {
+      url = Uri.parse('$baseUrl/project?pg=$pg');
     }
-    final url = Uri.parse(baseUrl);
     final response = await http.get(url).timeout(const Duration(milliseconds: 5000));
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
@@ -26,11 +27,12 @@ class ProjectRepository {
     }
   }
 
-  Future<List<ProjectOverViewModel>> getMyProjectList(int userId) async {
-    final response = await http.get(Uri.parse('http://localhost:8080/user/project?pid=$userId'));
+  Future<List<ProjectOverViewModel>> getMyProjectList(int? userId) async {
+    final response = await http.get(Uri.parse('$baseUrl/user/project?pid=$userId'));
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
-      return data.map((json) => ProjectOverViewModel.fromJson(json)).toList();
+      final List<ProjectOverViewModel> projectList = data.map((json) => ProjectOverViewModel.fromMap(json)).toList();
+      return projectList;
     } else {
       throw Exception('Failed to fetch projects');
     }

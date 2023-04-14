@@ -30,8 +30,8 @@ class Auth {
           "device_token": token,
           "fb_uid": "TEST UID"
         };
-        final response =
-            await http.post(Uri.parse("$baseUrl/user"), headers: {"Content-Type": "application/json"}, body: jsonEncode(body));
+        final response = await http.post(Uri.parse("$baseUrl/user/config"),
+            headers: {"Content-Type": "application/json"}, body: jsonEncode(body));
         if (response.statusCode == 200) {
           Map<String, dynamic> data = jsonDecode(response.body);
           prefs.setInt("user_id", data.values as int);
@@ -83,25 +83,40 @@ class Auth {
         idToken: googleAuth.idToken,
       );
 
-      await _auth.signInWithCredential(credential).then((value) async{
-        if (value.additionalUserInfo!.isNewUser){
+      await _auth.signInWithCredential(credential).then((value) async {
+        if (value.additionalUserInfo!.isNewUser) {
           String? token = await _messaging.getToken();
           Map<String, dynamic> body = {
             "username": value.user!.email,
             "name": value.user!.email,
+            "password": null,
             "contact": value.user!.phoneNumber,
             "device_token": token,
             "fb_uid": value.user!.uid
           };
-          print(body);
-          final response =
-          await http.post(Uri.parse("$baseUrl/user/google"), headers: {"Content-Type": "application/json"}, body: jsonEncode(body));
+          final response = await http.post(Uri.parse("$baseUrl/user/config"),
+              headers: {"Content-Type": "application/json"}, body: jsonEncode(body));
           if (response.statusCode == 200) {
             Map<String, dynamic> data = jsonDecode(response.body);
-            prefs.setInt("user_id", data.values as int);
+            print(data.entries);
+            print("key : ${data.entries.first.key}, value: ${data.entries.first.value}");
+            prefs.setInt("user_id", data.entries.first.value);
           } else {
             throw Exception('Failed to fetch projects');
           }
+        }
+
+        final response = await http.post(
+          Uri.parse("$baseUrl/user/info"),
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode({"username": value.user!.email}),
+        );
+        if (response.statusCode == 200) {
+          List<dynamic> data = jsonDecode(response.body);
+          Map<String, dynamic> userData = data[0];
+          UserModel model = UserModel.fromMap(userData);
+          print(model);
+          prefs.setInt("user_id", model.userId!);
         }
         print("user exist. ${value.user!.phoneNumber}");
       });
@@ -138,22 +153,6 @@ class Auth {
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
       ),
     );
-  }
-
-  Future<void> test() async {
-    Map<String, dynamic> body = {
-      "title": "Test Title 10",
-      "category": 1,
-      "prj_desc": "Test project description 10",
-      "goal": "Build complete Ten"
-    };
-    final response =
-        await http.post(Uri.parse("$baseUrl/project?uid=${prefs.getInt("user_id")}&private=0"), headers: {"Content-Type": "application/json"}, body: jsonEncode(body));
-    if (response.statusCode == 200){
-      print(response.body);
-    } else {
-      throw Exception('Failed to fetch projects');
-    }
   }
 }
 // // register user

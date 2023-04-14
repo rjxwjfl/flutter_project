@@ -12,6 +12,14 @@ class SqlRepository {
     return todoList;
   }
 
+  Future<List<SqlModel>> getOverView() async{
+    final db = await sqlData.database;
+    var toDo = await db.query(sqlTable, orderBy: 'startOn');
+    List<SqlModel> todoList =
+    toDo.isNotEmpty ? toDo.map((e) => SqlModel.fromMap(e)).toList() : [];
+    return todoList;
+  }
+
   Future<void> insertDB(SqlModel todo) async {
     final db = await sqlData.database;
     await db.insert(sqlTable, todo.toMap());
