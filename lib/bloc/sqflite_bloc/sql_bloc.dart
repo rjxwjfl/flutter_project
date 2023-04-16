@@ -29,7 +29,7 @@ class SqlBloc {
 
   SqlBloc(this._sqlDao) {
     _today = DateTime.now();
-    checkExpire();
+    // checkExpire();
     getTodoList();
     overView();
   }
@@ -72,6 +72,7 @@ class SqlBloc {
   insertData(SqlModel todo) async {
     await _sqlDao.insertDB(todo);
     getTodoList();
+    overView();
   }
 
   deleteTodo(int id) async {

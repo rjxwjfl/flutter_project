@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dowith/bloc/sqflite_bloc/model/sql_model.dart';
 import 'package:flutter_dowith/utils/glow_remover.dart';
 import 'package:flutter_dowith/view/todo/model/create_todo.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_dowith/view/todo/model/todo_list_view.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -46,6 +47,7 @@ class _TodoMainState extends State<TodoMain>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
+      appBar: AppBar(),
       body: Column(
         children: [
           // SizedBox(height: _flexibleSize),
@@ -55,19 +57,16 @@ class _TodoMainState extends State<TodoMain>
       ),
       floatingActionButton: dayCheck()
           ? const SizedBox()
-          : Padding(
-              padding: const EdgeInsets.only(bottom: 70),
-              child: FloatingActionButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              CreateTodo(today: _selectedDay)));
-                },
-                child: const Icon(Icons.add),
-              ),
-            ),
+          : FloatingActionButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          CreateTodo(today: _selectedDay)));
+            },
+            child: const Icon(FontAwesomeIcons.plus),
+          ),
     );
   }
 

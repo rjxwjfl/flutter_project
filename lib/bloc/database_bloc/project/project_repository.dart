@@ -11,13 +11,21 @@ class ProjectRepository {
   final String baseUrl = "http://10.0.2.2:8080";
 
   Future<List<ProjectOverViewModel>> getProjectList(int? pg, String? sk, int? st) async {
-    Uri url;
+    String url;
     if (pg == null){
-      url = Uri.parse('$baseUrl/project?pg=1');
+      url = '$baseUrl/project?pg=1';
     } else {
-      url = Uri.parse('$baseUrl/project?pg=$pg');
+      url = '$baseUrl/project?pg=$pg';
     }
-    final response = await http.get(url).timeout(const Duration(milliseconds: 5000));
+    if (sk != null) {
+      url += '&sk=$sk';
+    }
+    if (st != null) {
+      url += '&st=$st';
+    }
+
+    final response = await http.get(Uri.parse(url)).timeout(const Duration(milliseconds: 5000));
+    print(url);
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
       final List<ProjectOverViewModel> projectList = data.map((json) => ProjectOverViewModel.fromMap(json)).toList();
@@ -28,7 +36,7 @@ class ProjectRepository {
   }
 
   Future<List<ProjectOverViewModel>> getMyProjectList(int? userId) async {
-    final response = await http.get(Uri.parse('$baseUrl/user/project?pid=$userId'));
+    final response = await http.get(Uri.parse('$baseUrl/user/project?pid=$userId')).timeout(const Duration(milliseconds: 5000));
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
       final List<ProjectOverViewModel> projectList = data.map((json) => ProjectOverViewModel.fromMap(json)).toList();

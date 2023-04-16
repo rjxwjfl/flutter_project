@@ -10,6 +10,7 @@ class SearchBarUI extends StatelessWidget {
       this.bloc,
       required this.color,
       required this.callback,
+        required this.removeCallback,
       this.keyboardType = TextInputType.text,
       super.key});
 
@@ -20,6 +21,7 @@ class SearchBarUI extends StatelessWidget {
   final ProjectBloc? bloc;
   final Color color;
   final void Function(String?) callback;
+  final void Function() removeCallback;
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +60,7 @@ class SearchBarUI extends StatelessWidget {
                       focusColor: Colors.transparent,
                       hoverColor: Colors.transparent,
                       highlightColor: Colors.transparent,
-                      onPressed: () {
-                        controller.clear();
-                      },
+                      onPressed: removeCallback,
                       icon: const Icon(
                         FontAwesomeIcons.xmark,
                         size: 18,

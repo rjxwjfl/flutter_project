@@ -72,7 +72,12 @@ class _SearchViewUIState extends State<SearchViewUI> {
                   }
                   print(value);
                   FocusScope.of(context).unfocus();
-                  // FocusManager.instance.primaryFocus!.unfocus();
+                },
+                removeCallback: (){
+                  _textEditingController.clear();
+                  setState(() {
+                    searchKeyword = null;
+                  });
                 },
               ),
             ),

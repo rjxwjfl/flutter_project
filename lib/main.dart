@@ -2,18 +2,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dowith/utils/theme/app_theme.dart';
 import 'package:flutter_dowith/bloc/sqflite_bloc/sql_bloc.dart';
 import 'package:flutter_dowith/bloc/sqflite_bloc/sql_repository.dart';
-import 'package:flutter_dowith/firebase/auth.dart';
 import 'package:flutter_dowith/navi_home.dart';
 import 'package:flutter_dowith/utils/glow_remover.dart';
 import 'package:flutter_dowith/utils/riverpod/page_route_provider.dart';
 import 'package:flutter_dowith/utils/theme/theme_provider.dart';
 import 'package:flutter_dowith/view/splash/login_signup_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:flutter_dowith/firebase_options.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 
 final themeProv = ChangeNotifierProvider((ref) => ThemeProvider());
 final routeProv = ChangeNotifierProvider((ref) => PageRouteProvider());
@@ -51,8 +53,8 @@ class AppInit extends ConsumerWidget {
     ));
     return MaterialApp(
         title: "Do With!",
-        theme: ThemeData.from(colorScheme: ref.watch(themeProv).lightColorScheme),
-        darkTheme: ThemeData.from(colorScheme: ref.watch(themeProv).darkColorScheme),
+        theme: ThemeData(colorScheme: ref.watch(themeProv).lightColorScheme, fontFamilyFallback: ["QuickSand", "NotoSans"], useMaterial3: true),
+        darkTheme: ThemeData(colorScheme: ref.watch(themeProv).darkColorScheme, fontFamilyFallback: ["QuickSand", "NotoSans"], useMaterial3: true),
         themeMode: ref.watch(themeProv).themeMode,
         scrollBehavior: ScrollGlowRemove(),
         debugShowCheckedModeBanner: false,

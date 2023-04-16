@@ -47,41 +47,19 @@ class _NaviHomeState extends State<NaviHome> {
           builder: (BuildContext context, WidgetRef ref, Widget? child) {
             var refs = ref.watch(routeProv);
             return Scaffold(
-              appBar: AppBar(
-                title: Text(refs.title),
-                elevation: 0.0,
-                backgroundColor: scheme.background,
-                foregroundColor: scheme.onBackground,
-                actions: refs.selectedIndex == 2
-                    ? [
-                        IconButton(
-                            onPressed: () {
-                              Navigator.push(context, CupertinoPageRoute(builder: (context) => const SearchViewUI()));
-                            },
-                            icon: const FaIcon(FontAwesomeIcons.magnifyingGlass)),
-                        IconButton(
-                            onPressed: () {
-                              Navigator.push(context, CupertinoPageRoute(builder: (context) => const ProjectAddUI()));
-                            },
-                            icon: const FaIcon(FontAwesomeIcons.calendarPlus)),
-                        const SizedBox(width: 5)
-                      ]
-                    : [],
-              ),
+
               body: PageView(
                 controller: refs.pageController,
                 physics: const NeverScrollableScrollPhysics(),
                 children: refs.routes,
               ),
               bottomNavigationBar: SizedBox(
-                height: 55,
                 child: BottomNavigationBar(
                   selectedItemColor: scheme.primary,
                   unselectedItemColor: scheme.secondary,
                   showSelectedLabels: false,
                   showUnselectedLabels: false,
                   unselectedIconTheme: const IconThemeData(size: 18),
-                  type: BottomNavigationBarType.fixed,
                   currentIndex: refs.selectedIndex,
                   onTap: (index) {
                     refs.pageRouteNavigator(index);
@@ -94,7 +72,7 @@ class _NaviHomeState extends State<NaviHome> {
                   ],
                 ),
               ),
-              extendBody: true,
+              resizeToAvoidBottomInset: true,
             );
           },
         ),

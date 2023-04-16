@@ -19,79 +19,110 @@ class OverViewUI extends StatelessWidget {
     ColorScheme scheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
-      child: Stack(
-        children: [
-          Card(
-            elevation: 10.0,
-            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
-            child: InkWell(
-              borderRadius: const BorderRadius.all(Radius.circular(5)),
-              onTap: () {
-                if (data.pvt){
-
-                }
-                TestCode().getProject(data.prjId).then((value) {
-                  Navigator.pop(context);
-                  Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (context) => ProjectHome(data: value),
-                      ));
-                });
-              },
-              child: Ink(
-                width: MediaQuery.of(context).size.width,
-                height: 160,
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(5)),
-                  child: Row(
-                    children: [
-                      Container(
-                        color: Theme.of(context).colorScheme.primary,
-                        width: 100,
-                        height: MediaQuery.of(context).size.height,
-                        child: getCategoryTransfer(data.category, context),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Stack(
+      child: Card(
+        elevation: 0,
+        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
+        child: InkWell(
+          borderRadius: const BorderRadius.all(Radius.circular(5)),
+          onTap: () {
+            if (data.pvt){
+              showModalBottomSheet<void>(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(20))
+                ),
+                context: context,
+                builder: (BuildContext context) {
+                  return SizedBox(
+                    height: 200,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          const Text('비공개 프로젝트입니다.'),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Expanded(child: Text("Title : ${data.title}")),
-                                      CircleAvatar(
-                                        // backgroundImage: NetworkImage("${data.masterImageUrl}"),
-                                        backgroundColor: Theme.of(context).colorScheme.primary,
-                                        child: data.masterImageUrl == null || data.masterImageUrl == "" ? Text(data.masterName[0].toUpperCase()) : null,
-                                      ),
-                                    ],
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 10, bottom: 10),
-                                    child: Divider(color: scheme.onSurface, height: 1),
-                                  ),
-                                  Text("${data.masterImageUrl}"),
-                                  const SizedBox(height: 10),
-                                  Text("Detail : ${data.prjDesc}"),
-                                  const SizedBox(height: 7),
-                                  Text("Goal : ${data.goal}"),
-                                ],
+                              ElevatedButton(
+                                child: const Text('가입 신청'),
+                                onPressed: () => Navigator.pop(context),
+                              ),
+                              SizedBox(width: 20
+                                ),
+                              ElevatedButton(
+                                child: const Text('닫기'),
+                                onPressed: () => Navigator.pop(context),
                               ),
                             ],
-                          ),
-                        ),
+                          )
+                        ],
                       ),
-                    ],
+                    ),
+                  );
+                },
+              );
+            } else {
+            TestCode().getProject(data.prjId).then((value) {
+              Navigator.pop(context);
+              Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => ProjectHome(data: value),
+                  ));
+            });
+            }
+          },
+          child: Ink(
+            width: MediaQuery.of(context).size.width,
+            height: 170,
+            child: ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(5)),
+              child: Row(
+                children: [
+                  Container(
+                    color: Theme.of(context).colorScheme.primary,
+                    width: 100,
+                    height: MediaQuery.of(context).size.height,
+                    child: getCategoryTransfer(data.category, context),
                   ),
-                ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Stack(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(child: Text("Title : ${data.title}")),
+                                  CircleAvatar(
+                                    // backgroundImage: NetworkImage("${data.masterImageUrl}"),
+                                    backgroundColor: Theme.of(context).colorScheme.primary,
+                                    child: data.masterImageUrl == null || data.masterImageUrl == "" ? Text(data.masterName[0].toUpperCase()) : null,
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10, bottom: 10),
+                                child: Divider(color: scheme.onSurface, height: 1),
+                              ),
+                              Text("${data.masterImageUrl}"),
+                              const SizedBox(height: 10),
+                              Text("Detail : ${data.prjDesc}"),
+                              const SizedBox(height: 7),
+                              Text("Goal : ${data.goal}"),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }
@@ -119,7 +150,7 @@ class OverViewUI extends StatelessWidget {
         break;
       case 5:
         categoryIcon = FontAwesomeIcons.code;
-        categoryTitle = "DEVELOPMENT";
+        categoryTitle = "DEVELOP";
         break;
       default:
         categoryIcon = FontAwesomeIcons.question;
