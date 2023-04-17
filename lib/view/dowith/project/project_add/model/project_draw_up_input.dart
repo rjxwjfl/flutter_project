@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class ProjectAddInputField extends StatefulWidget {
-  const ProjectAddInputField(
+class ProjectDrawUpInput extends StatefulWidget {
+  const ProjectDrawUpInput(
       {required this.title, required this.hint, required this.controller, required this.focusNode, required this.validator, this.length = 50, Key? key})
       : super(key: key);
 
@@ -14,10 +14,10 @@ class ProjectAddInputField extends StatefulWidget {
   final int length;
 
   @override
-  State<ProjectAddInputField> createState() => _ProjectAddInputFieldState();
+  State<ProjectDrawUpInput> createState() => _ProjectDrawUpInputState();
 }
 
-class _ProjectAddInputFieldState extends State<ProjectAddInputField> {
+class _ProjectDrawUpInputState extends State<ProjectDrawUpInput> {
   bool _showClearIcon = false;
   int length = 0;
   
@@ -49,12 +49,12 @@ class _ProjectAddInputFieldState extends State<ProjectAddInputField> {
           Row(
             children: [
               Expanded(child: Text(widget.title)),
-              RichText(text: TextSpan(
+              length > 0 ? RichText(text: TextSpan(
                 children: [
                   TextSpan(text: "$length", style: TextStyle(color: _lengthValidate(context, length), fontFamily: "QuickSand")),
                   TextSpan(text: "/${widget.length}", style: TextStyle(color: Theme.of(context).colorScheme.onBackground, fontFamily: "QuickSand"))
                 ],
-              ),),
+              ),) : const SizedBox(),
             ],
           ),
           TextFormField(

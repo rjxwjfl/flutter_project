@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dowith/main.dart';
 import 'package:flutter_dowith/utils/theme/app_theme.dart';
 import 'package:flutter_dowith/view/dowith/dw_main.dart';
 import 'package:flutter_dowith/view/dowith/project/project_add/project_add_ui.dart';
@@ -46,7 +47,7 @@ class _DwNaviHomeState extends State<DwNaviHome> with TickerProviderStateMixin, 
     ColorScheme scheme = Theme.of(context).colorScheme;
     super.build(context);
     return Consumer(
-      builder: (BuildContext context, WidgetRef ref, Widget? child) {
+      builder: (context, ref, child) {
         return Scaffold(
           appBar: AppBar(
             leading: const SizedBox(),
@@ -63,6 +64,7 @@ class _DwNaviHomeState extends State<DwNaviHome> with TickerProviderStateMixin, 
                   icon: const FaIcon(FontAwesomeIcons.magnifyingGlass)),
               IconButton(
                   onPressed: () {
+                    ref.watch(prjDrawUpProv).initialize();
                     showMakePrjUI(context);
                   },
                   icon: const FaIcon(FontAwesomeIcons.calendarPlus)),
@@ -85,12 +87,12 @@ class _DwNaviHomeState extends State<DwNaviHome> with TickerProviderStateMixin, 
             ],
           ),
         );
-      },
+      }
     );
   }
 
-  void showMakePrjUI(BuildContext context) {
-    showModalBottomSheet(
+  Future<void> showMakePrjUI(BuildContext context) async{
+    await showModalBottomSheet(
       isScrollControlled: true,
       context: context,
       shape: const RoundedRectangleBorder(
@@ -98,13 +100,10 @@ class _DwNaviHomeState extends State<DwNaviHome> with TickerProviderStateMixin, 
       ),
       builder: (context) => Padding(
         padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-        child: InkWell(
-            splashColor: Colors.transparent,
-            focusColor: Colors.transparent,
-            hoverColor: Colors.transparent,
-            highlightColor: Colors.transparent,
+        child: GestureDetector(
             onTap: () {
               FocusScope.of(context).unfocus();
+              print("Out of Focus");
             },
             child: const ProjectAddUI()),
       ),
