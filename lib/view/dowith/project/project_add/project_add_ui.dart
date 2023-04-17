@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dowith/view/dowith/project/model/project_add_inputfield.dart';
+import 'package:flutter_dowith/view/dowith/project/project_add/model/button_ui.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
@@ -93,75 +94,11 @@ class _ProjectAddUIState extends State<ProjectAddUI> with TickerProviderStateMix
                   Row(
                     children: [
                       Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
-                          child: Container(
-                            height: 48,
-                            decoration: BoxDecoration(
-                              color: scheme.primary,
-                              borderRadius: const BorderRadius.all(Radius.circular(12.0)),
-                              boxShadow: <BoxShadow>[
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.6),
-                                  blurRadius: 8,
-                                  offset: const Offset(4, 4),
-                                ),
-                              ],
-                            ),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                borderRadius: const BorderRadius.all(Radius.circular(12.0)),
-                                highlightColor: Colors.transparent,
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Center(
-                                  child: Text(
-                                    '생성',
-                                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18, color: scheme.onPrimary),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                        child: ButtonUI(scheme: scheme, title: "생성")
                       ),
                       const SizedBox(),
                       Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
-                          child: Container(
-                            height: 48,
-                            decoration: BoxDecoration(
-                              color: scheme.onPrimary,
-                              borderRadius: const BorderRadius.all(Radius.circular(12.0)),
-                              boxShadow: <BoxShadow>[
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.6),
-                                  blurRadius: 8,
-                                  offset: const Offset(4, 4),
-                                ),
-                              ],
-                            ),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                borderRadius: const BorderRadius.all(Radius.circular(12.0)),
-                                highlightColor: Colors.transparent,
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Center(
-                                  child: Text(
-                                    '취소',
-                                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18, color: scheme.primary),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                        child: ButtonUI(scheme: scheme, title: "취소")
                       ),
                     ],
                   )

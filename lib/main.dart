@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_dowith/utils/theme/app_theme.dart';
 import 'package:flutter_dowith/bloc/sqflite_bloc/sql_bloc.dart';
 import 'package:flutter_dowith/bloc/sqflite_bloc/sql_repository.dart';
 import 'package:flutter_dowith/navi_home.dart';
@@ -11,7 +10,6 @@ import 'package:flutter_dowith/utils/riverpod/page_route_provider.dart';
 import 'package:flutter_dowith/utils/theme/theme_provider.dart';
 import 'package:flutter_dowith/view/splash/login_signup_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:flutter_dowith/firebase_options.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -58,17 +56,10 @@ class AppInit extends ConsumerWidget {
         themeMode: ref.watch(themeProv).themeMode,
         scrollBehavior: ScrollGlowRemove(),
         debugShowCheckedModeBanner: false,
-        home: SafeArea(
+        home: const SafeArea(
           top: false,
           bottom: false,
-          child: StreamBuilder(
-              stream: FirebaseAuth.instance.authStateChanges(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const LoginSignUpScreen();
-                }
-                return const NaviHome();
-              }),
+          child: NaviHome(),
         ));
   }
 }

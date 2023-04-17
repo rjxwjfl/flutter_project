@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dowith/utils/theme/app_theme.dart';
 import 'package:flutter_dowith/view/dowith/dw_main.dart';
-import 'package:flutter_dowith/view/dowith/project_add_ui.dart';
+import 'package:flutter_dowith/view/dowith/project/project_add/project_add_ui.dart';
 import 'package:flutter_dowith/view/dowith/project_tabview.dart';
 import 'package:flutter_dowith/view/dowith/search_view_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

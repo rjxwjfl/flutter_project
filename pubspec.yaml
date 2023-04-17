@@ -16,8 +16,6 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_local_notifications: ^8.2.0
-  flutter_localizations:
-    sdk: flutter
   flutter_riverpod: ^2.3.0
   font_awesome_flutter: ^10.4.0
   google_sign_in: ^6.0.2
