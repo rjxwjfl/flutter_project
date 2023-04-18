@@ -18,7 +18,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 final theme = ChangeNotifierProvider((ref) => ThemeProvider());
 final pageRoute = ChangeNotifierProvider((ref) => PageRouteProvider());
 final drawUp = ChangeNotifierProvider((ref) => ProjectDrawUpEditProvider());
-final prjRoute = ChangeNotifierProvider((ref) => ProjectRouteProvider());
 final bloc = SqlBloc(SqlRepository());
 late final SharedPreferences prefs;
 

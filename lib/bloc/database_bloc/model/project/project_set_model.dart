@@ -7,7 +7,7 @@ import 'package:line_icons/line_icon.dart';
 
 // Project Model
 
-class ProjectModel {
+class ProjectSetModel {
   int? prjId;
   String title;
   int category;
@@ -20,7 +20,7 @@ class ProjectModel {
   bool pvt;
   String? prjPw;
 
-  ProjectModel(
+  ProjectSetModel(
       {this.prjId,
       required this.title,
       required this.category,
@@ -50,22 +50,22 @@ class ProjectModel {
     };
   }
 
-  factory ProjectModel.fromMap(Map<String, dynamic> map) {
-    return ProjectModel(
-        prjId: map['prj_id'] != null ? map['prj_id'] as int : null,
-        title: map['title'] as String,
-        category: map['category'] as int,
-        mstId: map['mst_id'] as int,
-        prjDesc: map['prj_desc'] as String,
-        goal: map['goal'] as String,
-        createAt: map['create_at'] != null ? DateTime.parse(map['create_at']) : null,
-        startOn: map['start_on'] != null ? DateTime.parse(map['start_on']) : null,
-        expireOn: map['expire_on'] != null ? DateTime.parse(map['expire_on']) : null,
-        pvt: setBool(map['pvt']),
-        prjPw: map['prj_pw'] != null ? map['prj_pw'] as String : null);
+  factory ProjectSetModel.fromMap(Map<String, dynamic> json) {
+    return ProjectSetModel(
+        prjId: json['prj_id'] != null ? json['prj_id'] as int : null,
+        title: json['title'] as String,
+        category: json['category'] as int,
+        mstId: json['mst_id'] as int,
+        prjDesc: json['prj_desc'] as String,
+        goal: json['goal'] as String,
+        createAt: json['create_at'] != null ? DateTime.parse(json['create_at']) : null,
+        startOn: json['start_on'] != null ? DateTime.parse(json['start_on']) : null,
+        expireOn: json['expire_on'] != null ? DateTime.parse(json['expire_on']) : null,
+        pvt: setBool(json['pvt']),
+        prjPw: json['prj_pw'] != null ? json['prj_pw'] as String : null);
   }
 
   String toJson() => json.encode(toMap());
 
-  factory ProjectModel.fromJson(String source) => ProjectModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory ProjectSetModel.fromJson(String source) => ProjectSetModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

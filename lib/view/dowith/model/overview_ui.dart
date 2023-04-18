@@ -1,9 +1,6 @@
-import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dowith/bloc/database_bloc/model/project/project_overview_model.dart';
-import 'package:flutter_dowith/bloc/test_code.dart';
 import 'package:flutter_dowith/view/dowith/model/project_status_sum.dart';
 import 'package:flutter_dowith/view/dowith/project/project_navi_home.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -25,11 +22,9 @@ class OverViewUI extends StatelessWidget {
         child: InkWell(
           borderRadius: const BorderRadius.all(Radius.circular(5)),
           onTap: () {
-            if (data.pvt){
+            if (data.pvt) {
               showModalBottomSheet<void>(
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(20))
-                ),
+                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
                 context: context,
                 builder: (BuildContext context) {
                   return SizedBox(
@@ -47,8 +42,7 @@ class OverViewUI extends StatelessWidget {
                                 child: const Text('가입 신청'),
                                 onPressed: () => Navigator.pop(context),
                               ),
-                              SizedBox(width: 20
-                                ),
+                              const SizedBox(width: 20),
                               ElevatedButton(
                                 child: const Text('닫기'),
                                 onPressed: () => Navigator.pop(context),
@@ -62,14 +56,12 @@ class OverViewUI extends StatelessWidget {
                 },
               );
             } else {
-            TestCode().getProject(data.prjId).then((value) {
               Navigator.pop(context);
               Navigator.push(
                   context,
                   CupertinoPageRoute(
-                    builder: (context) => ProjectNaviHome(),
+                    builder: (context) => ProjectNaviHome(prjId: data.prjId,),
                   ));
-            });
             }
           },
           child: Ink(
@@ -99,7 +91,9 @@ class OverViewUI extends StatelessWidget {
                                   CircleAvatar(
                                     // backgroundImage: NetworkImage("${data.masterImageUrl}"),
                                     backgroundColor: Theme.of(context).colorScheme.primary,
-                                    child: data.masterImageUrl == null || data.masterImageUrl == "" ? Text(data.masterName[0].toUpperCase()) : null,
+                                    child: data.masterImageUrl == null || data.masterImageUrl == ""
+                                        ? Text(data.masterName[0].toUpperCase())
+                                        : null,
                                   ),
                                 ],
                               ),

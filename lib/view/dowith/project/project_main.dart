@@ -1,65 +1,88 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dowith/bloc/database_bloc/model/project/project_model.dart';
-import 'package:flutter_dowith/main.dart';
-import 'package:flutter_dowith/view/dowith/project/model/project_status_view.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_dowith/bloc/database_bloc/model/project/project_get_model.dart';
+import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_bloc.dart';
+import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_repository.dart';
+import 'package:flutter_dowith/view/dowith/project/model/project_dtl_ui.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ProjectMain extends StatefulWidget {
-  const ProjectMain({Key? key}) : super(key: key);
+  const ProjectMain({required this.prjId, Key? key}) : super(key: key);
 
+  final int prjId;
 
   @override
   State<ProjectMain> createState() => _ProjectMainState();
 }
 
 class _ProjectMainState extends State<ProjectMain> {
-  late ScrollController _scrollController;
-  bool lastStatus = true;
-  double height = 250;
+  final ProjectBloc _projectBloc = ProjectBloc(ProjectRepository());
 
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
-    _scrollController.addListener(() => _scrollListener());
-  }
-
-  @override
-  void dispose() {
-    _scrollController.removeListener(() => _scrollListener());
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  void _scrollListener() {
-    if (_isShrink != lastStatus) {
-      setState(() {
-        lastStatus = _isShrink;
-      });
-    }
-  }
-
-  Color setBackGroundColor() {
-    if (Theme.of(context).brightness == Brightness.light) {
-      return Color(0xFFEDF0F2);
-    } else {
-      return Color(0xFF383838);
-    }
-  }
-
-  bool get _isShrink {
-    return _scrollController.hasClients && _scrollController.offset > (height - kToolbarHeight);
+    _projectBloc.getCurrentProject(widget.prjId);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (BuildContext context, WidgetRef ref, Widget? child) {
-        var prjRefs = ref.watch(prjRoute);
-        var thmRefs = ref.watch(theme);
+    ColorScheme scheme = Theme.of(context).colorScheme;
+    return StreamBuilder<ProjectGetModel>(
+      stream: _projectBloc.projectController,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        ProjectGetModel data = snapshot.data!;
         return Scaffold(
-            backgroundColor: ref.watch(theme).setMaterialColor(context),
-            body: Container());
+          appBar: AppBar(
+            title: Text(data.title),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 12),
+                child: IconButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: () {},
+                  icon: FaIcon(
+                    FontAwesomeIcons.users,
+                    color: scheme.primary,
+                    size: 20,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          body: RefreshIndicator(
+              onRefresh: () async {
+                _projectBloc.getCurrentProject(widget.prjId);
+              },
+              child: CustomScrollView(
+                slivers: [
+                  SliverList(
+                      delegate: SliverChildListDelegate([
+                    ProjectDtlUI(data: data),
+                    getTitleUI("SCHEDULE"),
+                    const Placeholder(
+                      child: SizedBox(height: 100, child: Center(child: Text("Calendar?"))),
+                    ),
+                    getTitleUI("MY TASK"),
+                    const Placeholder(
+                      child: SizedBox(height: 150, child: Center(child: Text("TASKS?"))),
+                    ),
+                    getTitleUI("FEED"),
+                    const Placeholder(
+                      child: SizedBox(height: 300, child: Center(child: Text("TASKS?"))),
+                    ),
+                    getTitleUI("INBOX"),
+                    const Placeholder(
+                      child: SizedBox(height: 100, child: Center(child: Text("FILES - GRID?"))),
+                    ),
+                  ]))
+                ],
+              )),
+          floatingActionButton: FloatingActionButton(onPressed: () {}),
+        );
       },
     );
   }

@@ -16,7 +16,6 @@ class PageRouteProvider extends ChangeNotifier {
   ];
 
   PageRouteProvider() {
-    print("PageRouteProvider initialized");
     _pageController = PageController(initialPage: _selectedIndex);
     _title = setTitle(0);
   }

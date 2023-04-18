@@ -1,23 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dowith/bloc/database_bloc/model/project/project_model.dart';
-import 'package:flutter_dowith/main.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_dowith/view/dowith/project/feed/feed_main.dart';
+import 'package:flutter_dowith/view/dowith/project/project_inbox.dart';
+import 'package:flutter_dowith/view/dowith/project/project_main.dart';
+import 'package:flutter_dowith/view/dowith/project/task/task_tab_main.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class ProjectNaviHome extends ConsumerWidget {
-  const ProjectNaviHome({ Key? key,
-  }) : super(key: key);
+class ProjectNaviHome extends StatefulWidget {
+  const ProjectNaviHome({required this.prjId, Key? key}) : super(key: key);
 
+  final int prjId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  State<ProjectNaviHome> createState() => _ProjectNaviHomeState();
+}
+
+class _ProjectNaviHomeState extends State<ProjectNaviHome> {
+  late final PageController _pageController;
+  int initIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: 0);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     ColorScheme scheme = Theme.of(context).colorScheme;
-    var refs = ref.watch(prjRoute);
     return Scaffold(
       body: PageView(
-        controller: refs.pageController,
+        controller: _pageController,
         physics: const NeverScrollableScrollPhysics(),
-        children: refs.routes,
+        children: [
+          ProjectMain(prjId: widget.prjId),
+          TaskTabMain(),
+          FeedMain(),
+          ProjectInbox(),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,
@@ -32,9 +51,12 @@ class ProjectNaviHome extends ConsumerWidget {
           BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.commentDots), label: 'FEED'),
           BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.folderOpen), label: 'INBOX'),
         ],
-        currentIndex: refs.selectedIndex,
-        onTap: (index){
-          refs.projectRouteNavigator(index);
+        currentIndex: initIndex,
+        onTap: (index) {
+          setState(() {
+            initIndex = index;
+            _pageController.jumpToPage(initIndex);
+          });
         },
       ),
     );

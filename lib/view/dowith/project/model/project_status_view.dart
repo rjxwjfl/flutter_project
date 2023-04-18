@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dowith/bloc/database_bloc/model/project/project_model.dart';
+import 'package:flutter_dowith/bloc/database_bloc/model/project/project_set_model.dart';
 import 'package:flutter_dowith/bloc/database_bloc/model/user/user_dtl_model.dart';
 import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_bloc.dart';
 import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_repository.dart';
@@ -9,7 +9,7 @@ import 'package:flutter_dowith/view/dowith/project/model/item_desc_view.dart';
 class ProjectStatusView extends StatefulWidget {
   const ProjectStatusView({required this.prjData, required this.color, Key? key}) : super(key: key);
 
-  final ProjectModel prjData;
+  final ProjectSetModel prjData;
   final Color color;
 
   @override

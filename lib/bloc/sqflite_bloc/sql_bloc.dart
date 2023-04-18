@@ -46,7 +46,7 @@ class SqlBloc {
     List<SqlModel> data = await _sqlDao.getOverView();
     List<SqlModel> today = data.where((todo) {
       int startOn = todo.startOn.millisecondsSinceEpoch;
-      return startOn >= startOfDay && startOn <= endOfDay;;
+      return startOn >= startOfDay && startOn <= endOfDay;
     }).toList();
     _todoControllerForOverView.sink.add(today);
   }

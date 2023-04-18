@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dowith/bloc/database_bloc/model/project/project_model.dart';
+import 'package:flutter_dowith/bloc/database_bloc/model/project/project_set_model.dart';
 import 'package:flutter_dowith/firebase/auth.dart';
 import 'package:flutter_dowith/main.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -133,7 +133,7 @@ class ProjectDrawUpEditProvider extends ChangeNotifier {
     //   return;
     // }
     // int mstId = prefs.getInt("user_id")!;
-    ProjectModel model = ProjectModel(
+    ProjectSetModel model = ProjectSetModel(
         title: title,
         category: _selectedCategory!,
         mstId: 1,

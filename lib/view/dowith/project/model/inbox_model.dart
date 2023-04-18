@@ -16,7 +16,7 @@ class InboxModel extends StatelessWidget {
           },
           child: Ink(
             width: MediaQuery.of(context).size.width,
-            height: 75,
+            height: 100,
             child: ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(5)),
               child: Row(

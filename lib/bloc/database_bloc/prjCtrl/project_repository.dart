@@ -1,8 +1,9 @@
 import 'dart:convert';
+import 'package:flutter_dowith/bloc/database_bloc/model/project/project_get_model.dart';
 import 'package:http/http.dart' as http;
 
 import '../model/project/project_member_model.dart';
-import '../model/project/project_model.dart';
+import '../model/project/project_set_model.dart';
 import '../model/project/project_overview_model.dart';
 import '../model/project/project_rule_model.dart';
 import '../model/user/user_dtl_model.dart';
@@ -25,7 +26,6 @@ class ProjectRepository {
     }
 
     final response = await http.get(Uri.parse(url)).timeout(const Duration(milliseconds: 5000));
-    print(url);
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
       final List<ProjectOverViewModel> projectList = data.map((json) => ProjectOverViewModel.fromMap(json)).toList();
@@ -46,12 +46,12 @@ class ProjectRepository {
     }
   }
 
-  Future<ProjectModel> getProject(int projectId) async {
+  Future<ProjectGetModel> getProject(int projectId) async {
     final response = await http.get(Uri.parse("$baseUrl/project/dtl?pid=$projectId"));
     if (response.statusCode == 200){
       List<dynamic> data = jsonDecode(response.body);
       Map<String, dynamic> projectMap = data[0]; // get the first project object as a map
-      ProjectModel model = ProjectModel.fromMap(projectMap);
+      ProjectGetModel model = ProjectGetModel.fromMap(projectMap);
       return model;
     } else {
       throw Exception('Failed to fetch projects');

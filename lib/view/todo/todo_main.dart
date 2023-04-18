@@ -16,8 +16,7 @@ class TodoMain extends StatefulWidget {
   State<TodoMain> createState() => _TodoMainState();
 }
 
-class _TodoMainState extends State<TodoMain>
-    with AutomaticKeepAliveClientMixin {
+class _TodoMainState extends State<TodoMain> {
   late DateTime today;
   late DateTime _selectedDay;
   late DateTime _focusedDay;
@@ -45,7 +44,6 @@ class _TodoMainState extends State<TodoMain>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return Scaffold(
       appBar: AppBar(),
       body: Column(
@@ -58,15 +56,11 @@ class _TodoMainState extends State<TodoMain>
       floatingActionButton: dayCheck()
           ? const SizedBox()
           : FloatingActionButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          CreateTodo(today: _selectedDay)));
-            },
-            child: const Icon(FontAwesomeIcons.plus),
-          ),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => CreateTodo(today: _selectedDay)));
+              },
+              child: const Icon(FontAwesomeIcons.plus),
+            ),
     );
   }
 
@@ -100,11 +94,7 @@ class _TodoMainState extends State<TodoMain>
                   width: MediaQuery.of(context).size.width / 2.1,
                   child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    CreateTodo(today: _selectedDay)));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => CreateTodo(today: _selectedDay)));
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -132,9 +122,7 @@ class _TodoMainState extends State<TodoMain>
                         SizedBox(
                           width: 50,
                           height: 100,
-                          child: Center(
-                              child: Text(
-                                  DateFormat("hh:mm").format(sqlData.startOn))),
+                          child: Center(child: Text(DateFormat("hh:mm").format(sqlData.startOn))),
                         ),
                         Dismissible(
                             key: ValueKey(sqlData.id),
@@ -164,14 +152,11 @@ class _TodoMainState extends State<TodoMain>
     ColorScheme scheme = Theme.of(context).colorScheme;
     return Card(
       shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(10),
-              bottomRight: Radius.circular(10))),
+          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))),
       margin: const EdgeInsets.only(left: 0, right: 0),
       elevation: 5.0,
       child: ClipRRect(
-        borderRadius: const BorderRadius.only(
-            bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
+        borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
         child: Container(
           decoration: BoxDecoration(
             color: scheme.background,
@@ -203,26 +188,16 @@ class _TodoMainState extends State<TodoMain>
               });
             },
             calendarStyle: CalendarStyle(
-                todayDecoration: BoxDecoration(
-                    color: scheme.secondary, shape: BoxShape.circle),
-                todayTextStyle: TextStyle(
-                    color: scheme.background,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400),
-                selectedDecoration: BoxDecoration(
-                    color: scheme.primary, shape: BoxShape.circle),
-                selectedTextStyle: TextStyle(
-                    color: scheme.background,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400)),
+                todayDecoration: BoxDecoration(color: scheme.secondary, shape: BoxShape.circle),
+                todayTextStyle: TextStyle(color: scheme.background, fontSize: 18, fontWeight: FontWeight.w400),
+                selectedDecoration: BoxDecoration(color: scheme.primary, shape: BoxShape.circle),
+                selectedTextStyle: TextStyle(color: scheme.background, fontSize: 18, fontWeight: FontWeight.w400)),
           ),
         ),
       ),
     );
   }
 
-  @override
-  bool get wantKeepAlive => true;
 }
 // *** Scroll tracker ***
 // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
