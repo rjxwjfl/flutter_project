@@ -51,7 +51,7 @@ class _RuleInputState extends State<RuleInput> {
     ColorScheme scheme = Theme.of(context).colorScheme;
     return Consumer(
       builder: (context, ref, child) {
-        var refs = ref.watch(prjDrawUpProv);
+        var refs = ref.watch(drawUp);
         return Padding(
           padding: const EdgeInsets.only(top: 12, bottom: 12),
           child: Column(

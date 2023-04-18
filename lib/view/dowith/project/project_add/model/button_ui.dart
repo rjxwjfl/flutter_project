@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 class ButtonUI extends StatelessWidget {
-  const ButtonUI({required this.scheme, required this.title, Key? key}) : super(key: key);
+  const ButtonUI({required this.scheme, required this.title, required this.callback, Key? key}) : super(key: key);
 
   final ColorScheme scheme;
   final String title;
+  final void Function() callback;
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +29,7 @@ class ButtonUI extends StatelessWidget {
           child: InkWell(
             borderRadius: const BorderRadius.all(Radius.circular(12.0)),
             highlightColor: Colors.transparent,
-            onTap: () {
-              Navigator.pop(context);
-            },
+            onTap: callback,
             child: Center(
               child: Text(
                 title,

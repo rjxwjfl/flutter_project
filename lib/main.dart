@@ -7,6 +7,7 @@ import 'package:flutter_dowith/navi_home.dart';
 import 'package:flutter_dowith/utils/glow_remover.dart';
 import 'package:flutter_dowith/utils/riverpod/page_route_provider.dart';
 import 'package:flutter_dowith/utils/riverpod/project_add_edit_provider.dart';
+import 'package:flutter_dowith/utils/riverpod/project_route_provider.dart';
 import 'package:flutter_dowith/utils/theme/theme_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,9 +15,10 @@ import 'package:flutter_dowith/firebase_options.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-final themeProv = ChangeNotifierProvider((ref) => ThemeProvider());
-final routeProv = ChangeNotifierProvider((ref) => PageRouteProvider());
-final prjDrawUpProv = ChangeNotifierProvider((ref) => ProjectDrawUpEditProvider());
+final theme = ChangeNotifierProvider((ref) => ThemeProvider());
+final pageRoute = ChangeNotifierProvider((ref) => PageRouteProvider());
+final drawUp = ChangeNotifierProvider((ref) => ProjectDrawUpEditProvider());
+final prjRoute = ChangeNotifierProvider((ref) => ProjectRouteProvider());
 final bloc = SqlBloc(SqlRepository());
 late final SharedPreferences prefs;
 
@@ -51,9 +53,9 @@ class AppInit extends ConsumerWidget {
     ));
     return MaterialApp(
         title: "Do With!",
-        theme: ThemeData(colorScheme: ref.watch(themeProv).lightColorScheme, fontFamilyFallback: const ["QuickSand", "NotoSans"], useMaterial3: true),
-        darkTheme: ThemeData(colorScheme: ref.watch(themeProv).darkColorScheme, fontFamilyFallback: const ["QuickSand", "NotoSans"], useMaterial3: true),
-        themeMode: ref.watch(themeProv).themeMode,
+        theme: ThemeData(colorScheme: ref.watch(theme).lightColorScheme, fontFamilyFallback: const ["QuickSand", "NotoSans"], useMaterial3: true),
+        darkTheme: ThemeData(colorScheme: ref.watch(theme).darkColorScheme, fontFamilyFallback: const ["QuickSand", "NotoSans"], useMaterial3: true),
+        themeMode: ref.watch(theme).themeMode,
         scrollBehavior: ScrollGlowRemove(),
         debugShowCheckedModeBanner: false,
         home: const SafeArea(

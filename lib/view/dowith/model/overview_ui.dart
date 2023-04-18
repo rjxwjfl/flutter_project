@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dowith/bloc/database_bloc/model/project/project_overview_model.dart';
 import 'package:flutter_dowith/bloc/test_code.dart';
 import 'package:flutter_dowith/view/dowith/model/project_status_sum.dart';
-import 'package:flutter_dowith/view/dowith/project/project_home.dart';
+import 'package:flutter_dowith/view/dowith/project/project_navi_home.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
@@ -67,7 +67,7 @@ class OverViewUI extends StatelessWidget {
               Navigator.push(
                   context,
                   CupertinoPageRoute(
-                    builder: (context) => ProjectHome(data: value),
+                    builder: (context) => ProjectNaviHome(),
                   ));
             });
             }
@@ -134,7 +134,7 @@ class OverViewUI extends StatelessWidget {
     switch (category) {
       case 1:
         categoryIcon = FontAwesomeIcons.users;
-        categoryTitle = "CO-WORK";
+        categoryTitle = "TEAM-WORK";
         break;
       case 2:
         categoryIcon = FontAwesomeIcons.pencil;

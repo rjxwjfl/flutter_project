@@ -49,7 +49,7 @@ class _TodoOutlineState extends State<TodoOutline> {
     ColorScheme scheme = Theme.of(context).colorScheme;
     return Consumer(builder: (BuildContext context, WidgetRef ref, Widget? child) {
       return Scaffold(
-        backgroundColor: ref.watch(themeProv).setMaterialColor(context),
+        backgroundColor: ref.watch(theme).setMaterialColor(context),
         appBar: AppBar(
           leading: Padding(
             padding: const EdgeInsets.only(left: 20),

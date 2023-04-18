@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter_dowith/bloc/database_bloc/model/user/user_dtl_model.dart';
 import 'package:intl/intl.dart';
+import 'package:line_icons/line_icon.dart';
 
 // Project Model
 
@@ -13,7 +14,7 @@ class ProjectModel {
   int mstId;
   String prjDesc;
   String goal;
-  DateTime createAt;
+  DateTime? createAt;
   DateTime? startOn;
   DateTime? expireOn;
   bool pvt;
@@ -26,7 +27,7 @@ class ProjectModel {
       required this.mstId,
       required this.prjDesc,
       required this.goal,
-      required this.createAt,
+      this.createAt,
       this.startOn,
       this.expireOn,
       required this.pvt,
@@ -41,9 +42,9 @@ class ProjectModel {
       'mst_id': mstId,
       'prj_desc': prjDesc,
       'goal': goal,
-      'create_at': formatter.format(createAt),
-      'start_on': formatter.format(startOn!),
-      'expire_on': formatter.format(expireOn!),
+      'create_at': createAt != null ? formatter.format(createAt!) : null,
+      'start_on': startOn != null ? formatter.format(startOn!) : null,
+      'expire_on': expireOn != null ? formatter.format(expireOn!) : null,
       'pvt': setInt(pvt),
       'prj_pw': prjPw
     };
@@ -57,7 +58,7 @@ class ProjectModel {
         mstId: map['mst_id'] as int,
         prjDesc: map['prj_desc'] as String,
         goal: map['goal'] as String,
-        createAt: DateTime.parse(map['create_at']),
+        createAt: map['create_at'] != null ? DateTime.parse(map['create_at']) : null,
         startOn: map['start_on'] != null ? DateTime.parse(map['start_on']) : null,
         expireOn: map['expire_on'] != null ? DateTime.parse(map['expire_on']) : null,
         pvt: setBool(map['pvt']),

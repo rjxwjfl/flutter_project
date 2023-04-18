@@ -21,6 +21,7 @@ dependencies:
   google_sign_in: ^6.0.2
   http: ^0.13.5
   intl: any
+  kakao_flutter_sdk: ^1.4.2
   line_icons: ^2.0.1
   path: ^1.8.2
   path_provider: ^2.0.13

@@ -20,7 +20,7 @@ class _AnimatedCardState extends ConsumerState<AnimatedCard>
   @override
   void initState() {
     super.initState();
-    ref.read(themeProv);
+    ref.read(theme);
     _animationController = AnimationController(vsync: this, duration: duration);
     _arrowRotateAnimation =
         Tween<double>(begin: 0, end: 0.5).animate(_animationController);
@@ -107,7 +107,7 @@ class _AnimatedCardState extends ConsumerState<AnimatedCard>
         children: [
           GestureDetector(
             onTap: () {
-              ref.watch(themeProv).schemeSelector(code);
+              ref.watch(theme).schemeSelector(code);
             },
             child: Container(
               height: 60,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dowith/bloc/database_bloc/model/project/project_overview_model.dart';
-import 'package:flutter_dowith/bloc/database_bloc/project/project_bloc.dart';
-import 'package:flutter_dowith/bloc/database_bloc/project/project_repository.dart';
+import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_bloc.dart';
+import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_repository.dart';
 import 'package:flutter_dowith/main.dart';
 import 'package:flutter_dowith/view/dowith/model/overview_ui.dart';
 

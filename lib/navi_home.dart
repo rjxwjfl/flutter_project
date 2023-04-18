@@ -45,9 +45,8 @@ class _NaviHomeState extends State<NaviHome> {
         },
         child: Consumer(
           builder: (BuildContext context, WidgetRef ref, Widget? child) {
-            var refs = ref.watch(routeProv);
+            var refs = ref.watch(pageRoute);
             return Scaffold(
-
               body: PageView(
                 controller: refs.pageController,
                 physics: const NeverScrollableScrollPhysics(),

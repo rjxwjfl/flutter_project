@@ -69,9 +69,9 @@ class SettingsMain extends StatelessWidget {
                       ItemSwitcher(
                           title: "다크모드 설정",
                           callback: (value) {
-                            ref.watch(themeProv).isDarkMode = value;
+                            ref.watch(theme).isDarkMode = value;
                           },
-                          value: ref.watch(themeProv).isDarkMode),
+                          value: ref.watch(theme).isDarkMode),
                     ],
                   ),
                 ),

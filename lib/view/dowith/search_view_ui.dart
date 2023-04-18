@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dowith/bloc/database_bloc/model/project/project_overview_model.dart';
-import 'package:flutter_dowith/bloc/database_bloc/project/project_bloc.dart';
-import 'package:flutter_dowith/bloc/database_bloc/project/project_repository.dart';
+import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_bloc.dart';
+import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_repository.dart';
 import 'package:flutter_dowith/main.dart';
 import 'package:flutter_dowith/view/dowith/model/overview_ui.dart';
 import 'package:flutter_dowith/view/dowith/project/model/search_model.dart';
@@ -20,7 +20,6 @@ class _SearchViewUIState extends State<SearchViewUI> {
   List<int>? filters;
   int? sort;
   final ProjectBloc _bloc = ProjectBloc(ProjectRepository());
-  final ProjectRepository repository = ProjectRepository();
   late TextEditingController _textEditingController;
   late FocusNode _focusNode;
 
@@ -61,7 +60,7 @@ class _SearchViewUIState extends State<SearchViewUI> {
                 controller: _textEditingController,
                 hintText: "검색할 프로젝트를 입력하세요.",
                 focusNode: _focusNode,
-                color: ref.watch(themeProv).setMaterialColor(context),
+                color: ref.watch(theme).setMaterialColor(context),
                 callback: (value){
                   if (value != null && value.isNotEmpty){
                     saveKeyword(value);
@@ -86,7 +85,7 @@ class _SearchViewUIState extends State<SearchViewUI> {
                 getFilterBarUI(),
                 Expanded(
                   child: Material(
-                    color: ref.watch(themeProv).setMaterialColor(context),
+                    color: ref.watch(theme).setMaterialColor(context),
                     child: StreamBuilder<List<ProjectOverViewModel>>(
                       stream: _bloc.overViewController,
                       builder: (context, snapshot) {

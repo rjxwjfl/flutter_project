@@ -64,7 +64,7 @@ class _DwNaviHomeState extends State<DwNaviHome> with TickerProviderStateMixin, 
                   icon: const FaIcon(FontAwesomeIcons.magnifyingGlass)),
               IconButton(
                   onPressed: () {
-                    ref.watch(prjDrawUpProv).initialize();
+                    ref.watch(drawUp).initialize();
                     showMakePrjUI(context);
                   },
                   icon: const FaIcon(FontAwesomeIcons.calendarPlus)),

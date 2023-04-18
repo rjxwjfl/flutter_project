@@ -4,16 +4,15 @@ import 'package:flutter_dowith/main.dart';
 import 'package:flutter_dowith/view/dowith/project/model/project_status_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProjectOverView extends StatefulWidget {
-  const ProjectOverView({required this.data, Key? key}) : super(key: key);
+class ProjectMain extends StatefulWidget {
+  const ProjectMain({Key? key}) : super(key: key);
 
-  final ProjectModel data;
 
   @override
-  State<ProjectOverView> createState() => _ProjectOverViewState();
+  State<ProjectMain> createState() => _ProjectMainState();
 }
 
-class _ProjectOverViewState extends State<ProjectOverView> {
+class _ProjectMainState extends State<ProjectMain> {
   late ScrollController _scrollController;
   bool lastStatus = true;
   double height = 250;
@@ -56,37 +55,11 @@ class _ProjectOverViewState extends State<ProjectOverView> {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (BuildContext context, WidgetRef ref, Widget? child) {
+        var prjRefs = ref.watch(prjRoute);
+        var thmRefs = ref.watch(theme);
         return Scaffold(
-            backgroundColor: ref.watch(themeProv).setMaterialColor(context),
-            body: NestedScrollView(
-              controller: _scrollController,
-              headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-                return [
-                  SliverAppBar(
-                    elevation: 0,
-                    pinned: true,
-                    floating: true,
-                    snap: true,
-                    collapsedHeight: kToolbarHeight,
-                    expandedHeight: 270,
-                    title: Text(widget.data.title),
-                    flexibleSpace: FlexibleSpaceBar(
-                      collapseMode: CollapseMode.parallax,
-                      background: ProjectStatusView(prjData: widget.data, color: setBackGroundColor()),
-                    ),
-                  ),
-                ];
-              },
-              body: CustomScrollView(
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 150,
-                    ),
-                  )
-                ],
-              ),
-            ));
+            backgroundColor: ref.watch(theme).setMaterialColor(context),
+            body: Container());
       },
     );
   }

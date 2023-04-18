@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dowith/view/dowith/dw_navi_home.dart';
-import 'package:flutter_dowith/view/outline/todo_outline.dart';
-import 'package:flutter_dowith/view/settings/settings_main.dart';
-import 'package:flutter_dowith/view/todo/todo_main.dart';
+import 'package:flutter_dowith/bloc/database_bloc/model/project/project_model.dart';
+import 'package:flutter_dowith/view/dowith/project/feed/feed_main.dart';
+import 'package:flutter_dowith/view/dowith/project/task/task_main.dart';
+import 'package:flutter_dowith/view/dowith/project/project_inbox.dart';
+import 'package:flutter_dowith/view/dowith/project/project_main.dart';
+
 
 class ProjectRouteProvider extends ChangeNotifier {
+  late ProjectModel _currentProject;
   late int _selectedIndex = 0;
   late PageController _pageController;
   late String _title;
   final List<Widget> routes = [
-    const TodoOutline(),
-    const TodoMain(),
-    const DwNaviHome(),
-    const SettingsMain(),
+    const ProjectMain(),
+    const TaskMain(),
+    const FeedMain(),
+    const ProjectInbox()
   ];
 
   ProjectRouteProvider() {
@@ -25,7 +28,7 @@ class ProjectRouteProvider extends ChangeNotifier {
   get selectedIndex => _selectedIndex;
   get title => _title;
 
-  void pageRouteNavigator(index) {
+  void projectRouteNavigator(index) {
     _selectedIndex = index;
     _title = setTitle(index);
     _pageController.jumpToPage(_selectedIndex);
