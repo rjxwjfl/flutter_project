@@ -7,7 +7,7 @@ import 'package:flutter_dowith/navi_home.dart';
 import 'package:flutter_dowith/utils/glow_remover.dart';
 import 'package:flutter_dowith/utils/riverpod/page_route_provider.dart';
 import 'package:flutter_dowith/utils/riverpod/project_add_edit_provider.dart';
-import 'package:flutter_dowith/utils/riverpod/project_route_provider.dart';
+import 'package:flutter_dowith/utils/riverpod/user_management_provider.dart';
 import 'package:flutter_dowith/utils/theme/theme_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -18,6 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 final theme = ChangeNotifierProvider((ref) => ThemeProvider());
 final pageRoute = ChangeNotifierProvider((ref) => PageRouteProvider());
 final drawUp = ChangeNotifierProvider((ref) => ProjectDrawUpEditProvider());
+final user = ChangeNotifierProvider((ref) => UserManagementProvider());
 final bloc = SqlBloc(SqlRepository());
 late final SharedPreferences prefs;
 
@@ -28,6 +29,7 @@ void loadPref() async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   loadPref();
   await SystemChrome.setPreferredOrientations(
     <DeviceOrientation>[

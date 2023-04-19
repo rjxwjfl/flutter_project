@@ -1,19 +1,18 @@
 import 'dart:convert';
+import 'package:flutter_dowith/bloc/database_bloc/model/project/members_list_model.dart';
 import 'package:flutter_dowith/bloc/database_bloc/model/project/project_get_model.dart';
 import 'package:http/http.dart' as http;
 
-import '../model/project/project_member_model.dart';
-import '../model/project/project_set_model.dart';
 import '../model/project/project_overview_model.dart';
 import '../model/project/project_rule_model.dart';
-import '../model/user/user_dtl_model.dart';
 
 class ProjectRepository {
   final String baseUrl = "http://10.0.2.2:8080";
 
-  Future<List<ProjectOverViewModel>> getProjectList(int? pg, String? sk, int? st) async {
+  Future<List<ProjectOverViewModel>> getProjectList(
+      int? pg, String? sk, int? st) async {
     String url;
-    if (pg == null){
+    if (pg == null) {
       url = '$baseUrl/project?pg=1';
     } else {
       url = '$baseUrl/project?pg=$pg';
@@ -25,10 +24,13 @@ class ProjectRepository {
       url += '&st=$st';
     }
 
-    final response = await http.get(Uri.parse(url)).timeout(const Duration(milliseconds: 5000));
+    final response = await http
+        .get(Uri.parse(url))
+        .timeout(const Duration(milliseconds: 5000));
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
-      final List<ProjectOverViewModel> projectList = data.map((json) => ProjectOverViewModel.fromMap(json)).toList();
+      final List<ProjectOverViewModel> projectList =
+          data.map((json) => ProjectOverViewModel.fromMap(json)).toList();
       return projectList;
     } else {
       throw Exception('Failed to fetch projects');
@@ -36,10 +38,13 @@ class ProjectRepository {
   }
 
   Future<List<ProjectOverViewModel>> getMyProjectList(int? userId) async {
-    final response = await http.get(Uri.parse('$baseUrl/user/project?pid=$userId')).timeout(const Duration(milliseconds: 5000));
+    final response = await http
+        .get(Uri.parse('$baseUrl/user/project?pid=$userId'))
+        .timeout(const Duration(milliseconds: 5000));
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
-      final List<ProjectOverViewModel> projectList = data.map((json) => ProjectOverViewModel.fromMap(json)).toList();
+      final List<ProjectOverViewModel> projectList =
+          data.map((json) => ProjectOverViewModel.fromMap(json)).toList();
       return projectList;
     } else {
       throw Exception('Failed to fetch projects');
@@ -47,10 +52,12 @@ class ProjectRepository {
   }
 
   Future<ProjectGetModel> getProject(int projectId) async {
-    final response = await http.get(Uri.parse("$baseUrl/project/dtl?pid=$projectId"));
-    if (response.statusCode == 200){
+    final response =
+        await http.get(Uri.parse("$baseUrl/project/dtl?pid=$projectId"));
+    if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
-      Map<String, dynamic> projectMap = data[0]; // get the first project object as a map
+      Map<String, dynamic> projectMap =
+          data[0]; // get the first project object as a map
       ProjectGetModel model = ProjectGetModel.fromMap(projectMap);
       return model;
     } else {
@@ -58,35 +65,28 @@ class ProjectRepository {
     }
   }
 
-  Future<ProjectRuleModel> getProjectRule(int projectId) async {
-    final response = await http.get(Uri.parse('http://localhost:8080/project/rule?pid=$projectId'));
+  Future<List<ProjectRuleModel>> getProjectRule(int projectId) async {
+    final response =
+        await http.get(Uri.parse('$baseUrl/project/rule?pid=$projectId'));
     if (response.statusCode == 200) {
-      final json = jsonDecode(response.body)[0];
-      return ProjectRuleModel.fromMap(json);
-    } else {
-      throw Exception('Failed to load project');
-    }
-  }
-
-  Future<ProjectMemberModel> getProjectMember(int projectId) async {
-    final response = await http.get(Uri.parse('http://localhost:8080/project/member?pid=$projectId'));
-    if (response.statusCode == 200) {
-      final json = jsonDecode(response.body)[0];
-      return ProjectMemberModel.fromMap(json);
-    } else {
-      throw Exception('Failed to load project');
-    }
-  }
-
-  Future<UserDtlModel> getUser(int userId) async{
-    final response = await http.get(Uri.parse("$baseUrl/user/info?uid=$userId"));
-    if (response.statusCode == 200){
       List<dynamic> data = jsonDecode(response.body);
-      Map<String, dynamic> userData = data[0];
-      UserDtlModel model = UserDtlModel.fromMap(userData);
-      return model;
+      final List<ProjectRuleModel> rules =
+          data.map((json) => ProjectRuleModel.fromMap(json)).toList();
+      return rules;
     } else {
-      throw Exception('Failed to fetch projects');
+      throw Exception('Failed to load project');
+    }
+  }
+
+  Future<List<MembersListModel>> getProjectMember(int prjId) async {
+    final response =
+        await http.get(Uri.parse('$baseUrl/project/member?pid=$prjId'));
+    if (response.statusCode == 200) {
+      List<dynamic> data = jsonDecode(response.body);
+      List<MembersListModel> memberList = data.map((json) => MembersListModel.fromMap(json)).toList();
+      return memberList;
+    } else {
+      throw Exception('Failed to load project');
     }
   }
 }

@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dowith/bloc/database_bloc/model/project/project_get_model.dart';
+import 'package:flutter_dowith/bloc/database_bloc/model/project/project_member_model.dart';
 import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_bloc.dart';
 import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_repository.dart';
+import 'package:flutter_dowith/bloc/database_bloc/userCtrl/user_bloc.dart';
+import 'package:flutter_dowith/bloc/database_bloc/userCtrl/user_repository.dart';
+import 'package:flutter_dowith/main.dart';
+import 'package:flutter_dowith/view/dowith/project/model/entry_view_ui.dart';
 import 'package:flutter_dowith/view/dowith/project/model/project_dtl_ui.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ProjectMain extends StatefulWidget {
@@ -16,11 +22,19 @@ class ProjectMain extends StatefulWidget {
 
 class _ProjectMainState extends State<ProjectMain> {
   final ProjectBloc _projectBloc = ProjectBloc(ProjectRepository());
+  bool _isClicked = false;
+  int? userId = prefs.getInt("user_id");
+  int? userRole;
+
+  void blocInit() {
+    _projectBloc.getCurrentProject(widget.prjId);
+    _projectBloc.getPrjRules();
+  }
 
   @override
   void initState() {
     super.initState();
-    _projectBloc.getCurrentProject(widget.prjId);
+    blocInit();
   }
 
   @override
@@ -34,55 +48,92 @@ class _ProjectMainState extends State<ProjectMain> {
             child: CircularProgressIndicator(),
           );
         }
-        ProjectGetModel data = snapshot.data!;
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(data.title),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.only(right: 12),
-                child: IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () {},
-                  icon: FaIcon(
-                    FontAwesomeIcons.users,
-                    color: scheme.primary,
-                    size: 20,
+        ProjectGetModel prjModel = snapshot.data!;
+        return Consumer(builder: (context, ref, child) {
+          var userRefs = ref.watch(user);
+          userRefs.fetchUserRole(widget.prjId);
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(prjModel.title),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 12),
+                  child: IconButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () => showDialog(
+                        context: context,
+                        builder: (context) {
+                          return const EntryViewUI();
+                        }),
+                    icon: FaIcon(
+                      FontAwesomeIcons.users,
+                      color: scheme.primary,
+                      size: 20,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          body: RefreshIndicator(
-              onRefresh: () async {
-                _projectBloc.getCurrentProject(widget.prjId);
-              },
-              child: CustomScrollView(
-                slivers: [
-                  SliverList(
-                      delegate: SliverChildListDelegate([
-                    ProjectDtlUI(data: data),
-                    getTitleUI("SCHEDULE"),
-                    const Placeholder(
-                      child: SizedBox(height: 100, child: Center(child: Text("Calendar?"))),
-                    ),
-                    getTitleUI("MY TASK"),
-                    const Placeholder(
-                      child: SizedBox(height: 150, child: Center(child: Text("TASKS?"))),
-                    ),
-                    getTitleUI("FEED"),
-                    const Placeholder(
-                      child: SizedBox(height: 300, child: Center(child: Text("TASKS?"))),
-                    ),
-                    getTitleUI("INBOX"),
-                    const Placeholder(
-                      child: SizedBox(height: 100, child: Center(child: Text("FILES - GRID?"))),
-                    ),
-                  ]))
-                ],
-              )),
-          floatingActionButton: FloatingActionButton(onPressed: () {}),
-        );
+                userRefs.userRole == 0
+                    ? Padding(
+                        padding: const EdgeInsets.only(right: 12),
+                        child: IconButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: () {},
+                          icon: FaIcon(
+                            FontAwesomeIcons.gears,
+                            color: scheme.primary,
+                            size: 20,
+                          ),
+                        ),
+                      )
+                    : const SizedBox(),
+              ],
+            ),
+            body: RefreshIndicator(
+                onRefresh: () async {
+                  blocInit();
+                },
+                child: CustomScrollView(
+                  slivers: [
+                    SliverList(
+                        delegate: SliverChildListDelegate([
+                      ProjectDtlUI(
+                        data: prjModel,
+                        clickState: _isClicked,
+                        stream: _projectBloc.ruleController,
+                        callback: () {
+                          setState(() {
+                            _isClicked = !_isClicked;
+                          });
+                        },
+                      ),
+                      getTitleUI("SCHEDULE"),
+                      const Placeholder(
+                        child: SizedBox(
+                            height: 100,
+                            child: Center(child: Text("Calendar?"))),
+                      ),
+                      getTitleUI("MY TASK"),
+                      const Placeholder(
+                        child: SizedBox(
+                            height: 150, child: Center(child: Text("TASKS?"))),
+                      ),
+                      getTitleUI("FEED"),
+                      const Placeholder(
+                        child: SizedBox(
+                            height: 300, child: Center(child: Text("TASKS?"))),
+                      ),
+                      getTitleUI("INBOX"),
+                      const Placeholder(
+                        child: SizedBox(
+                            height: 100,
+                            child: Center(child: Text("FILES - GRID?"))),
+                      ),
+                    ]))
+                  ],
+                )),
+            floatingActionButton: FloatingActionButton(onPressed: () {}),
+          );
+        });
       },
     );
   }
@@ -92,7 +143,10 @@ class _ProjectMainState extends State<ProjectMain> {
       padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
       child: SizedBox(
         child: Row(
-          children: [Expanded(child: Text(title, textAlign: TextAlign.start)), const Text("SHOW MORE >>")],
+          children: [
+            Expanded(child: Text(title, textAlign: TextAlign.start)),
+            const Text("SHOW MORE >>")
+          ],
         ),
       ),
     );

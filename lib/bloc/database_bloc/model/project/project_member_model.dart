@@ -7,7 +7,7 @@ class ProjectMemberModel {
   int? prjMbrId;
   int prjId;
   int userId;
-  String role;
+  int role;
 
   ProjectMemberModel({this.prjMbrId, required this.prjId, required this.userId, required this.role});
 
@@ -20,7 +20,7 @@ class ProjectMemberModel {
         prjMbrId: map['prj_mbr_id'] != null ? map['prj_mbr_id'] as int : null,
         prjId: map['prj_id'] as int,
         userId: map['user_id'] as int,
-        role: map['role'] as String);
+        role: map['role'] as int);
   }
 
   String toJson() => json.encode(toMap());
