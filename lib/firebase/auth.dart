@@ -36,7 +36,7 @@ class Auth {
           Map<String, dynamic> data = jsonDecode(response.body);
           prefs.setInt("user_id", data.values as int);
         } else {
-          throw Exception('Failed to fetch projects');
+          throw Exception('Failed to join');
         }
       });
       // 서버로 데이터 전송 => username : email, password : password, name: name, fb_uid : _auth.currentUser!.uid, device_token: _messaging.getToken()

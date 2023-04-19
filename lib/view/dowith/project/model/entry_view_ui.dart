@@ -22,7 +22,7 @@ class _EntryViewUIState extends State<EntryViewUI> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      insetPadding: const EdgeInsets.only(left: 30, right: 30),
+      insetPadding: const EdgeInsets.only(left: 20, right: 20),
       child: Padding(
         padding: const EdgeInsets.all(30),
         child: Column(
@@ -32,26 +32,31 @@ class _EntryViewUIState extends State<EntryViewUI> {
               "프로젝트 참가자",
               style: TextStyle(fontSize: 25),
             ),
-            StreamBuilder<List<MembersListModel>>(
-              stream: _bloc.mbrListController,
-              builder: (context, snapshot) {
-                if (!snapshot.hasData){
-                  return const Center(child: CircularProgressIndicator(),);
-                }
-                List<MembersListModel> data = snapshot.data!;
-                return ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: 200,
-                    maxHeight: 200
-                  ),
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: data.length,
-                      itemBuilder: (context, index) {
-                        return getMemberView(context, data[index]);
-                      }),
-                );
-              }
+            Padding(
+              padding: const EdgeInsets.only(top: 12),
+              child: StreamBuilder<List<MembersListModel>>(
+                  stream: _bloc.mbrListController,
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    List<MembersListModel> data = snapshot.data!;
+                    return ConstrainedBox(
+                      constraints: const BoxConstraints(minHeight: 200, maxHeight: 300),
+                      child: ListView.separated(
+                        shrinkWrap: true,
+                        itemCount: data.length,
+                        itemBuilder: (context, index) {
+                          return getMemberView(context, data[index]);
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const Divider();
+                        },
+                      ),
+                    );
+                  }),
             ),
           ],
         ),
@@ -60,27 +65,34 @@ class _EntryViewUIState extends State<EntryViewUI> {
   }
 
   Widget getMemberView(context, MembersListModel model) {
-    return Row(
-      children: [
-        CircleAvatar(
-          backgroundColor: Theme.of(context).colorScheme.secondary,
-          child: model.imageUrl == null || model.imageUrl == ""
-              ? Text(model.name[0].toUpperCase(), style: TextStyle(fontSize: 25, color: Theme.of(context).colorScheme.onSecondary),)
-              : null,
-        ),
-        Expanded(child: Center(child: Text(model.name))),
-        Column(
+    return InkWell(
+      onTap: () {},
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
           children: [
-            Text(intToString(model.role)),
-            RichText(text: TextSpan(children: [
-              TextSpan(text: "최종 접속일\n"),
-              TextSpan(text: dateCal(model.latestAccess))
-            ]))
+            CircleAvatar(
+              backgroundColor: Theme.of(context).colorScheme.secondary,
+              child: model.imageUrl == null || model.imageUrl == ""
+                  ? Text(
+                      model.name[0].toUpperCase(),
+                      style: TextStyle(fontSize: 25, color: Theme.of(context).colorScheme.onSecondary),
+                    )
+                  : null,
+            ),
+            Expanded(child: Center(child: Text(model.name))),
+            Column(
+              children: [
+                Text(intToString(model.role)),
+                RichText(text: TextSpan(children: [TextSpan(text: "최종 접속일\n"), TextSpan(text: dateCal(model.latestAccess))]))
+              ],
+            )
           ],
-        )
-      ],
+        ),
+      ),
     );
   }
+
   String intToString(int role) {
     String result;
     const map = {0: "프로젝트장", 1: "관리자", 2: "구성원", 3: "손님"};
@@ -88,22 +100,22 @@ class _EntryViewUIState extends State<EntryViewUI> {
     return result;
   }
 
-  String dateCal(DateTime date){
+  String dateCal(DateTime date) {
     DateTime now = DateTime.now();
     Duration difference = now.difference(date);
-    if (difference.inSeconds < 60){
+    if (difference.inSeconds < 60) {
       return "${difference.inSeconds}초 전";
     }
-    if (difference.inMinutes < 60){
+    if (difference.inMinutes < 60) {
       return "${difference.inMinutes}분 전";
     }
-    if (difference.inHours < 24){
+    if (difference.inHours < 24) {
       return "${difference.inHours}시간 전";
     }
-    if (difference.inDays < 30){
+    if (difference.inDays < 30) {
       return "${difference.inDays}일 전";
     }
-    if (difference.inDays < 365){
+    if (difference.inDays < 365) {
       return "${(difference.inDays / 30).floor()}달 전";
     }
     return "${(difference.inDays / 365).floor()}년 전";

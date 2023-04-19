@@ -22,37 +22,43 @@ class ProjectDtlUI extends StatelessWidget {
       child: SizedBox(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+          child: Stack(
             children: [
-              Text(data.prjDesc),
-              Text(data.goal),
-              clickState
-                  ? StreamBuilder<List<ProjectRuleModel>>(
-                      stream: stream,
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData) {
-                          return Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Text("프로젝트 규칙이 존재하지 않습니다."),
-                              TextButton(onPressed: callback, child: const Text("규칙 추가")),
-                            ],
-                          );
-                        }
-                        List<ProjectRuleModel> data = snapshot.data!;
-                        return ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: data.length,
-                            itemBuilder: (context, index) {
-                              return getRuleView(data[index]);
-                            });
-                      },
-                    )
-                  : TextButton(
-                      onPressed: callback,
-                      child: const Text("규칙 확인"),
-                    ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(data.prjDesc),
+                  Text(data.goal),
+                  clickState
+                      ? StreamBuilder<List<ProjectRuleModel>>(
+                          stream: stream,
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Text("프로젝트 규칙이 존재하지 않습니다."),
+                                  TextButton(onPressed: callback, child: const Text("규칙 추가")),
+                                ],
+                              );
+                            }
+                            List<ProjectRuleModel> data = snapshot.data!;
+                            return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: data.length,
+                                itemBuilder: (context, index) {
+                                  return getRuleView(data[index]);
+                                });
+                          },
+                        )
+                      : TextButton(
+                          onPressed: callback,
+                          child: const Text("규칙 확인"),
+                        ),
+                ],
+              ),
+
             ],
           ),
         ),

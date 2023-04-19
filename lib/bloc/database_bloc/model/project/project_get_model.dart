@@ -14,7 +14,6 @@ class ProjectGetModel {
   DateTime? startOn;
   DateTime? expireOn;
   bool pvt;
-  String? prjPw;
   int memberCount;
 
   ProjectGetModel(
@@ -28,7 +27,6 @@ class ProjectGetModel {
         this.startOn,
         this.expireOn,
         required this.pvt,
-        this.prjPw,
         required this.memberCount});
 
   Map<String, dynamic> toMap() {
@@ -44,7 +42,6 @@ class ProjectGetModel {
       'start_on': startOn != null ? formatter.format(startOn!) : null,
       'expire_on': expireOn != null ? formatter.format(expireOn!) : null,
       'pvt': setInt(pvt),
-      'prj_pw': prjPw,
       'member_count': memberCount
     };
   }
@@ -61,7 +58,6 @@ class ProjectGetModel {
         startOn: json['start_on'] != null ? DateTime.parse(json['start_on']) : null,
         expireOn: json['expire_on'] != null ? DateTime.parse(json['expire_on']) : null,
         pvt: setBool(json['pvt']),
-        prjPw: json['prj_pw'] != null ? json['prj_pw'] as String : null,
         memberCount: json['member_count'] as int);
   }
 

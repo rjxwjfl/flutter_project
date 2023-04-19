@@ -1,12 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dowith/bloc/database_bloc/model/project/project_set_model.dart';
+import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_repository.dart';
 import 'package:flutter_dowith/main.dart';
 import 'package:flutter_dowith/view/dowith/project/project_add/model/category_item.dart';
-import 'package:flutter_dowith/view/dowith/project/project_add/model/private_setting_ui.dart';
 import 'package:flutter_dowith/view/dowith/project/project_add/model/project_draw_up_input.dart';
 import 'package:flutter_dowith/view/dowith/project/project_add/model/button_ui.dart';
 import 'package:flutter_dowith/view/dowith/project/project_add/model/get_period_ui.dart';
 import 'package:flutter_dowith/view/dowith/project/project_add/model/rule_input.dart';
+import 'package:flutter_dowith/view/dowith/project/project_navi_home.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ProjectAddUI extends StatefulWidget {
   const ProjectAddUI({Key? key}) : super(key: key);
@@ -15,29 +19,41 @@ class ProjectAddUI extends StatefulWidget {
   State<ProjectAddUI> createState() => _ProjectAddUIState();
 }
 
-class _ProjectAddUIState extends State<ProjectAddUI>
-    with TickerProviderStateMixin {
+class _ProjectAddUIState extends State<ProjectAddUI> with TickerProviderStateMixin {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descController = TextEditingController();
   final TextEditingController _goalController = TextEditingController();
   final TextEditingController _ruleController = TextEditingController();
-  final TextEditingController _prjPwController = TextEditingController();
 
   final FocusNode _titleFocus = FocusNode();
   final FocusNode _descFocus = FocusNode();
   final FocusNode _goalFocus = FocusNode();
   final FocusNode _ruleFocus = FocusNode();
-  final FocusNode _prjPwFocus = FocusNode();
 
   late final AnimationController _animationController;
 
   final _formKey = GlobalKey<FormState>();
 
+  final ProjectRepository _repository = ProjectRepository();
+
+  Future<int> drawUpPrj(
+      String title, int category, String prjDesc, String goal, bool pvt, bool period, DateTime? start, DateTime? end) async {
+    ProjectSetModel model =
+        ProjectSetModel(title: title, category: category, prjDesc: prjDesc, goal: goal, pvt: pvt, startOn: start, expireOn: end);
+    if (period) {
+      // period => only check state
+      model.startOn = null;
+      model.expireOn = null;
+      print(model);
+    }
+    int prjId = await _repository.createProject(prefs.getInt("user_id")!, model);
+    return prjId;
+  }
+
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
-        duration: const Duration(milliseconds: 400), vsync: this);
+    _animationController = AnimationController(duration: const Duration(milliseconds: 400), vsync: this);
     _animationController.forward();
   }
 
@@ -102,14 +118,7 @@ class _ProjectAddUIState extends State<ProjectAddUI>
                             ),
                             GetPeriodUI(scheme: scheme),
                             getCategoryUI(),
-                            SetPrivateUI(
-                              title: "프로젝트 공개여부",
-                              hint: "비밀번호를 지정하세요.",
-                              controller: _prjPwController,
-                              focusNode: _prjPwFocus,
-                              validator: _pwValidate,
-                              length: 20,
-                            )
+                            setPrivate()
                           ],
                         ),
                       ),
@@ -128,17 +137,20 @@ class _ProjectAddUIState extends State<ProjectAddUI>
                           scheme: scheme,
                           title: "생성",
                           callback: () {
-                            if (_formKey.currentState!.validate()) {
-                              if (refs.isPrivate) {
-                                refs.crypt = _prjPwController.text;
-                              }
-                              refs.drawUp(
-                                  _titleController.text,
-                                  _descController.text,
-                                  _goalController.text,
-                                  refs.isPrivate);
-                              Navigator.pop(context);
+                            if (!_formKey.currentState!.validate()) {
+                              return;
                             }
+                            if (refs.selectedCategory == null) {
+                              showSnackBar(context, "카테고리를 선택해주세요.");
+                              return;
+                            }
+                            drawUpPrj(_titleController.text, refs.selectedCategory!, _descController.text, _goalController.text,
+                                    refs.isPrivate, refs.period, refs.initDate, refs.endDate)
+                                .then((value) {
+                              Navigator.pop(context);
+                              showSnackBar(context, "프로젝트가 생성되었습니다.");
+                              Navigator.push(context, CupertinoPageRoute(builder: (context) => ProjectNaviHome(prjId: value)));
+                            });
                           },
                         )),
                         const SizedBox(),
@@ -199,6 +211,48 @@ class _ProjectAddUIState extends State<ProjectAddUI>
     });
   }
 
+  Widget setPrivate() {
+    ColorScheme scheme = Theme.of(context).colorScheme;
+    return Consumer(builder: (context, ref, child) {
+      var refs = ref.watch(drawUp);
+      return Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 12, bottom: 12),
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(15)), border: Border.all(color: scheme.primary)),
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: refs.isPrivate
+                    ? Icon(
+                        FontAwesomeIcons.lock,
+                        size: 40,
+                        color: scheme.primary,
+                      )
+                    : Icon(
+                        FontAwesomeIcons.lockOpen,
+                        size: 40,
+                        color: scheme.primary,
+                      ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 12, bottom: 12),
+            child: Text("이 프로젝트는 ${refs.isPrivate ? "비공개" : "공개"} 프로젝트입니다."),
+          ),
+          IconButton.outlined(
+            onPressed: () {
+              refs.isPrivate = !refs.isPrivate;
+            },
+            icon: const Icon(FontAwesomeIcons.arrowsRotate),
+          ),
+        ],
+      );
+    });
+  }
+
   String? _titleValidate(String? title) {
     if (title == null || title.isEmpty) {
       return "제목을 입력해주세요.";
@@ -250,13 +304,15 @@ class _ProjectAddUIState extends State<ProjectAddUI>
     return null;
   }
 
-  String? _ruleValidate(String? title) {
-    return "";
-  }
-
-  String? _pwValidate(String? title) {
-    return "";
+  void showSnackBar(context, String text) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(text, textAlign: TextAlign.center),
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.fromLTRB(20, 0, 20, 50),
+        elevation: 30,
+        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
+      ),
+    );
   }
 }
-// const mstId = req.query.uid;
-// const { title, category, prj_desc, goal, start_on, expire_on, pvt, prj_pw } = req.body;

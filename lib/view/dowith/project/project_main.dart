@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dowith/bloc/database_bloc/model/project/project_get_model.dart';
-import 'package:flutter_dowith/bloc/database_bloc/model/project/project_member_model.dart';
 import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_bloc.dart';
 import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_repository.dart';
-import 'package:flutter_dowith/bloc/database_bloc/userCtrl/user_bloc.dart';
-import 'package:flutter_dowith/bloc/database_bloc/userCtrl/user_repository.dart';
 import 'package:flutter_dowith/main.dart';
 import 'package:flutter_dowith/view/dowith/project/model/entry_view_ui.dart';
 import 'package:flutter_dowith/view/dowith/project/model/project_dtl_ui.dart';

@@ -36,7 +36,7 @@ class _CategoryItemState extends State<CategoryItem> {
         decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             border: Border.all(color: scheme.primary),
-            color: widget.selectState ? scheme.primary : scheme.onPrimary),
+            color: widget.selectState ? scheme.primary : scheme.background),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(

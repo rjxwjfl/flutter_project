@@ -25,13 +25,16 @@ class UserRepository {
     }
   }
 
-  Future<ProjectMemberModel> getUserRole(int prjId, int userId) async {
+  Future<ProjectMemberModel?> getUserRole(int prjId, int userId) async {
     final response =
         await http.get(Uri.parse("$baseUrl/user?pid=$prjId&uid=$userId"));
     if (response.statusCode != 200) {
       throw Exception('Failed to fetch roles');
     }
     List<dynamic> data = jsonDecode(response.body);
+    if (data.isEmpty){
+      return null;
+    }
     Map<String, dynamic> map = data[0];
     ProjectMemberModel model = ProjectMemberModel.fromMap(map);
     return model;

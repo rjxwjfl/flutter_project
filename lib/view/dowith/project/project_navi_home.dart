@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dowith/view/dowith/project/calendar/prj_calendar_main.dart';
 import 'package:flutter_dowith/view/dowith/project/feed/feed_main.dart';
 import 'package:flutter_dowith/view/dowith/project/project_inbox.dart';
 import 'package:flutter_dowith/view/dowith/project/project_main.dart';
@@ -33,23 +34,25 @@ class _ProjectNaviHomeState extends State<ProjectNaviHome> {
         physics: const NeverScrollableScrollPhysics(),
         children: [
           ProjectMain(prjId: widget.prjId),
+          ProjectCalendarMain(),
           TaskTabMain(),
           FeedMain(),
           ProjectInbox(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
         selectedItemColor: scheme.primary,
         unselectedItemColor: scheme.secondary,
         unselectedIconTheme: const IconThemeData(size: 18),
+        selectedFontSize: 12,
+        unselectedFontSize: 10,
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.house), label: '개요'),
-          BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.filePen), label: 'ENTIRE'),
-          BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.commentDots), label: 'FEED'),
-          BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.folderOpen), label: 'INBOX'),
+          BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.d), label: '개요'),
+          BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.calendarDay), label: '일정표'),
+          BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.filePen), label: '과업'),
+          BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.commentDots), label: '소식'),
+          BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.folderOpen), label: '보관함'),
         ],
         currentIndex: initIndex,
         onTap: (index) {

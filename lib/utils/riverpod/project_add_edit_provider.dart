@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dowith/bloc/database_bloc/model/project/project_rule_model.dart';
 import 'package:flutter_dowith/bloc/database_bloc/model/project/project_set_model.dart';
+import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_repository.dart';
 import 'package:flutter_dowith/firebase/auth.dart';
 import 'package:flutter_dowith/main.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -14,7 +16,7 @@ class ProjectDrawUpEditProvider extends ChangeNotifier {
   int? _selectedCategory;
   List<String> _ruleList = [];
   List<bool> _gridSwitch = List.filled(6, false);
-  String? _crypt;
+  final ProjectRepository _repository = ProjectRepository();
 
   final Map<String, IconData> _category = {
     "TEAM-WORK": FontAwesomeIcons.users,
@@ -22,7 +24,7 @@ class ProjectDrawUpEditProvider extends ChangeNotifier {
     "EXERCISE": FontAwesomeIcons.dumbbell,
     "HOBBIES": FontAwesomeIcons.icons,
     "DEVELOP": FontAwesomeIcons.code,
-    "UNKNOWN": FontAwesomeIcons.question
+    "ETC": FontAwesomeIcons.question
   };
 
   void initialize() {
@@ -35,7 +37,6 @@ class ProjectDrawUpEditProvider extends ChangeNotifier {
     _selectedCategory = null;
     _ruleList.clear();
     _gridSwitch = List.filled(6, false);
-    _crypt = null;
     notifyListeners();
   }
 
@@ -59,14 +60,6 @@ class ProjectDrawUpEditProvider extends ChangeNotifier {
 
   List<bool> get gridSwitch => _gridSwitch;
 
-
-  String? get crypt => _crypt;
-
-  set crypt(String? value) {
-    _crypt = value;
-    notifyListeners();
-  }
-
   set period(bool value) {
     _period = value;
     notifyListeners();
@@ -74,6 +67,7 @@ class ProjectDrawUpEditProvider extends ChangeNotifier {
 
   set isPrivate(bool value) {
     _isPrivate = value;
+    notifyListeners();
   }
 
   set editable(bool value) {
@@ -126,17 +120,19 @@ class ProjectDrawUpEditProvider extends ChangeNotifier {
   }
 
   void drawUp(String title, String prjDesc, String goal, bool pvt) async {
-    // if (Auth().auth.currentUser == null) {
-    //   return;
-    // }
-    // if (prefs.getInt("user_id") == null) {
-    //   return;
-    // }
-    // int mstId = prefs.getInt("user_id")!;
-    ProjectSetModel model = ProjectSetModel(
+    int mstId;
+    ProjectSetModel model;
+    if (Auth().auth.currentUser == null) {
+      print("로그인되지 않음");
+      return;
+    }
+    if (prefs.getInt("user_id") == null) {
+      return;
+    }
+    mstId = prefs.getInt("user_id")!;
+    model = ProjectSetModel(
         title: title,
         category: _selectedCategory!,
-        mstId: 1,
         prjDesc: prjDesc,
         goal: goal,
         pvt: pvt);
@@ -144,9 +140,6 @@ class ProjectDrawUpEditProvider extends ChangeNotifier {
       model.startOn = _initDate;
       model.expireOn = _endDate;
     }
-    if(_isPrivate){
-      model.prjPw = _crypt;
-    }
-    print(model);
+    await _repository.createProject(mstId, model);
   }
 }

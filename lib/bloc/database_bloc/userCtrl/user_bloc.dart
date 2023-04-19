@@ -4,15 +4,16 @@ import 'package:flutter_dowith/bloc/database_bloc/model/project/project_member_m
 import 'package:flutter_dowith/bloc/database_bloc/model/user/user_dtl_model.dart';
 import 'package:flutter_dowith/bloc/database_bloc/userCtrl/user_repository.dart';
 
-class UserBloc{
+class UserBloc {
   final UserRepository _repository;
   final StreamController<UserDtlModel> _userDtlController = StreamController.broadcast();
   final StreamController<ProjectMemberModel> _roleController = StreamController.broadcast();
 
   Stream<UserDtlModel> get userDtlController => _userDtlController.stream;
+
   Stream<ProjectMemberModel> get roleController => _roleController.stream;
 
-  void dispose(){
+  void dispose() {
     _userDtlController.close();
   }
 
@@ -23,8 +24,10 @@ class UserBloc{
     _userDtlController.sink.add(model);
   }
 
-  getUserRole(int prjId, int userId)async{
-    ProjectMemberModel model = await _repository.getUserRole(prjId, userId);
-    _roleController.sink.add(model);
+  getUserRole(int prjId, int userId) async {
+    ProjectMemberModel? model = await _repository.getUserRole(prjId, userId);
+    if (model != null) {
+      _roleController.sink.add(model);
+    }
   }
 }

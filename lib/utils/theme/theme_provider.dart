@@ -67,9 +67,7 @@ class ThemeProvider extends ChangeNotifier {
 
   _loadFromPrefs() {
     _isDarkMode = prefs.getBool('isDarkMode') ?? false;
-    print("is DarkMode? : ${prefs.getBool('isDarkMode')}");
     _schemeValue = prefs.getInt('schemeValue') ?? 0;
-    print("current Scheme code? : ${prefs.getInt('schemeValue')}");
   }
 
   _saveToPrefs() {

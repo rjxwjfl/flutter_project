@@ -34,9 +34,12 @@ class UserManagementProvider extends ChangeNotifier{
       return;
     }
     _currentPrjId = prjId;
-    ProjectMemberModel model = await UserRepository().getUserRole(prjId, _userId!);
+    print("in riverpod : $_currentPrjId");
+    ProjectMemberModel? model = await UserRepository().getUserRole(prjId, _userId!);
+    if (model == null){
+      return;
+    }
     _userRole = model.role;
-    fetchMemberList();
     notifyListeners();
   }
 
