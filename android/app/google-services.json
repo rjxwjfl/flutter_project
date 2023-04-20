@@ -23,6 +23,22 @@
           }
         },
         {
+          "client_id": "286159962420-rsf52mpsilopdl1j42r0q0tu71eq1pj4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dowithdev.flutter_dowith",
+            "certificate_hash": "7204412a19be4b9f1d4836560602ec178e7292ab"
+          }
+        },
+        {
+          "client_id": "286159962420-sov2h7993g28bi8rkpdlq8vn03hf821l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dowithdev.flutter_dowith",
+            "certificate_hash": "f1c47d74cd3aafcaf461c67bf157b5284aec573d"
+          }
+        },
+        {
           "client_id": "286159962420-nibq2kmo5kj25nook08t85stmua3c3n9.apps.googleusercontent.com",
           "client_type": 3
         }

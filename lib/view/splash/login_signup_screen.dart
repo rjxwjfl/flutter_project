@@ -116,11 +116,11 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
               CircleButton(
                 assetPath: "assets/icons/google_logo.png",
                 isLoad: _isGoogleLoad,
-                callback: () {
+                callback: () async{
                   setState(() {
                     _isGoogleLoad = !_isGoogleLoad;
                   });
-                  if (Auth().signInUpWithGoogle() != null) {}
+                  await Auth().signInUpWithGoogle().then((value) => Navigator.pop(context));
                 },
               ),
             ],

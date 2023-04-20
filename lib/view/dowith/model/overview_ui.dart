@@ -7,68 +7,30 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 class OverViewUI extends StatelessWidget {
-  const OverViewUI({required this.data, Key? key}) : super(key: key);
+  const OverViewUI({required this.data, required this.callback, Key? key}) : super(key: key);
 
   final ProjectOverViewModel data;
+  final void Function() callback;
 
   @override
   Widget build(BuildContext context) {
     ColorScheme scheme = Theme.of(context).colorScheme;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
-      child: Card(
-        elevation: 0,
-        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
+      padding: const EdgeInsets.fromLTRB(8, 6, 8, 6),
+      child: Container(
+        decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+          border: Border.all(width: 0.5, color: scheme.primary),
+        ),
         child: InkWell(
-          borderRadius: const BorderRadius.all(Radius.circular(5)),
-          onTap: () {
-            if (data.pvt) {
-              showModalBottomSheet<void>(
-                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-                context: context,
-                builder: (BuildContext context) {
-                  return SizedBox(
-                    height: 200,
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          const Text('비공개 프로젝트입니다.'),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ElevatedButton(
-                                child: const Text('가입 신청'),
-                                onPressed: () => Navigator.pop(context),
-                              ),
-                              const SizedBox(width: 20),
-                              ElevatedButton(
-                                child: const Text('닫기'),
-                                onPressed: () => Navigator.pop(context),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              );
-            } else {
-              Navigator.pop(context);
-              Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => ProjectNaviHome(prjId: data.prjId,),
-                  ));
-            }
-          },
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          onTap: callback,
           child: Ink(
             width: MediaQuery.of(context).size.width,
             height: 170,
+            color: scheme.surface,
             child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(5)),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
               child: Row(
                 children: [
                   Container(
@@ -167,6 +129,7 @@ class OverViewUI extends StatelessWidget {
             padding: const EdgeInsets.only(left: 5, right: 5, top: 5),
             child: SizedBox(
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   ProjectStatusSum(
                       padding: const EdgeInsets.only(top: 10),
@@ -182,13 +145,13 @@ class OverViewUI extends StatelessWidget {
                               ProjectStatusSum(
                                   padding: const EdgeInsets.only(top: 5),
                                   icon: FontAwesomeIcons.hourglassStart,
-                                  iconSize: 15.0,
+                                  iconSize: 12.0,
                                   text: formatter.format(data.startOn!),
                                   fontSize: 11.0),
                               ProjectStatusSum(
                                   padding: const EdgeInsets.only(top: 5),
                                   icon: FontAwesomeIcons.hourglassEnd,
-                                  iconSize: 15.0,
+                                  iconSize: 12.0,
                                   text: formatter.format(data.expireOn!),
                                   fontSize: 11.0),
                             ],
@@ -197,7 +160,7 @@ class OverViewUI extends StatelessWidget {
                       : const ProjectStatusSum(
                           padding: EdgeInsets.only(top: 5, left: 4),
                           icon: FontAwesomeIcons.hourglass,
-                          iconSize: 15,
+                          iconSize: 12,
                           text: "제한 없음",
                           fontSize: 10),
                 ],

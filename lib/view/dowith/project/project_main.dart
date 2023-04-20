@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dowith/bloc/database_bloc/model/project/project_get_model.dart';
 import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_bloc.dart';
 import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_repository.dart';
+import 'package:flutter_dowith/calendar_view.dart';
 import 'package:flutter_dowith/main.dart';
 import 'package:flutter_dowith/view/dowith/project/model/entry_view_ui.dart';
 import 'package:flutter_dowith/view/dowith/project/model/project_dtl_ui.dart';
@@ -48,7 +49,6 @@ class _ProjectMainState extends State<ProjectMain> {
         ProjectGetModel prjModel = snapshot.data!;
         return Consumer(builder: (context, ref, child) {
           var userRefs = ref.watch(user);
-          userRefs.fetchUserRole(widget.prjId);
           return Scaffold(
             appBar: AppBar(
               title: Text(prjModel.title),
@@ -104,11 +104,7 @@ class _ProjectMainState extends State<ProjectMain> {
                         },
                       ),
                       getTitleUI("SCHEDULE"),
-                      const Placeholder(
-                        child: SizedBox(
-                            height: 100,
-                            child: Center(child: Text("Calendar?"))),
-                      ),
+                      CalendarView(),
                       getTitleUI("MY TASK"),
                       const Placeholder(
                         child: SizedBox(

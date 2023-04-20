@@ -35,7 +35,7 @@ class ProjectRepository {
   }
 
   Future<List<ProjectOverViewModel>> getMyProjectList(int? userId) async {
-    final response = await http.get(Uri.parse('$baseUrl/user/project?pid=$userId')).timeout(const Duration(milliseconds: 5000));
+    final response = await http.get(Uri.parse('$baseUrl/user/project?uid=$userId')).timeout(const Duration(milliseconds: 5000));
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
       final List<ProjectOverViewModel> projectList = data.map((json) => ProjectOverViewModel.fromMap(json)).toList();

@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dowith/bloc/database_bloc/model/project/members_list_model.dart';
 import 'package:flutter_dowith/bloc/database_bloc/model/project/project_member_model.dart';
-import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_repository.dart';
 import 'package:flutter_dowith/bloc/database_bloc/userCtrl/user_repository.dart';
 import 'package:flutter_dowith/main.dart';
 
 class UserManagementProvider extends ChangeNotifier{
-  static int? _userId = prefs.getInt("user_id");
+  static int? _userId;
   static int? _currentPrjId;
-  int? _userRole;
-  List<MembersListModel>? _mbrList;
+  late int _userRole;
 
   int? get userId => _userId;
   int? get currentPrjId => _currentPrjId;
-  int? get userRole => _userRole;
+  int get userRole => _userRole;
 
-
-  List<MembersListModel>? get mbrList => _mbrList;
 
   set userId(int? value) {
     _userId = value;
@@ -28,25 +23,23 @@ class UserManagementProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  Future<void> fetchUserRole(int prjId) async {
+  Future<int> fetchUserRole(int prjId) async {
+    print("?");
+    _userId = prefs.getInt("user_id");
     if (_userId == null){
       _userRole = 3;
-      return;
+      return _userRole;
     }
     _currentPrjId = prjId;
-    print("in riverpod : $_currentPrjId");
+
     ProjectMemberModel? model = await UserRepository().getUserRole(prjId, _userId!);
     if (model == null){
-      return;
+      _userRole = 3;
+      return _userRole;
     }
     _userRole = model.role;
     notifyListeners();
-  }
-
-  Future<void> fetchMemberList() async{
-    List<MembersListModel> data = await ProjectRepository().getProjectMember(_currentPrjId!);
-    _mbrList = data;
-    notifyListeners();
+    return _userRole;
   }
 
   String intToString() {
@@ -55,5 +48,4 @@ class UserManagementProvider extends ChangeNotifier{
     result = map[_userRole] ?? "손님";
     return result;
   }
-
 }

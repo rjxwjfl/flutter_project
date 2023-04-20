@@ -120,8 +120,9 @@ class Auth {
         }
         print("user exist. ${value.user!.phoneNumber}");
       });
+      return;
     } catch (e) {
-      print(e);
+      print("Error : $e");
     }
   }
 
