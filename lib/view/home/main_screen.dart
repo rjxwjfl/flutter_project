@@ -1,22 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dowith/bloc/sqflite_bloc/model/sql_model.dart';
+import 'package:flutter_dowith/bloc/sqflite_bloc/personal_data/sql_model.dart';
 import 'package:flutter_dowith/main.dart';
 import 'package:flutter_dowith/utils/todo_time_indicator.dart';
-import 'package:flutter_dowith/view/dowith/search_view_ui.dart';
+import 'package:flutter_dowith/view/dowith/main_screen/project_search.dart';
 import 'package:flutter_dowith/view/todo/model/create_todo.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
-class TodoOutline extends StatefulWidget {
-  const TodoOutline({Key? key}) : super(key: key);
+class MainScreen extends StatefulWidget {
+  const MainScreen({Key? key}) : super(key: key);
 
   @override
-  State<TodoOutline> createState() => _TodoOutlineState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class _TodoOutlineState extends State<TodoOutline> {
+class _MainScreenState extends State<MainScreen> {
   final DateFormat formatter = DateFormat("hh:mm a");
 
   Color setProgressColor(TodoState state) {
@@ -70,7 +70,7 @@ class _TodoOutlineState extends State<TodoOutline> {
           actions: [
             IconButton(
                 onPressed: () {
-                  Navigator.push(context, CupertinoPageRoute(builder: (context) => const SearchViewUI()));
+                  Navigator.push(context, CupertinoPageRoute(builder: (context) => const ProjectSearch()));
                 },
                 icon: const Icon(FontAwesomeIcons.magnifyingGlass)),
             IconButton(onPressed: () {}, icon: const Icon(FontAwesomeIcons.bell)),

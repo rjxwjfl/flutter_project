@@ -2,23 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dowith/bloc/database_bloc/model/project/project_get_model.dart';
 import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_bloc.dart';
 import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_repository.dart';
-import 'package:flutter_dowith/calendar_view.dart';
+import 'package:flutter_dowith/view/dowith/project/calendar_view.dart';
 import 'package:flutter_dowith/main.dart';
 import 'package:flutter_dowith/view/dowith/project/model/entry_view_ui.dart';
 import 'package:flutter_dowith/view/dowith/project/model/project_dtl_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class ProjectMain extends StatefulWidget {
-  const ProjectMain({required this.prjId, Key? key}) : super(key: key);
+class ProjectMainScreen extends StatefulWidget {
+  const ProjectMainScreen({required this.prjId, Key? key}) : super(key: key);
 
   final int prjId;
 
   @override
-  State<ProjectMain> createState() => _ProjectMainState();
+  State<ProjectMainScreen> createState() => _ProjectMainScreenState();
 }
 
-class _ProjectMainState extends State<ProjectMain> {
+class _ProjectMainScreenState extends State<ProjectMainScreen> {
   final ProjectBloc _projectBloc = ProjectBloc(ProjectRepository());
   bool _isClicked = false;
   int? userId = prefs.getInt("user_id");
@@ -104,11 +104,11 @@ class _ProjectMainState extends State<ProjectMain> {
                         },
                       ),
                       getTitleUI("SCHEDULE"),
-                      CalendarView(),
+                      const CalendarView(),
                       getTitleUI("MY TASK"),
                       const Placeholder(
                         child: SizedBox(
-                            height: 150, child: Center(child: Text("TASKS?"))),
+                            height: 150, child: Center(child: Text("TASKS - TASK DTL"))),
                       ),
                       getTitleUI("FEED"),
                       const Placeholder(
@@ -142,47 +142,6 @@ class _ProjectMainState extends State<ProjectMain> {
           ],
         ),
       ),
-    );
-  }
-
-  Widget getContribution() {
-    return SingleChildScrollView(
-      child: SizedBox(
-        height: 110,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 12, right: 12),
-          child: ListView.builder(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return const Padding(
-                  padding: EdgeInsets.all(5),
-                  child: Placeholder(
-                    fallbackWidth: 100,
-                  ),
-                );
-              }),
-        ),
-      ),
-    );
-  }
-
-  Widget getMyTaskOverView(context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: 3,
-          itemBuilder: ((context, index) {
-            return const Padding(
-              padding: EdgeInsets.fromLTRB(12, 8, 12, 8),
-              child: Placeholder(
-                fallbackHeight: 100,
-              ),
-            );
-          })),
     );
   }
 }

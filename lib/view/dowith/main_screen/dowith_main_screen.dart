@@ -4,18 +4,18 @@ import 'package:flutter_dowith/bloc/database_bloc/model/project/project_overview
 import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_bloc.dart';
 import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_repository.dart';
 import 'package:flutter_dowith/main.dart';
-import 'package:flutter_dowith/view/dowith/model/overview_ui.dart';
-import 'package:flutter_dowith/view/dowith/project/project_navi_home.dart';
+import 'package:flutter_dowith/view/dowith/main_screen/model/overview_ui.dart';
+import 'package:flutter_dowith/view/dowith/project/project_navi_frame.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DwMain extends StatefulWidget {
-  const DwMain({Key? key}) : super(key: key);
+class DoWithMainScreen extends StatefulWidget {
+  const DoWithMainScreen({Key? key}) : super(key: key);
 
   @override
-  State<DwMain> createState() => _DwMainState();
+  State<DoWithMainScreen> createState() => _DoWithMainScreenState();
 }
 
-class _DwMainState extends State<DwMain> with AutomaticKeepAliveClientMixin {
+class _DoWithMainScreenState extends State<DoWithMainScreen>{
   final ProjectBloc _bloc = ProjectBloc(ProjectRepository());
   final int? _key = prefs.getInt("user_id");
 
@@ -27,7 +27,6 @@ class _DwMainState extends State<DwMain> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return Material(
       child: Consumer(builder: (context, ref, child) {
         var refs = ref.watch(user);
@@ -54,11 +53,10 @@ class _DwMainState extends State<DwMain> with AutomaticKeepAliveClientMixin {
                       data: data[index],
                       callback: () async {
                         refs.fetchUserRole(data[index].prjId).then((value) {
-                          Navigator.pop(context);
                           Navigator.push(
                             context,
                             CupertinoPageRoute(
-                              builder: (context) => ProjectNaviHome(
+                              builder: (context) => ProjectNaviFrame(
                                 prjId: data[index].prjId,
                               ),
                             ),
@@ -73,7 +71,4 @@ class _DwMainState extends State<DwMain> with AutomaticKeepAliveClientMixin {
       }),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

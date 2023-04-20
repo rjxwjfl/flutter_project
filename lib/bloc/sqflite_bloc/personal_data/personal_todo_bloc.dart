@@ -1,10 +1,9 @@
 import 'dart:async';
+import 'package:flutter_dowith/bloc/sqflite_bloc/personal_data/personal_todo_repository.dart';
+import 'package:flutter_dowith/bloc/sqflite_bloc/personal_data/sql_model.dart';
 
-import 'model/sql_model.dart';
-import 'sql_repository.dart';
-
-class SqlBloc {
-  final SqlRepository _sqlDao;
+class PersonalDataBloc {
+  final PersonalRepository _sqlDao;
   final StreamController<List<SqlModel>> _todoController =
       StreamController<List<SqlModel>>.broadcast();
   final StreamController<List<SqlModel>> _dailyController =
@@ -27,7 +26,7 @@ class SqlBloc {
     _todoControllerForOverView.close();
   }
 
-  SqlBloc(this._sqlDao) {
+  PersonalDataBloc(this._sqlDao) {
     _today = DateTime.now();
     // checkExpire();
     getTodoList();

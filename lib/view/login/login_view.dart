@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dowith/view/splash/model/custom_text_form_field.dart';
+import 'package:flutter_dowith/view/login/model/custom_text_form_field.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({required this.formKey, required this.emailController, required this.passwordController, super.key});

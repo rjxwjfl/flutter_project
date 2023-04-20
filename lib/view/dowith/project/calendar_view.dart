@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarView extends StatefulWidget {
-  const CalendarView({Key? key}) : super(key: key);
+  const CalendarView({this.formatChange, this.eventLoader, Key? key}) : super(key: key);
 
-  // final List<dynamic> Function(DateTime) eventLoader;
+  final void Function()? formatChange;
+  final List<dynamic> Function(DateTime)? eventLoader;
 
   @override
   State<CalendarView> createState() => _CalendarViewState();
@@ -26,8 +27,10 @@ class _CalendarViewState extends State<CalendarView> {
     return TableCalendar(
       locale: 'ko_KR',
       focusedDay: _focus,
+      calendarFormat: CalendarFormat.week,
       firstDay: DateTime(2000, 1, 1),
       lastDay: DateTime(2100, 12, 31),
+      rowHeight: 100,
       rangeStartDay: _start,
       rangeEndDay: _end,
       onPageChanged: (focus) {},
@@ -40,14 +43,15 @@ class _CalendarViewState extends State<CalendarView> {
       selectedDayPredicate: (value) {
         return isSameDay(_select, value);
       },
-      onRangeSelected: (start, end, focus) {
-        setState(() {
-          _start = start!;
-          _end = end!;
-        });
-      },
-      rangeSelectionMode: RangeSelectionMode.toggledOff,
-      // eventLoader: widget.eventLoader,
+      eventLoader: widget.eventLoader,
+      headerVisible: false,
+      daysOfWeekStyle: const DaysOfWeekStyle(
+        weekendStyle: TextStyle(color: Colors.redAccent)
+      ),
+      calendarStyle: const CalendarStyle(
+        weekendTextStyle: TextStyle(color: Colors.redAccent)
+      ),
+
     );
   }
 }

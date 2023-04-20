@@ -6,16 +6,16 @@ import 'package:flutter_dowith/view/dowith/project/project_main.dart';
 import 'package:flutter_dowith/view/dowith/project/task/task_tab_main.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class ProjectNaviHome extends StatefulWidget {
-  const ProjectNaviHome({required this.prjId, Key? key}) : super(key: key);
+class ProjectNaviFrame extends StatefulWidget {
+  const ProjectNaviFrame({required this.prjId, Key? key}) : super(key: key);
 
   final int prjId;
 
   @override
-  State<ProjectNaviHome> createState() => _ProjectNaviHomeState();
+  State<ProjectNaviFrame> createState() => _ProjectNaviFrameState();
 }
 
-class _ProjectNaviHomeState extends State<ProjectNaviHome> {
+class _ProjectNaviFrameState extends State<ProjectNaviFrame> {
   late final PageController _pageController;
   int initIndex = 0;
 
@@ -33,7 +33,7 @@ class _ProjectNaviHomeState extends State<ProjectNaviHome> {
         controller: _pageController,
         physics: const NeverScrollableScrollPhysics(),
         children: [
-          ProjectMain(prjId: widget.prjId),
+          ProjectMainScreen(prjId: widget.prjId),
           ProjectCalendarMain(),
           TaskTabMain(),
           FeedMain(),
@@ -51,7 +51,7 @@ class _ProjectNaviHomeState extends State<ProjectNaviHome> {
           BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.d), label: '개요'),
           BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.calendarDay), label: '일정표'),
           BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.filePen), label: '과업'),
-          BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.commentDots), label: '소식'),
+          BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.chalkboardUser), label: '소식'),
           BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.folderOpen), label: '보관함'),
         ],
         currentIndex: initIndex,

@@ -23,12 +23,12 @@ class Auth {
       await _auth.createUserWithEmailAndPassword(email: email, password: password).then((value) async {
         String? token = await _messaging.getToken();
         Map<String, dynamic> body = {
-          "username": "Test@test.com",
-          "user_pw": "TEST PW",
+          "username": email,
+          "user_pw": password,
           "name": "Test@test.com",
           "contact": "",
           "device_token": token,
-          "fb_uid": "TEST UID"
+          "fb_uid": value.credential!.token
         };
         final response = await http.post(Uri.parse("$baseUrl/user/config"),
             headers: {"Content-Type": "application/json"}, body: jsonEncode(body));
@@ -39,8 +39,6 @@ class Auth {
           throw Exception('Failed to join');
         }
       });
-      // 서버로 데이터 전송 => username : email, password : password, name: name, fb_uid : _auth.currentUser!.uid, device_token: _messaging.getToken()
-      // name 설정하는 페이지 추가해야함.
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         showSnackBar(context, '이미 사용중인 이메일입니다.');

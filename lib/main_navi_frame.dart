@@ -1,19 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dowith/main.dart';
-import 'package:flutter_dowith/view/dowith/project/project_add/project_add_ui.dart';
-import 'package:flutter_dowith/view/dowith/search_view_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class NaviHome extends StatefulWidget {
-  const NaviHome({Key? key}) : super(key: key);
+class MainNaviFrame extends StatefulWidget {
+  const MainNaviFrame({Key? key}) : super(key: key);
 
   @override
-  State<NaviHome> createState() => _NaviHomeState();
+  State<MainNaviFrame> createState() => _MainNaviFrameState();
 }
 
-class _NaviHomeState extends State<NaviHome> {
+class _MainNaviFrameState extends State<MainNaviFrame> {
 
   @override
   Widget build(BuildContext context) {
@@ -56,10 +53,15 @@ class _NaviHomeState extends State<NaviHome> {
                 child: BottomNavigationBar(
                   selectedItemColor: scheme.primary,
                   unselectedItemColor: scheme.secondary,
-                  showSelectedLabels: false,
-                  showUnselectedLabels: false,
+                  // showSelectedLabels: false,
+                  // showUnselectedLabels: false,
+                  selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
+                  unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
+                  selectedFontSize: 12,
+                  unselectedFontSize: 10,
                   unselectedIconTheme: const IconThemeData(size: 18),
                   currentIndex: refs.selectedIndex,
+                  type: BottomNavigationBarType.fixed,
                   onTap: (index) {
                     refs.pageRouteNavigator(index);
                   },
@@ -67,6 +69,7 @@ class _NaviHomeState extends State<NaviHome> {
                     BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.house), label: "Home"),
                     BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.calendarXmark), label: "ToDo"),
                     BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.users), label: "Do With"),
+                    BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.commentDots), label: "Message"),
                     BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.gears), label: "Setting"),
                   ],
                 ),

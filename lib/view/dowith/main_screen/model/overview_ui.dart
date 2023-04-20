@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dowith/bloc/database_bloc/model/project/project_overview_model.dart';
-import 'package:flutter_dowith/view/dowith/model/project_status_sum.dart';
-import 'package:flutter_dowith/view/dowith/project/project_navi_home.dart';
+import 'package:flutter_dowith/view/dowith/main_screen/model/project_status_sum.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
@@ -19,7 +18,7 @@ class OverViewUI extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(8, 6, 8, 6),
       child: Container(
         decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
           border: Border.all(width: 0.5, color: scheme.primary),
         ),
         child: InkWell(
@@ -35,9 +34,17 @@ class OverViewUI extends StatelessWidget {
                 children: [
                   Container(
                     color: Theme.of(context).colorScheme.primary,
-                    width: 100,
                     height: MediaQuery.of(context).size.height,
-                    child: getCategoryTransfer(data.category, context),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        getCategoryTransfer(data.category, context),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8, right: 8),
+                          child: getSummaryView(),
+                        )
+                      ],
+                    ),
                   ),
                   Expanded(
                     child: Padding(
@@ -84,7 +91,6 @@ class OverViewUI extends StatelessWidget {
   }
 
   Widget getCategoryTransfer(int category, context) {
-    DateFormat formatter = DateFormat("yy MM.dd");
     IconData categoryIcon;
     String categoryTitle;
     switch (category) {
@@ -113,61 +119,62 @@ class OverViewUI extends StatelessWidget {
         categoryTitle = "UNKNOWN";
         break;
     }
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        FaIcon(categoryIcon, size: 40, color: Theme.of(context).colorScheme.surface),
+        Text(
+          categoryTitle,
+          style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.surface),
+        ),
+      ],
+    );
+  }
+
+  Widget getSummaryView() {
+    DateFormat formatter = DateFormat("yy MM.dd");
     return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          FaIcon(categoryIcon, size: 40, color: Theme.of(context).colorScheme.surface),
-          const SizedBox(height: 10),
-          Text(
-            categoryTitle,
-            style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.surface),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 5, right: 5, top: 5),
-            child: SizedBox(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ProjectStatusSum(
-                      padding: const EdgeInsets.only(top: 10),
-                      icon: FontAwesomeIcons.usersLine,
-                      iconSize: 15,
-                      text: "${data.memberCount}명",
-                      fontSize: 12),
-                  data.startOn != null
-                      ? Padding(
-                          padding: const EdgeInsets.only(left: 3),
-                          child: Column(
-                            children: [
-                              ProjectStatusSum(
-                                  padding: const EdgeInsets.only(top: 5),
-                                  icon: FontAwesomeIcons.hourglassStart,
-                                  iconSize: 12.0,
-                                  text: formatter.format(data.startOn!),
-                                  fontSize: 11.0),
-                              ProjectStatusSum(
-                                  padding: const EdgeInsets.only(top: 5),
-                                  icon: FontAwesomeIcons.hourglassEnd,
-                                  iconSize: 12.0,
-                                  text: formatter.format(data.expireOn!),
-                                  fontSize: 11.0),
-                            ],
-                          ),
-                        )
-                      : const ProjectStatusSum(
-                          padding: EdgeInsets.only(top: 5, left: 4),
-                          icon: FontAwesomeIcons.hourglass,
-                          iconSize: 12,
-                          text: "제한 없음",
-                          fontSize: 10),
-                ],
-              ),
-            ),
-          ),
-        ],
+      padding: const EdgeInsets.only(left: 5, right: 5, top: 5),
+      child: SizedBox(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ProjectStatusSum(
+                padding: const EdgeInsets.only(top: 10),
+                icon: FontAwesomeIcons.usersLine,
+                iconSize: 15,
+                text: "${data.memberCount}명",
+                fontSize: 12),
+            data.startOn != null
+                ? Padding(
+                    padding: const EdgeInsets.only(left: 3),
+                    child: Column(
+                      children: [
+                        ProjectStatusSum(
+                            padding: const EdgeInsets.only(top: 5),
+                            icon: FontAwesomeIcons.hourglassStart,
+                            iconSize: 12.0,
+                            text: formatter.format(data.startOn!),
+                            fontSize: 11.0),
+                        ProjectStatusSum(
+                            padding: const EdgeInsets.only(top: 5),
+                            icon: FontAwesomeIcons.hourglassEnd,
+                            iconSize: 12.0,
+                            text: formatter.format(data.expireOn!),
+                            fontSize: 11.0),
+                      ],
+                    ),
+                  )
+                : const ProjectStatusSum(
+                    padding: EdgeInsets.only(top: 5, left: 4),
+                    icon: FontAwesomeIcons.hourglass,
+                    iconSize: 12,
+                    text: "제한 없음",
+                    fontSize: 10),
+          ],
+        ),
       ),
     );
   }

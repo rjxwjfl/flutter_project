@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dowith/view/splash/model/circle_button.dart';
-import 'package:flutter_dowith/view/splash/model/custom_text_form_field.dart';
+import 'package:flutter_dowith/view/login/model/custom_text_form_field.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
@@ -22,8 +21,6 @@ class _SignUpViewState extends State<SignUpView> {
 
   final _formKey = GlobalKey<FormState>();
   bool _isSignUpLoad = false;
-  bool _isSignUpLoadGoogle = false;
-  bool _isSignUpLoadApple = false;
 
   @override
   void initState() {

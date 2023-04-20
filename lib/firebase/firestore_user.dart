@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_dowith/firebase/auth.dart';
+import 'package:flutter_dowith/bloc/database_bloc/userCtrl/auth.dart';
 
 class FireStoreUser {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

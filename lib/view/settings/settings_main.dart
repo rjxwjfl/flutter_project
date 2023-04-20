@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dowith/firebase/auth.dart';
+import 'package:flutter_dowith/bloc/database_bloc/userCtrl/auth.dart';
 import 'package:flutter_dowith/firebase/firestore_stream_controller.dart';
 import 'package:flutter_dowith/main.dart';
 import 'package:flutter_dowith/view/settings/model/animated_card.dart';

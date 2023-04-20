@@ -24,7 +24,6 @@ class UserManagementProvider extends ChangeNotifier{
   }
 
   Future<int> fetchUserRole(int prjId) async {
-    print("?");
     _userId = prefs.getInt("user_id");
     if (_userId == null){
       _userRole = 3;

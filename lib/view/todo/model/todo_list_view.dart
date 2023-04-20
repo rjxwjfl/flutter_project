@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dowith/bloc/sqflite_bloc/model/sql_model.dart';
+import 'package:flutter_dowith/bloc/sqflite_bloc/personal_data/sql_model.dart';
 import 'package:intl/intl.dart';
 
 

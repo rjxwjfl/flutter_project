@@ -1,7 +1,8 @@
-import 'model/sql_data.dart';
-import 'model/sql_model.dart';
 
-class SqlRepository {
+import 'package:flutter_dowith/bloc/sqflite_bloc/personal_data/sql_data.dart';
+import 'package:flutter_dowith/bloc/sqflite_bloc/personal_data/sql_model.dart';
+
+class PersonalRepository {
   final sqlData = SqlData.sqlData;
 
   Future<List<SqlModel>> getTodoDB() async {

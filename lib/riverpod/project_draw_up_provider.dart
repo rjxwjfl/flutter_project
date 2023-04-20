@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dowith/bloc/database_bloc/model/project/project_rule_model.dart';
 import 'package:flutter_dowith/bloc/database_bloc/model/project/project_set_model.dart';
 import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_repository.dart';
-import 'package:flutter_dowith/firebase/auth.dart';
+import 'package:flutter_dowith/bloc/database_bloc/userCtrl/auth.dart';
 import 'package:flutter_dowith/main.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class ProjectDrawUpEditProvider extends ChangeNotifier {
+class ProjectDrawUpProvider extends ChangeNotifier {
   bool _period = false;
   bool _editable = false;
   bool _isLimit = false;

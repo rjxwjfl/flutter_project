@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dowith/bloc/sqflite_bloc/model/sql_model.dart';
+import 'package:flutter_dowith/bloc/sqflite_bloc/personal_data/sql_model.dart';
 import 'package:flutter_dowith/utils/glow_remover.dart';
 import 'package:flutter_dowith/view/todo/model/create_todo.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -9,14 +9,14 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../../main.dart';
 
-class TodoMain extends StatefulWidget {
-  const TodoMain({Key? key}) : super(key: key);
+class PersonalTodoScreen extends StatefulWidget {
+  const PersonalTodoScreen({Key? key}) : super(key: key);
 
   @override
-  State<TodoMain> createState() => _TodoMainState();
+  State<PersonalTodoScreen> createState() => _PersonalTodoScreenState();
 }
 
-class _TodoMainState extends State<TodoMain> {
+class _PersonalTodoScreenState extends State<PersonalTodoScreen> {
   late DateTime today;
   late DateTime _selectedDay;
   late DateTime _focusedDay;
@@ -96,9 +96,9 @@ class _TodoMainState extends State<TodoMain> {
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => CreateTodo(today: _selectedDay)));
                       },
-                      child: Row(
+                      child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const <Widget>[
+                        children: <Widget>[
                           Icon(Icons.note_add_rounded),
                           SizedBox(width: 10),
                           Text("새 일정 추가하기"),

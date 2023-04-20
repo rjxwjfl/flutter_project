@@ -2,21 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dowith/main.dart';
 import 'package:flutter_dowith/utils/theme/app_theme.dart';
-import 'package:flutter_dowith/view/dowith/dw_main.dart';
+import 'package:flutter_dowith/view/dowith/main_screen/dowith_main_screen.dart';
+import 'package:flutter_dowith/view/dowith/main_screen/project_search.dart';
+import 'package:flutter_dowith/view/dowith/main_screen/project_tabview.dart';
 import 'package:flutter_dowith/view/dowith/project/project_add/project_add_ui.dart';
-import 'package:flutter_dowith/view/dowith/project_tabview.dart';
-import 'package:flutter_dowith/view/dowith/search_view_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class DwNaviHome extends StatefulWidget {
-  const DwNaviHome({super.key});
+class DoWithTabScreen extends StatefulWidget {
+  const DoWithTabScreen({super.key});
 
   @override
-  State<DwNaviHome> createState() => _DwNaviHomeState();
+  State<DoWithTabScreen> createState() => _DoWithTabScreenState();
 }
 
-class _DwNaviHomeState extends State<DwNaviHome> with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+class _DoWithTabScreenState extends State<DoWithTabScreen> with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   late TabController _tabController;
 
   @override
@@ -59,7 +59,7 @@ class _DwNaviHomeState extends State<DwNaviHome> with TickerProviderStateMixin, 
             actions: [
               IconButton(
                   onPressed: () {
-                    Navigator.push(context, CupertinoPageRoute(builder: (context) => const SearchViewUI()));
+                    Navigator.push(context, CupertinoPageRoute(builder: (context) => const ProjectSearch()));
                   },
                   icon: const FaIcon(FontAwesomeIcons.magnifyingGlass)),
               IconButton(
@@ -82,7 +82,7 @@ class _DwNaviHomeState extends State<DwNaviHome> with TickerProviderStateMixin, 
           body: TabBarView(
             controller: _tabController,
             children: const [
-              DwMain(),
+              DoWithMainScreen(),
               ProjectTabView(),
             ],
           ),

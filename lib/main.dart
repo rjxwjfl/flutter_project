@@ -1,13 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_dowith/bloc/sqflite_bloc/sql_bloc.dart';
-import 'package:flutter_dowith/bloc/sqflite_bloc/sql_repository.dart';
-import 'package:flutter_dowith/navi_home.dart';
+import 'package:flutter_dowith/bloc/sqflite_bloc/personal_data/personal_todo_bloc.dart';
+import 'package:flutter_dowith/bloc/sqflite_bloc/personal_data/personal_todo_repository.dart';
+import 'package:flutter_dowith/main_navi_frame.dart';
+import 'package:flutter_dowith/riverpod/main_route_provider.dart';
+import 'package:flutter_dowith/riverpod/project_draw_up_provider.dart';
+import 'package:flutter_dowith/riverpod/user_management_provider.dart';
 import 'package:flutter_dowith/utils/glow_remover.dart';
-import 'package:flutter_dowith/utils/riverpod/page_route_provider.dart';
-import 'package:flutter_dowith/utils/riverpod/project_add_edit_provider.dart';
-import 'package:flutter_dowith/utils/riverpod/user_management_provider.dart';
 import 'package:flutter_dowith/utils/theme/theme_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -17,10 +17,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 final theme = ChangeNotifierProvider((ref) => ThemeProvider());
-final pageRoute = ChangeNotifierProvider((ref) => PageRouteProvider());
-final drawUp = ChangeNotifierProvider((ref) => ProjectDrawUpEditProvider());
+final pageRoute = ChangeNotifierProvider((ref) => MainRouteProvider());
+final drawUp = ChangeNotifierProvider((ref) => ProjectDrawUpProvider());
 final user = ChangeNotifierProvider((ref) => UserManagementProvider());
-final bloc = SqlBloc(SqlRepository());
+final bloc = PersonalDataBloc(PersonalRepository());
 late final SharedPreferences prefs;
 
 void loadPref() async {
@@ -63,7 +63,7 @@ class AppInit extends ConsumerWidget {
         home: const SafeArea(
           top: false,
           bottom: false,
-          child: NaviHome(),
+          child: MainNaviFrame(),
         ));
   }
 }

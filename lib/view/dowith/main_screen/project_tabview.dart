@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dowith/firebase/auth.dart';
+import 'package:flutter_dowith/bloc/database_bloc/userCtrl/auth.dart';
 import 'package:flutter_dowith/main.dart';
 
 class ProjectTabView extends StatelessWidget {

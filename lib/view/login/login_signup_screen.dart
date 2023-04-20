@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dowith/firebase/auth.dart';
+import 'package:flutter_dowith/bloc/database_bloc/userCtrl/auth.dart';
 import 'package:flutter_dowith/utils/glow_remover.dart';
-import 'package:flutter_dowith/view/splash/login_view.dart';
-import 'package:flutter_dowith/view/splash/model/circle_button.dart';
-import 'package:flutter_dowith/view/splash/model/custom_extension_button.dart';
+import 'package:flutter_dowith/view/login/login_view.dart';
+import 'package:flutter_dowith/view/login/model/circle_button.dart';
+import 'package:flutter_dowith/view/login/model/custom_extension_button.dart';
 
 class LoginSignUpScreen extends StatefulWidget {
-  const LoginSignUpScreen({super.key});
+  const LoginSignUpScreen({this.callback, super.key});
+
+  final VoidCallback? callback;
 
   @override
   State<LoginSignUpScreen> createState() => _LoginSignUpScreenState();
@@ -19,6 +21,11 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
   bool _isSignInLoad = false;
   bool _isGoogleLoad = false;
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,11 +123,17 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
               CircleButton(
                 assetPath: "assets/icons/google_logo.png",
                 isLoad: _isGoogleLoad,
-                callback: () async{
-                  setState(() {
-                    _isGoogleLoad = !_isGoogleLoad;
-                  });
-                  await Auth().signInUpWithGoogle().then((value) => Navigator.pop(context));
+                callback: () {
+                  if (mounted) {
+                    setState(() {
+                      _isGoogleLoad = !_isGoogleLoad;
+                    });
+                    Auth().signInUpWithGoogle().then((value) {
+                      if (widget.callback != null) {
+                        widget.callback;
+                      }
+                    });
+                  }
                 },
               ),
             ],

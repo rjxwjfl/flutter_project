@@ -45,6 +45,9 @@ class ProjectBloc {
   }
 
   getMyOverView(int? userId) async {
+    if (userId == null){
+      return;
+    }
     List<ProjectOverViewModel> myList = await _projectRepository.getMyProjectList(userId);
     _myOverViewController.sink.add(myList);
   }

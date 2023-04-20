@@ -4,19 +4,19 @@ import 'package:flutter_dowith/bloc/database_bloc/model/project/project_overview
 import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_bloc.dart';
 import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_repository.dart';
 import 'package:flutter_dowith/main.dart';
-import 'package:flutter_dowith/view/dowith/model/overview_ui.dart';
+import 'package:flutter_dowith/view/dowith/main_screen/model/overview_ui.dart';
 import 'package:flutter_dowith/view/dowith/project/model/search_model.dart';
-import 'package:flutter_dowith/view/dowith/project/project_navi_home.dart';
+import 'package:flutter_dowith/view/dowith/project/project_navi_frame.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SearchViewUI extends StatefulWidget {
-  const SearchViewUI({Key? key}) : super(key: key);
+class ProjectSearch extends StatefulWidget {
+  const ProjectSearch({Key? key}) : super(key: key);
 
   @override
-  State<SearchViewUI> createState() => _SearchViewUIState();
+  State<ProjectSearch> createState() => _ProjectSearchState();
 }
 
-class _SearchViewUIState extends State<SearchViewUI> {
+class _ProjectSearchState extends State<ProjectSearch> {
   int? page;
   String? searchKeyword;
   List<int>? filters;
@@ -152,7 +152,7 @@ class _SearchViewUIState extends State<SearchViewUI> {
                                         Navigator.push(
                                           context,
                                           CupertinoPageRoute(
-                                            builder: (context) => ProjectNaviHome(
+                                            builder: (context) => ProjectNaviFrame(
                                               prjId: data[index].prjId,
                                             ),
                                           ),

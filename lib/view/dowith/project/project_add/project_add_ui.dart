@@ -8,8 +8,8 @@ import 'package:flutter_dowith/view/dowith/project/project_add/model/project_dra
 import 'package:flutter_dowith/view/dowith/project/project_add/model/button_ui.dart';
 import 'package:flutter_dowith/view/dowith/project/project_add/model/get_period_ui.dart';
 import 'package:flutter_dowith/view/dowith/project/project_add/model/rule_input.dart';
-import 'package:flutter_dowith/view/dowith/project/project_navi_home.dart';
-import 'package:flutter_dowith/view/splash/login_signup_screen.dart';
+import 'package:flutter_dowith/view/dowith/project/project_navi_frame.dart';
+import 'package:flutter_dowith/view/login/login_signup_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -37,10 +37,10 @@ class _ProjectAddUIState extends State<ProjectAddUI> with TickerProviderStateMix
 
   final ProjectRepository _repository = ProjectRepository();
 
-  Future<int?> drawUpPrj(String title, int category, String prjDesc, String goal, bool pvt, bool period,
-      DateTime? start, DateTime? end) async {
-    ProjectSetModel model = ProjectSetModel(
-        title: title, category: category, prjDesc: prjDesc, goal: goal, pvt: pvt, startOn: start, expireOn: end);
+  Future<int?> drawUpPrj(
+      String title, int category, String prjDesc, String goal, bool pvt, bool period, DateTime? start, DateTime? end) async {
+    ProjectSetModel model =
+        ProjectSetModel(title: title, category: category, prjDesc: prjDesc, goal: goal, pvt: pvt, startOn: start, expireOn: end);
 
     int? userId = prefs.getInt('user_id');
     if (period) {
@@ -150,18 +150,16 @@ class _ProjectAddUIState extends State<ProjectAddUI> with TickerProviderStateMix
                               showSnackBar(context, "카테고리를 선택해주세요.");
                               return;
                             }
-                            drawUpPrj(_titleController.text, refs.selectedCategory!, _descController.text,
-                                    _goalController.text, refs.isPrivate, refs.period, refs.initDate, refs.endDate)
+                            drawUpPrj(_titleController.text, refs.selectedCategory!, _descController.text, _goalController.text,
+                                    refs.isPrivate, refs.period, refs.initDate, refs.endDate)
                                 .then((value) {
                               if (value == null) {
-                                Navigator.push(
-                                    context, CupertinoPageRoute(builder: (context) => const LoginSignUpScreen()));
+                                Navigator.push(context, CupertinoPageRoute(builder: (context) => const LoginSignUpScreen()));
                                 return;
                               }
                               Navigator.pop(context);
                               showSnackBar(context, "프로젝트가 생성되었습니다.");
-                              Navigator.push(
-                                  context, CupertinoPageRoute(builder: (context) => ProjectNaviHome(prjId: value)));
+                              Navigator.push(context, CupertinoPageRoute(builder: (context) => ProjectNaviFrame(prjId: value)));
                             });
                           },
                         )),
