@@ -96,9 +96,9 @@ class _PersonalTodoScreenState extends State<PersonalTodoScreen> {
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => CreateTodo(today: _selectedDay)));
                       },
-                      child: const Row(
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
+                        children: const [
                           Icon(Icons.note_add_rounded),
                           SizedBox(width: 10),
                           Text("새 일정 추가하기"),

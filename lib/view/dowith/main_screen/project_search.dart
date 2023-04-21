@@ -17,12 +17,13 @@ class ProjectSearch extends StatefulWidget {
 }
 
 class _ProjectSearchState extends State<ProjectSearch> {
-  int? page;
+  int page = 1;
   String? searchKeyword;
   List<int>? filters;
   int? sort;
   final ProjectBloc _bloc = ProjectBloc(ProjectRepository());
   late TextEditingController _textEditingController;
+  late final ScrollController _scrollController;
   late FocusNode _focusNode;
 
   Future<void> saveKeyword(String keyword) async {
@@ -34,11 +35,49 @@ class _ProjectSearchState extends State<ProjectSearch> {
     await prefs.setStringList('keywords', keywords);
   }
 
+  Future<void> fetchData() async {
+    print("fetch start");
+    if (_bloc.isLimit){
+      print("fetch was forced terminated");
+      return;
+    }
+    _bloc.getOverView(page, searchKeyword, sort);
+    setState(() {
+      page++;
+      print("waiting for loading next page");
+    });
+  }
+
+  void setSearchKeyword(String keyword) {
+    if (searchKeyword != keyword) {
+      setState(() {
+        page = 1;
+        searchKeyword = keyword;
+      });
+    }
+    fetchData();
+  }
+
+  void scrollListener() {
+    if (_scrollController.offset >= _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      fetchData();
+    }
+  }
+
+  void blocInit(){
+    _bloc.list.clear();
+    _bloc.isLimit = false;
+  }
+
   @override
   void initState() {
     super.initState();
-    _bloc.getOverView(page, searchKeyword, filters, sort); // Frequent rebuilds should be avoided.
+    _bloc.list.clear();
+    fetchData(); // Frequent rebuilds should be avoided.
     _textEditingController = TextEditingController();
+    _scrollController = ScrollController();
+    _scrollController.addListener(scrollListener);
     _focusNode = FocusNode();
   }
 
@@ -68,12 +107,8 @@ class _ProjectSearchState extends State<ProjectSearch> {
                   callback: (value) {
                     if (value != null && value.isNotEmpty) {
                       saveKeyword(value);
-                      setState(() {
-                        searchKeyword = _textEditingController.text;
-                      });
-                      _bloc.getOverView(page, searchKeyword, filters, sort);
+                      setSearchKeyword(_textEditingController.text);
                     }
-                    print(value);
                     FocusScope.of(context).unfocus();
                   },
                   removeCallback: () {
@@ -98,15 +133,21 @@ class _ProjectSearchState extends State<ProjectSearch> {
                               child: CircularProgressIndicator(),
                             );
                           }
-                          if (snapshot.data!.isEmpty) {
-                            return const Center(
-                              child: Text("프로젝트가 존재하지 않습니다."),
-                            );
-                          }
                           List<ProjectOverViewModel> data = snapshot.data!;
+                          if (data.isEmpty) {
+                            return const Center(child: Text("프로젝트가 존재하지 않습니다."),);
+                          }
                           return RefreshIndicator(
-                            onRefresh: () => _bloc.getOverView(null, searchKeyword, filters, sort),
+                            onRefresh: () async {
+                              setState(() {
+                                page = 1;
+                              });
+                              blocInit();
+                              await fetchData();
+                            },
                             child: ListView.builder(
+                                controller: _scrollController,
+                                physics: const BouncingScrollPhysics(),
                                 itemCount: data.length,
                                 itemBuilder: (context, index) {
                                   return OverViewUI(
@@ -184,16 +225,16 @@ class _ProjectSearchState extends State<ProjectSearch> {
             children: <Widget>[
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Category',
                         style: TextStyle(fontSize: 14),
                       ),
-                      SizedBox(height: 10),
-                      Text(
+                      const SizedBox(height: 10),
+                      const Text(
                         'ALL',
                         style: TextStyle(fontSize: 14),
                       ),
@@ -214,13 +255,13 @@ class _ProjectSearchState extends State<ProjectSearch> {
                   padding: const EdgeInsets.only(left: 8),
                   child: Row(
                     children: <Widget>[
-                      Text(
+                      const Text(
                         'Filter',
                         style: TextStyle(
                           fontSize: 14,
                         ),
                       ),
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Icon(Icons.sort),
                       ),

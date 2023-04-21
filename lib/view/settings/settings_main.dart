@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dowith/bloc/database_bloc/userCtrl/auth.dart';
-import 'package:flutter_dowith/firebase/firestore_stream_controller.dart';
 import 'package:flutter_dowith/main.dart';
 import 'package:flutter_dowith/view/settings/model/animated_card.dart';
 import 'package:flutter_dowith/view/settings/model/item_card.dart';
 import 'package:flutter_dowith/view/settings/model/item_switcher.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SettingsMain extends StatelessWidget {
   const SettingsMain({super.key});
@@ -43,43 +43,54 @@ class SettingsMain extends StatelessWidget {
   }
 
   Widget themeSettingTab() {
-    return SingleChildScrollView(
-      child: Consumer(
-        builder: (context, ref, child) {
-          return Padding(
-            padding: const EdgeInsets.only(left: 12, right: 12),
-            child: Column(
-              children: [
-                SizedBox(
-                    height: 60,
-                    child: Row(
-                      children: const [
-                        Text(
-                          "Theme Settings",
-                          style: TextStyle(fontSize: 22, letterSpacing: 1.2),
-                        ),
-                      ],
-                    )),
-                ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  child: Column(
-                    children: [
-                      ItemCard(title: "색상 설정", callback: () {}),
-                      const AnimatedCard(),
-                      ItemSwitcher(
-                          title: "다크모드 설정",
-                          callback: (value) {
-                            ref.watch(theme).isDarkMode = value;
-                          },
-                          value: ref.watch(theme).isDarkMode),
+    return Row(
+      children: [
+        SizedBox(
+          child: Row(
+            children: [
+              buttonUI(false, FontAwesomeIcons.sun, 'LIGHT', context),
+              buttonUI(true, FontAwesomeIcons.moon, 'DARK')
+            ],
+          ),
+        )
+      ],
+    );
+  }
+  Widget buttonUI(bool isDark, IconData icon, String text, context){
+    return Consumer(
+      builder: (context, ref, child) {
+        var refs = ref.watch(theme);
+        return InkWell(
+          onTap: (){
+            refs.isDarkMode = isDark? false: true;
+          },
+          child: Ink(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              color: isDark? Colors.black87 : Colors.white
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 15, bottom: 15),
+              child: SizedBox(
+                width: 100,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: isDark? MainAxisAlignment.start : MainAxisAlignment.end,
+                    children: isDark? [
+                      Text(text, style: const TextStyle(color: Colors.white),),
+                      Icon(icon, color: Colors.white,),
+                    ] : [
+                      Icon(icon, color: Colors.black87,),
+                      Text(text, style: const TextStyle(color: Colors.black87),),
                     ],
                   ),
                 ),
-              ],
+              ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      }
     );
   }
 }

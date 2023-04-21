@@ -16,7 +16,7 @@ class DoWithTabScreen extends StatefulWidget {
   State<DoWithTabScreen> createState() => _DoWithTabScreenState();
 }
 
-class _DoWithTabScreenState extends State<DoWithTabScreen> with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+class _DoWithTabScreenState extends State<DoWithTabScreen> with TickerProviderStateMixin{
   late TabController _tabController;
 
   @override
@@ -45,7 +45,6 @@ class _DoWithTabScreenState extends State<DoWithTabScreen> with TickerProviderSt
   @override
   Widget build(BuildContext context) {
     ColorScheme scheme = Theme.of(context).colorScheme;
-    super.build(context);
     return Consumer(
       builder: (context, ref, child) {
         return Scaffold(
@@ -109,7 +108,4 @@ class _DoWithTabScreenState extends State<DoWithTabScreen> with TickerProviderSt
       ),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

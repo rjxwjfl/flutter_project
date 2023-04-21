@@ -10,20 +10,14 @@ import '../model/project/project_rule_model.dart';
 class ProjectRepository {
   final String baseUrl = "http://10.0.2.2:8080";
 
-  Future<List<ProjectOverViewModel>> getProjectList(int? pg, String? sk, int? st) async {
-    String url;
-    if (pg == null) {
-      url = '$baseUrl/project?pg=1';
-    } else {
-      url = '$baseUrl/project?pg=$pg';
-    }
+  Future<List<ProjectOverViewModel>> getProjectList(int pg, String? sk, int? st) async {
+    String url = '$baseUrl/project?pg=$pg';
     if (sk != null) {
       url += '&sk=$sk';
     }
     if (st != null) {
       url += '&st=$st';
     }
-
     final response = await http.get(Uri.parse(url)).timeout(const Duration(milliseconds: 5000));
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);

@@ -6,6 +6,7 @@ import 'package:flutter_dowith/view/dowith/project/calendar_view.dart';
 import 'package:flutter_dowith/main.dart';
 import 'package:flutter_dowith/view/dowith/project/model/entry_view_ui.dart';
 import 'package:flutter_dowith/view/dowith/project/model/project_dtl_ui.dart';
+import 'package:flutter_dowith/view/dowith/project/my_task_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -49,6 +50,7 @@ class _ProjectMainScreenState extends State<ProjectMainScreen> {
         ProjectGetModel prjModel = snapshot.data!;
         return Consumer(builder: (context, ref, child) {
           var userRefs = ref.watch(user);
+          var themeRefs = ref.watch(theme);
           return Scaffold(
             appBar: AppBar(
               title: Text(prjModel.title),
@@ -103,23 +105,19 @@ class _ProjectMainScreenState extends State<ProjectMainScreen> {
                           });
                         },
                       ),
-                      getTitleUI("SCHEDULE"),
+                      divider(),
+                      getTitleUI("일 정"),
                       const CalendarView(),
+                      divider(),
                       getTitleUI("MY TASK"),
-                      const Placeholder(
-                        child: SizedBox(
-                            height: 150, child: Center(child: Text("TASKS - TASK DTL"))),
-                      ),
+                      const MyTaskView(),
                       getTitleUI("FEED"),
                       const Placeholder(
-                        child: SizedBox(
-                            height: 300, child: Center(child: Text("TASKS?"))),
+                        child: SizedBox(height: 300, child: Center(child: Text("TASKS?"))),
                       ),
                       getTitleUI("INBOX"),
                       const Placeholder(
-                        child: SizedBox(
-                            height: 100,
-                            child: Center(child: Text("FILES - GRID?"))),
+                        child: SizedBox(height: 100, child: Center(child: Text("FILES - GRID?"))),
                       ),
                     ]))
                   ],
@@ -133,15 +131,26 @@ class _ProjectMainScreenState extends State<ProjectMainScreen> {
 
   Widget getTitleUI(String title) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+      padding: const EdgeInsets.only(left: 12, right: 12, bottom: 10),
       child: SizedBox(
         child: Row(
           children: [
-            Expanded(child: Text(title, textAlign: TextAlign.start)),
+            Expanded(
+                child: Text(
+              title,
+              textAlign: TextAlign.start,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+            )),
             const Text("SHOW MORE >>")
           ],
         ),
       ),
+    );
+  }
+  Widget divider(){
+    return const Padding(
+      padding: EdgeInsets.only(top: 5, bottom: 5),
+      child: Divider(thickness: 8),
     );
   }
 }
