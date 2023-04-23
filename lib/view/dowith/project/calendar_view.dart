@@ -25,7 +25,7 @@ class _CalendarViewState extends State<CalendarView> {
   @override
   Widget build(BuildContext context) {
     return TableCalendar(
-      locale: 'ko_KR',
+      locale: 'en_US',
       focusedDay: _focus,
       calendarFormat: CalendarFormat.week,
       firstDay: DateTime(2000, 1, 1),

@@ -2,9 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dowith/bloc/database_bloc/userCtrl/auth.dart';
 import 'package:flutter_dowith/main.dart';
-import 'package:flutter_dowith/view/settings/model/animated_card.dart';
-import 'package:flutter_dowith/view/settings/model/item_card.dart';
-import 'package:flutter_dowith/view/settings/model/item_switcher.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -18,7 +15,7 @@ class SettingsMain extends StatelessWidget {
         child: Column(
           children: [
             getUserProfile(size),
-            themeSettingTab(),
+            themeSettingTab(context),
             ElevatedButton(onPressed: (){
               Auth().signOutSession();
             }, child: const Text("SignOut"),),
@@ -42,17 +39,12 @@ class SettingsMain extends StatelessWidget {
     );
   }
 
-  Widget themeSettingTab() {
+  Widget themeSettingTab(context) {
     return Row(
+
       children: [
-        SizedBox(
-          child: Row(
-            children: [
-              buttonUI(false, FontAwesomeIcons.sun, 'LIGHT', context),
-              buttonUI(true, FontAwesomeIcons.moon, 'DARK')
-            ],
-          ),
-        )
+        buttonUI(false, FontAwesomeIcons.sun, 'LIGHT', context),
+        buttonUI(true, FontAwesomeIcons.moon, 'DARK', context)
       ],
     );
   }
@@ -62,7 +54,7 @@ class SettingsMain extends StatelessWidget {
         var refs = ref.watch(theme);
         return InkWell(
           onTap: (){
-            refs.isDarkMode = isDark? false: true;
+            refs.isDarkMode = isDark? true: false;
           },
           child: Ink(
             decoration: BoxDecoration(
@@ -78,11 +70,11 @@ class SettingsMain extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: isDark? MainAxisAlignment.start : MainAxisAlignment.end,
                     children: isDark? [
-                      Text(text, style: const TextStyle(color: Colors.white),),
+                      Text(text, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
                       Icon(icon, color: Colors.white,),
                     ] : [
                       Icon(icon, color: Colors.black87,),
-                      Text(text, style: const TextStyle(color: Colors.black87),),
+                      Text(text, style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),),
                     ],
                   ),
                 ),

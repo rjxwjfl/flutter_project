@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dowith/bloc/database_bloc/model/project/members_list_model.dart';
 import 'package:flutter_dowith/bloc/database_bloc/model/project/project_get_model.dart';
 import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_bloc.dart';
 import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_repository.dart';
 import 'package:flutter_dowith/view/dowith/project/calendar_view.dart';
 import 'package:flutter_dowith/main.dart';
 import 'package:flutter_dowith/view/dowith/project/model/entry_view_ui.dart';
-import 'package:flutter_dowith/view/dowith/project/model/project_dtl_ui.dart';
+import 'package:flutter_dowith/view/dowith/project/project_dtl_ui.dart';
+import 'package:flutter_dowith/view/dowith/project/model/project_title_ui.dart';
+import 'package:flutter_dowith/view/dowith/project/model/user_summary.dart';
 import 'package:flutter_dowith/view/dowith/project/my_task_view.dart';
+import 'package:flutter_dowith/view/dowith/project/statics_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -25,9 +29,10 @@ class _ProjectMainScreenState extends State<ProjectMainScreen> {
   int? userId = prefs.getInt("user_id");
   int? userRole;
 
-  void blocInit() {
+  Future<void> blocInit() async{
     _projectBloc.getCurrentProject(widget.prjId);
-    _projectBloc.getPrjRules();
+    await _projectBloc.getPrjRules();
+    await _projectBloc.getMembers();
   }
 
   @override
@@ -88,69 +93,84 @@ class _ProjectMainScreenState extends State<ProjectMainScreen> {
               ],
             ),
             body: RefreshIndicator(
-                onRefresh: () async {
-                  blocInit();
-                },
-                child: CustomScrollView(
-                  slivers: [
-                    SliverList(
-                        delegate: SliverChildListDelegate([
-                      ProjectDtlUI(
-                        data: prjModel,
-                        clickState: _isClicked,
-                        stream: _projectBloc.ruleController,
-                        callback: () {
-                          setState(() {
-                            _isClicked = !_isClicked;
-                          });
-                        },
-                      ),
-                      divider(),
-                      getTitleUI("일 정"),
-                      const CalendarView(),
-                      divider(),
-                      getTitleUI("MY TASK"),
-                      const MyTaskView(),
-                      getTitleUI("FEED"),
-                      const Placeholder(
-                        child: SizedBox(height: 300, child: Center(child: Text("TASKS?"))),
-                      ),
-                      getTitleUI("INBOX"),
-                      const Placeholder(
-                        child: SizedBox(height: 100, child: Center(child: Text("FILES - GRID?"))),
-                      ),
-                    ]))
+              onRefresh: () async {
+                blocInit();
+              },
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ProjectDtlUI(
+                      data: prjModel,
+                      clickState: _isClicked,
+                      ruleStream: _projectBloc.ruleController,
+                      callback: () {
+                        setState(() {
+                          _isClicked = !_isClicked;
+                        });
+                      },
+                    ),
+                    divider(),
+                    ProjectTitleUI(title: "일정", subText: "\n새로운 일정을 확인하세요", callback: () {}),
+                    const CalendarView(),
+                    divider(),
+                    ProjectTitleUI(title: "과제",callback: () {}),
+                    const MyTaskView(),
+                    ProjectTitleUI(title: "통계", callback: () {}),
+                    StaticsView(),
+                    ProjectTitleUI(title: "피드", subText: "\n프로젝트 피드를 확인하세요", callback: () {}),
+                    const Placeholder(
+                      child: SizedBox(height: 150, child: Center(child: Text("TASKS?"))),
+                    ),
+                    ProjectTitleUI(title: "INBOX", subText: "\n프로젝트 관련자료를 확인하세요.", callback: () {}),
+                    const Placeholder(
+                      child: SizedBox(height: 100, child: Center(child: Text("FILES - GRID?"))),
+                    ),
+                    ProjectTitleUI(title: "구성원", subText: "", callback: (){}),
+                    getMemberOverViewUI(),
                   ],
-                )),
-            floatingActionButton: FloatingActionButton(onPressed: () {}),
+                ),
+              ),
+            ),
           );
         });
       },
     );
   }
 
-  Widget getTitleUI(String title) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 12, right: 12, bottom: 10),
-      child: SizedBox(
-        child: Row(
-          children: [
-            Expanded(
-                child: Text(
-              title,
-              textAlign: TextAlign.start,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-            )),
-            const Text("SHOW MORE >>")
-          ],
-        ),
-      ),
-    );
-  }
-  Widget divider(){
+  Widget divider() {
     return const Padding(
       padding: EdgeInsets.only(top: 5, bottom: 5),
       child: Divider(thickness: 8),
+    );
+  }
+
+  Widget getMemberOverViewUI() {
+    return StreamBuilder<List<MembersListModel>>(
+      stream: _projectBloc.mbrListController,
+      initialData: null,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        List<MembersListModel> mbr = snapshot.data!;
+        int managerLength = mbr.where((element) => element.role < 2).length;
+        return Padding(
+          padding: const EdgeInsets.only(left: 16, right: 16),
+          child: SizedBox(
+            height: 100,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: managerLength,
+              itemBuilder: (context, index) => UserSummary(
+                data: mbr[index],
+                callback: () {},
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

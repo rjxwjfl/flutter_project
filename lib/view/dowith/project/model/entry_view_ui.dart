@@ -93,13 +93,6 @@ class _EntryViewUIState extends State<EntryViewUI> {
     );
   }
 
-  String intToString(int role) {
-    String result;
-    const map = {0: "프로젝트장", 1: "관리자", 2: "구성원", 3: "손님"};
-    result = map[role] ?? "손님";
-    return result;
-  }
-
   String dateCal(DateTime date) {
     DateTime now = DateTime.now();
     Duration difference = now.difference(date);
@@ -123,3 +116,10 @@ class _EntryViewUIState extends State<EntryViewUI> {
 }
 // https://bangu4.tistory.com/364
 // https://velog.io/@yellowtoast/Flutter-%EC%95%B1-%EB%B0%B0%ED%8F%AC-%ED%9B%84-%ED%8A%B9%EC%A0%95-%EC%95%88%EB%93%9C%EB%A1%9C%EC%9D%B4%EB%93%9C-%ED%8F%B0%EC%97%90%EC%84%9C-%EC%95%B1-%EC%8B%A4%ED%96%89%EC%9D%B4-%EB%90%98%EC%A7%80-%EC%95%8A%EB%8A%94-%ED%98%84%EC%83%81-%ED%95%B4%EA%B2%B0-%EC%A4%91
+
+String intToString(int role) {
+  String result;
+  const map = {0: "프로젝트장", 1: "관리자", 2: "구성원", 3: "손님"};
+  result = map[role] ?? "손님";
+  return result;
+}

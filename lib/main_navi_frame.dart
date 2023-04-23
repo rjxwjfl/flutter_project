@@ -59,18 +59,18 @@ class _MainNaviFrameState extends State<MainNaviFrame> {
                   unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
                   selectedFontSize: 12,
                   unselectedFontSize: 10,
-                  unselectedIconTheme: const IconThemeData(size: 18),
+                  unselectedIconTheme: const IconThemeData(size: 20),
                   currentIndex: refs.selectedIndex,
                   type: BottomNavigationBarType.fixed,
                   onTap: (index) {
                     refs.pageRouteNavigator(index);
                   },
                   items: const <BottomNavigationBarItem>[
-                    BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.house), label: "Home"),
-                    BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.calendarXmark), label: "ToDo"),
+                    BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.house), label: "홈"),
+                    BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.calendarCheck), label: "ToDo"),
                     BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.users), label: "Do With"),
-                    BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.commentDots), label: "Message"),
-                    BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.gears), label: "Setting"),
+                    BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.commentDots), label: "쪽지함"),
+                    BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.gears), label: "설정"),
                   ],
                 ),
               ),
