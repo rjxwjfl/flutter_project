@@ -31,8 +31,24 @@ class _TaskDtlViewCompactState extends State<TaskDtlViewCompact> {
                 children: [
                   Row(
                     children: [
-                      Expanded(child: Center(child: Text("업무 ${widget.index}"))),
-
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Category>",
+                              style: TextStyle(fontSize: 10),
+                            ),
+                            Text("수정 ${widget.index}번 파트"),
+                          ],
+                        ),
+                      ),
+                      Column(
+                        children: [
+                          Text("6시간 남음", style: TextStyle(color: Theme.of(context).colorScheme.onBackground)),
+                          Text("~16:35", style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 10)),
+                        ],
+                      ),
                     ],
                   ),
                   const Divider()
@@ -44,13 +60,16 @@ class _TaskDtlViewCompactState extends State<TaskDtlViewCompact> {
               duration: const Duration(milliseconds: 100),
               width: _isFold ? MediaQuery.of(context).size.width * 0.15 : 0.0,
               child: InkWell(
-                onTap: (){},
+                onTap: () {},
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: AnimatedOpacity(
                       opacity: _isFold ? 1.0 : 0.0,
                       duration: const Duration(milliseconds: 100),
-                      child: const Icon(FontAwesomeIcons.check, color: Colors.green,)),
+                      child: const Icon(
+                        FontAwesomeIcons.check,
+                        color: Colors.green,
+                      )),
                 ),
               )),
         ],
