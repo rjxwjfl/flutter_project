@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dowith/view/dowith/project/task/model/task_dtl_view_compact.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MyTaskView extends StatelessWidget {
   const MyTaskView({Key? key}) : super(key: key);

@@ -39,10 +39,10 @@ class ProjectTitleUI extends StatelessWidget {
             ),
             InkWell(
               onTap: callback,
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Row(
-                  children: [
+                  children: const [
                     Text(
                       "전체보기",
                       style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
