@@ -36,7 +36,7 @@ class UserRepository {
       return null;
     }
     Map<String, dynamic> map = data[0];
-    ProjectMemberModel model = ProjectMemberModel.fromMap(map);
+    ProjectMemberModel model = ProjectMemberModel.fromJson(map);
     return model;
   }
 }

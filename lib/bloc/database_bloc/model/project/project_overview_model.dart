@@ -1,9 +1,5 @@
-// Project Overview Model
 
-import 'dart:convert';
-
-import 'package:flutter_dowith/bloc/database_bloc/model/user/user_dtl_model.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_dowith/utils/convert_data.dart';
 
 class ProjectOverViewModel {
   final int prjId;
@@ -33,8 +29,7 @@ class ProjectOverViewModel {
       required this.masterImageUrl,
       required this.pvt});
 
-  Map<String, dynamic> toMap() {
-    DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'prj_id': prjId,
       'title': title,
@@ -51,7 +46,7 @@ class ProjectOverViewModel {
     };
   }
 
-  factory ProjectOverViewModel.fromMap(Map<String, dynamic> json) {
+  factory ProjectOverViewModel.fromJson(Map<String, dynamic> json) {
     return ProjectOverViewModel(
         prjId: json['prj_id'] as int,
         title: json['title'] as String,
@@ -67,9 +62,4 @@ class ProjectOverViewModel {
         pvt: setBool(json['pvt'])
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory ProjectOverViewModel.fromJson(String source) =>
-      ProjectOverViewModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

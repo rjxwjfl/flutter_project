@@ -21,7 +21,7 @@ class ProjectRepository {
     final response = await http.get(Uri.parse(url)).timeout(const Duration(milliseconds: 5000));
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
-      final List<ProjectOverViewModel> projectList = data.map((json) => ProjectOverViewModel.fromMap(json)).toList();
+      final List<ProjectOverViewModel> projectList = data.map((json) => ProjectOverViewModel.fromJson(json)).toList();
       return projectList;
     } else {
       throw Exception('Failed to fetch projects');
@@ -32,7 +32,7 @@ class ProjectRepository {
     final response = await http.get(Uri.parse('$baseUrl/user/project?uid=$userId')).timeout(const Duration(milliseconds: 5000));
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
-      final List<ProjectOverViewModel> projectList = data.map((json) => ProjectOverViewModel.fromMap(json)).toList();
+      final List<ProjectOverViewModel> projectList = data.map((json) => ProjectOverViewModel.fromJson(json)).toList();
       return projectList;
     } else {
       throw Exception('Failed to fetch projects');
@@ -44,7 +44,7 @@ class ProjectRepository {
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
       Map<String, dynamic> projectMap = data[0]; // get the first project object as a map
-      ProjectGetModel model = ProjectGetModel.fromMap(projectMap);
+      ProjectGetModel model = ProjectGetModel.fromJson(projectMap);
       return model;
     } else {
       throw Exception('Failed to fetch projects');
@@ -55,7 +55,7 @@ class ProjectRepository {
     final response = await http.get(Uri.parse('$baseUrl/project/rule?pid=$projectId'));
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
-      final List<ProjectRuleModel> rules = data.map((json) => ProjectRuleModel.fromMap(json)).toList();
+      final List<ProjectRuleModel> rules = data.map((json) => ProjectRuleModel.fromJson(json)).toList();
       return rules;
     } else {
       throw Exception('Failed to load project');
@@ -66,7 +66,7 @@ class ProjectRepository {
     final response = await http.get(Uri.parse('$baseUrl/project/member?pid=$prjId'));
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
-      List<MembersListModel> memberList = data.map((json) => MembersListModel.fromMap(json)).toList();
+      List<MembersListModel> memberList = data.map((json) => MembersListModel.fromJson(json)).toList();
       return memberList;
     } else {
       throw Exception('Failed to load project');
@@ -75,7 +75,7 @@ class ProjectRepository {
 
   Future<int> createProject(int userId, ProjectSetModel model) async {
     String url = '$baseUrl/project?uid=$userId';
-    Map<String, dynamic> body = model.toMap();
+    Map<String, dynamic> body = model.toJson();
     final response = await http.post(Uri.parse(url), headers: {"Content-Type": "application/json"}, body: jsonEncode(body));
     if (response.statusCode != 200) {
       throw Exception('Failed to create project');

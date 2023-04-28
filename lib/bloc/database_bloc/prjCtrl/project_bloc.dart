@@ -9,7 +9,7 @@ import '../model/project/project_overview_model.dart';
 import '../model/user/user_dtl_model.dart';
 import 'project_repository.dart';
 
-class ProjectBloc {
+class Bloc {
   static late int currentProject;
   final ProjectRepository _projectRepository;
   List<ProjectOverViewModel> _list = [];
@@ -19,7 +19,6 @@ class ProjectBloc {
   final StreamController<ProjectGetModel> _projectController = StreamController.broadcast();
   final StreamController<List<ProjectRuleModel>> _ruleController = StreamController.broadcast();
 
-  // final StreamController<ProjectMemberModel> _mbrController = StreamController.broadcast();
   final StreamController<List<MembersListModel>> _mbrListController = StreamController.broadcast();
 
   dispose() {
@@ -41,7 +40,7 @@ class ProjectBloc {
 
   Stream<List<MembersListModel>> get mbrListController => _mbrListController.stream;
 
-  ProjectBloc(this._projectRepository);
+  Bloc(this._projectRepository);
 
   bool get isLimit => _isLimit;
 

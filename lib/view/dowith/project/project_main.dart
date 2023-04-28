@@ -24,7 +24,7 @@ class ProjectMainScreen extends StatefulWidget {
 }
 
 class _ProjectMainScreenState extends State<ProjectMainScreen> {
-  final ProjectBloc _projectBloc = ProjectBloc(ProjectRepository());
+  final Bloc _projectBloc = Bloc(ProjectRepository());
   bool _isClicked = false;
   int? userId = prefs.getInt("user_id");
   int? userRole;

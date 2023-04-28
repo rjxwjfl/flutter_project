@@ -21,7 +21,7 @@ class _ProjectSearchState extends State<ProjectSearch> {
   String? searchKeyword;
   List<int>? filters;
   int? sort;
-  final ProjectBloc _bloc = ProjectBloc(ProjectRepository());
+  final Bloc _bloc = Bloc(ProjectRepository());
   late TextEditingController _textEditingController;
   late final ScrollController _scrollController;
   late FocusNode _focusNode;

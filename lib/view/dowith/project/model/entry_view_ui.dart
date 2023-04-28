@@ -11,7 +11,7 @@ class EntryViewUI extends StatefulWidget {
 }
 
 class _EntryViewUIState extends State<EntryViewUI> {
-  final ProjectBloc _bloc = ProjectBloc(ProjectRepository());
+  final Bloc _bloc = Bloc(ProjectRepository());
 
   @override
   void initState() {
@@ -92,27 +92,27 @@ class _EntryViewUIState extends State<EntryViewUI> {
       ),
     );
   }
+}
 
-  String dateCal(DateTime date) {
-    DateTime now = DateTime.now();
-    Duration difference = now.difference(date);
-    if (difference.inSeconds < 60) {
-      return "${difference.inSeconds}초 전";
-    }
-    if (difference.inMinutes < 60) {
-      return "${difference.inMinutes}분 전";
-    }
-    if (difference.inHours < 24) {
-      return "${difference.inHours}시간 전";
-    }
-    if (difference.inDays < 30) {
-      return "${difference.inDays}일 전";
-    }
-    if (difference.inDays < 365) {
-      return "${(difference.inDays / 30).floor()}달 전";
-    }
-    return "${(difference.inDays / 365).floor()}년 전";
+String dateCal(DateTime date) {
+  DateTime now = DateTime.now();
+  Duration difference = now.difference(date);
+  if (difference.inSeconds < 60) {
+    return "${difference.inSeconds}초 전";
   }
+  if (difference.inMinutes < 60) {
+    return "${difference.inMinutes}분 전";
+  }
+  if (difference.inHours < 24) {
+    return "${difference.inHours}시간 전";
+  }
+  if (difference.inDays < 30) {
+    return "${difference.inDays}일 전";
+  }
+  if (difference.inDays < 365) {
+    return "${(difference.inDays / 30).floor()}달 전";
+  }
+  return "${(difference.inDays / 365).floor()}년 전";
 }
 // https://bangu4.tistory.com/364
 // https://velog.io/@yellowtoast/Flutter-%EC%95%B1-%EB%B0%B0%ED%8F%AC-%ED%9B%84-%ED%8A%B9%EC%A0%95-%EC%95%88%EB%93%9C%EB%A1%9C%EC%9D%B4%EB%93%9C-%ED%8F%B0%EC%97%90%EC%84%9C-%EC%95%B1-%EC%8B%A4%ED%96%89%EC%9D%B4-%EB%90%98%EC%A7%80-%EC%95%8A%EB%8A%94-%ED%98%84%EC%83%81-%ED%95%B4%EA%B2%B0-%EC%A4%91

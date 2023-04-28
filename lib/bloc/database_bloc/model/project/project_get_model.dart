@@ -1,6 +1,5 @@
-import 'dart:convert';
 
-import 'package:flutter_dowith/bloc/database_bloc/model/user/user_dtl_model.dart';
+import 'package:flutter_dowith/utils/convert_data.dart';
 import 'package:intl/intl.dart';
 
 class ProjectGetModel {
@@ -29,8 +28,7 @@ class ProjectGetModel {
         required this.pvt,
         required this.memberCount});
 
-  Map<String, dynamic> toMap() {
-    DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'prj_id': prjId,
       'title': title,
@@ -46,7 +44,7 @@ class ProjectGetModel {
     };
   }
 
-  factory ProjectGetModel.fromMap(Map<String, dynamic> json) {
+  factory ProjectGetModel.fromJson(Map<String, dynamic> json) {
     return ProjectGetModel(
         prjId: json['prj_id'] != null ? json['prj_id'] as int : null,
         title: json['title'] as String,
@@ -60,8 +58,4 @@ class ProjectGetModel {
         pvt: setBool(json['pvt']),
         memberCount: json['member_count'] as int);
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory ProjectGetModel.fromJson(String source) => ProjectGetModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

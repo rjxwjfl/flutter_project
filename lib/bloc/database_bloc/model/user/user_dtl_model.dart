@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:flutter_dowith/utils/convert_data.dart';
 import 'package:intl/intl.dart';
 
 class UserDtlModel {
@@ -64,18 +65,4 @@ class UserDtlModel {
   String toJson() => json.encode(toMap());
 
   factory UserDtlModel.fromJson(String source) => UserDtlModel.fromMap(json.decode(source) as Map<String, dynamic>);
-}
-
-bool setBool(int state) {
-  bool state;
-  const map = {0: false, 1: true};
-  state = map["state"] ?? false;
-  return state;
-}
-
-int setInt(bool state) {
-  int state;
-  const map = {false: 0, true: 1};
-  state = map["state"] ?? 0;
-  return state;
 }

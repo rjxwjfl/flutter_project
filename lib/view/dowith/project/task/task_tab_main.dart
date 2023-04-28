@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dowith/bloc/database_bloc/model/task/task_model.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class TaskTabMain extends StatefulWidget {
@@ -12,7 +11,6 @@ class TaskTabMain extends StatefulWidget {
 }
 
 class _TaskTabMainState extends State<TaskTabMain> {
-  List<TaskModel> sampleTask = [];
 
   @override
   void initState() {

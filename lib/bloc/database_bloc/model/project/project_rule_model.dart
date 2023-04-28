@@ -1,6 +1,3 @@
-// Project Rule Model
-
-import 'dart:convert';
 
 class ProjectRuleModel {
   int? ruleId;
@@ -9,19 +6,14 @@ class ProjectRuleModel {
 
   ProjectRuleModel({this.ruleId, required this.prjId, required this.rule});
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{'rule_id': ruleId, 'prj_id': prjId, 'rule': rule};
   }
 
-  factory ProjectRuleModel.fromMap(Map<String, dynamic> map) {
+  factory ProjectRuleModel.fromJson(Map<String, dynamic> json) {
     return ProjectRuleModel(
-        ruleId: map['rule_id'] != null ? map['rule_id'] as int : null,
-        prjId: map['prj_id'] as int,
-        rule: map['rule'] as String);
+        ruleId: json['rule_id'] != null ? json['rule_id'] as int : null,
+        prjId: json['prj_id'] as int,
+        rule: json['rule'] as String);
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory ProjectRuleModel.fromJson(String source) =>
-      ProjectRuleModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

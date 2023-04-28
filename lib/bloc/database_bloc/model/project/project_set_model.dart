@@ -1,9 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
-import 'package:flutter_dowith/bloc/database_bloc/model/user/user_dtl_model.dart';
-import 'package:intl/intl.dart';
-import 'package:line_icons/line_icon.dart';
+import 'package:flutter_dowith/utils/convert_data.dart';
 
 // Project Model
 
@@ -29,8 +24,7 @@ class ProjectSetModel {
       this.expireOn,
       required this.pvt});
 
-  Map<String, dynamic> toMap() {
-    DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'prj_id': prjId,
       'title': title,
@@ -44,7 +38,7 @@ class ProjectSetModel {
     };
   }
 
-  factory ProjectSetModel.fromMap(Map<String, dynamic> json) {
+  factory ProjectSetModel.fromJson(Map<String, dynamic> json) {
     return ProjectSetModel(
         prjId: json['prj_id'] != null ? json['prj_id'] as int : null,
         title: json['title'] as String,
@@ -56,8 +50,4 @@ class ProjectSetModel {
         expireOn: json['expire_on'] != null ? DateTime.parse(json['expire_on']) : null,
         pvt: setBool(json['pvt']));
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory ProjectSetModel.fromJson(String source) => ProjectSetModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }
