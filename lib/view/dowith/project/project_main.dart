@@ -3,6 +3,8 @@ import 'package:flutter_dowith/bloc/database_bloc/model/project/members_list_mod
 import 'package:flutter_dowith/bloc/database_bloc/model/project/project_get_model.dart';
 import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_bloc.dart';
 import 'package:flutter_dowith/bloc/database_bloc/prjCtrl/project_repository.dart';
+import 'package:flutter_dowith/bloc/database_bloc/taskCtrl/task_bloc.dart';
+import 'package:flutter_dowith/bloc/database_bloc/taskCtrl/task_repository.dart';
 import 'package:flutter_dowith/view/dowith/project/calendar_view.dart';
 import 'package:flutter_dowith/main.dart';
 import 'package:flutter_dowith/view/dowith/project/model/entry_view_ui.dart';
@@ -24,7 +26,7 @@ class ProjectMainScreen extends StatefulWidget {
 }
 
 class _ProjectMainScreenState extends State<ProjectMainScreen> {
-  final Bloc _projectBloc = Bloc(ProjectRepository());
+  final ProjectBloc _projectBloc = ProjectBloc(ProjectRepository());
   bool _isClicked = false;
   int? userId = prefs.getInt("user_id");
   int? userRole;
@@ -114,9 +116,7 @@ class _ProjectMainScreenState extends State<ProjectMainScreen> {
                     const CalendarView(),
                     divider(),
                     ProjectTitleUI(title: "과제",callback: () {}),
-                    const MyTaskView(),
-                    ProjectTitleUI(title: "통계", callback: () {}),
-                    StaticsView(),
+                    MyTaskView(userId: userId!, prjId: widget.prjId,),
                     ProjectTitleUI(title: "피드", subText: "\n프로젝트 피드를 확인하세요", callback: () {}),
                     const Placeholder(
                       child: SizedBox(height: 150, child: Center(child: Text("TASKS?"))),

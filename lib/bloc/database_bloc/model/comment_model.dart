@@ -23,8 +23,8 @@ class FeedCommentModel {
       'feedId': feedId,
       'author_id': authorId,
       'feed_cmt_cnt': feedCmtCnt,
-      'create_at': formatter.format(createAt),
-      'update_at': formatter.format(updateAt)
+      'create_at': dataFormatter.format(createAt),
+      'update_at': dataFormatter.format(updateAt)
     };
   }
 

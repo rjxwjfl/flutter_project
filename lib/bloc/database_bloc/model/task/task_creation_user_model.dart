@@ -26,8 +26,8 @@ class TaskCreationUserModel {
       'task_pnt': taskPnt,
       'task_cmt': taskCmt,
       'task_state': taskState,
-      'start_date': formatter.format(startDate),
-      'end_date': formatter.format(endDate)
+      'start_date': dataFormatter.format(startDate),
+      'end_date': dataFormatter.format(endDate)
     };
   }
 

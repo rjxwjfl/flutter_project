@@ -18,7 +18,7 @@ class SearchBarUI extends StatelessWidget {
   final FocusNode focusNode;
   final TextEditingController controller;
   final TextInputType keyboardType;
-  final Bloc? bloc;
+  final ProjectBloc? bloc;
   final Color color;
   final void Function(String?) callback;
   final void Function() removeCallback;

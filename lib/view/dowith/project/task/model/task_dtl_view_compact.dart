@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dowith/bloc/database_bloc/model/task/task_assigned_view.dart';
+import 'package:flutter_dowith/utils/convert_data.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class TaskDtlViewCompact extends StatefulWidget {
-  const TaskDtlViewCompact({required this.index, Key? key}) : super(key: key);
+  const TaskDtlViewCompact({required this.data, Key? key}) : super(key: key);
 
-  final int index;
+  final TaskAssignedCompactView data;
 
   @override
   State<TaskDtlViewCompact> createState() => _TaskDtlViewCompactState();
@@ -29,34 +31,52 @@ class _TaskDtlViewCompactState extends State<TaskDtlViewCompact> {
               },
               child: Column(
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "Category>",
-                              style: TextStyle(fontSize: 10),
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      maxHeight: 60.0
+                    ),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 5, top: 2, bottom: 2),
+                          child: Container(
+                            height: MediaQuery.of(context).size.height,
+                            width: 5.0,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.rectangle,
+                              color: widget.data.lblClr
                             ),
-                            Text("수정 ${widget.index}번 파트"),
-                          ],
+                          ),
                         ),
-                      ),
-                      Column(
-                        children: [
-                          Text("6시간 남음",
-                              style: TextStyle(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onBackground)),
-                          Text("~16:35",
-                              style: TextStyle(
-                                  color: Theme.of(context).colorScheme.outline,
-                                  fontSize: 10)),
-                        ],
-                      ),
-                    ],
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${widget.data.taskSub}>",
+                                style: const TextStyle(fontSize: 10),
+                              ),
+                              Text(widget.data.taskPnt),
+                            ],
+                          ),
+                        ),
+                        widget.data.startDate != null ?
+                        Column(
+                          children: [
+                            Text(untilExpire(widget.data.endDate!),
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground)),
+                            Text(dateFormat.format(widget.data.endDate!),
+                                style: TextStyle(
+                                    color: Theme.of(context).colorScheme.outline,
+                                    fontSize: 10),
+                            textAlign: TextAlign.center,),
+                          ],
+                        ) : const SizedBox(),
+                      ],
+                    ),
                   ),
                   const Divider()
                 ],

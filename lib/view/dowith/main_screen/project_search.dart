@@ -21,7 +21,7 @@ class _ProjectSearchState extends State<ProjectSearch> {
   String? searchKeyword;
   List<int>? filters;
   int? sort;
-  final Bloc _bloc = Bloc(ProjectRepository());
+  final ProjectBloc _bloc = ProjectBloc(ProjectRepository());
   late TextEditingController _textEditingController;
   late final ScrollController _scrollController;
   late FocusNode _focusNode;
@@ -36,15 +36,12 @@ class _ProjectSearchState extends State<ProjectSearch> {
   }
 
   Future<void> fetchData() async {
-    print("fetch start");
     if (_bloc.isLimit){
-      print("fetch was forced terminated");
       return;
     }
     _bloc.getOverView(page, searchKeyword, sort);
     setState(() {
       page++;
-      print("waiting for loading next page");
     });
   }
 
@@ -59,8 +56,10 @@ class _ProjectSearchState extends State<ProjectSearch> {
   }
 
   void scrollListener() {
-    if (_scrollController.offset >= _scrollController.position.maxScrollExtent &&
-        !_scrollController.position.outOfRange) {
+    final maxScrollExtent = _scrollController.position.maxScrollExtent;
+    final triggerFetchPoint = maxScrollExtent;
+    // print("Offset : ${_scrollController.offset} / MaxScrollExtent : $maxScrollExtent / Out of Range? ${_scrollController.position.outOfRange}");
+    if (_scrollController.offset >= triggerFetchPoint && !_scrollController.position.outOfRange) {
       fetchData();
     }
   }

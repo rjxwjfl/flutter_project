@@ -35,7 +35,7 @@ class _ProjectNaviFrameState extends State<ProjectNaviFrame> {
         children: [
           ProjectMainScreen(prjId: widget.prjId),
           ProjectCalendarMain(),
-          TaskTabMain(prjId: widget.prjId,),
+          TaskTabMain(prjId: widget.prjId),
           FeedMain(),
           ProjectInbox(),
         ],

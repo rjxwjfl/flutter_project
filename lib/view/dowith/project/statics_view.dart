@@ -5,11 +5,11 @@ class StaticsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 20),
+    return const Padding(
+      padding: EdgeInsets.only(left: 16, right: 16, bottom: 20),
       child: Row(
         children: [
-          const SizedBox(
+          SizedBox(
             width: 150,
               height: 150,
               child: Card(
@@ -20,11 +20,11 @@ class StaticsView extends StatelessWidget {
                 ),
               )),
           Expanded(child: Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: EdgeInsets.all(12.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Text("총 과제 수 : :?")
               ],
             ),

@@ -24,7 +24,7 @@ class MembersListModel {
     return <String, dynamic>{
       'user_id': userId,
       'role': role,
-      'latest_access': formatter.format(latestAccess),
+      'latest_access': dataFormatter.format(latestAccess),
       'name': name,
       'contact': contact,
       'introduce': introduce,

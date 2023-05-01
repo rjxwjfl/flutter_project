@@ -17,10 +17,10 @@ class TaskViewCompactModel {
   DateTime createAt;
   DateTime updateAt;
   bool taskPE;
-  String taskPeriod;
+  String? taskPeriod;
   DateTime? startDate;
   DateTime? endDate;
-  int taskFreq;
+  int? taskFreq;
   int usersCount;
   
   TaskViewCompactModel({
@@ -40,10 +40,10 @@ class TaskViewCompactModel {
     required this.createAt,
     required this.updateAt,
     required this.taskPE,
-    required this.taskPeriod,
+    this.taskPeriod,
     this.startDate,
     this.endDate,
-    required this.taskFreq,
+    this.taskFreq,
     required this.usersCount,
   });
 
@@ -62,12 +62,12 @@ class TaskViewCompactModel {
       'task_dtl_desc': taskDtlDesc,
       'lbl_clr': lblClr,
       'priority': priority,
-      'create_at': formatter.format(createAt),
-      'update_at': formatter.format(updateAt),
+      'create_at': dataFormatter.format(createAt),
+      'update_at': dataFormatter.format(updateAt),
       'task_pe': setInt(taskPE),
       'task_period': taskPeriod,
-      'start_date': startDate != null ? formatter.format(startDate!) : null,
-      'end_date': endDate != null ? formatter.format(endDate!) : null,
+      'start_date': startDate != null ? dataFormatter.format(startDate!) : null,
+      'end_date': endDate != null ? dataFormatter.format(endDate!) : null,
       'task_freq': taskFreq,
       'users_count': usersCount,
     };
@@ -93,14 +93,14 @@ class TaskViewCompactModel {
       createAt: DateTime.parse(json['create_at'] ),
       updateAt: DateTime.parse(json['update_at'] ),
       taskPE: setBool(json['task_pe']),
-      taskPeriod: json['task_period'] as String,
+      taskPeriod: json['task_period'] != null ? json['task_period'] as String : null,
       startDate: json['start_date'] != null
           ? DateTime.parse(json['start_date'])
           : null,
       endDate: json['end_date'] != null
           ? DateTime.parse(json['end_date'])
           : null,
-      taskFreq: json['task_freq'] as int,
+      taskFreq: json['task_freq'] != null ? json['task_freq'] as int : null,
       usersCount: json['users_count'] as int,
     );
   }

@@ -43,8 +43,8 @@ class TaskCreationModel {
       'task_dtl_desc': taskDtlDesc,
       'task_pe': setInt(taskPE),
       'task_period': taskPeriod,
-      'start_date': startDate != null ? formatter.format(startDate!) : null,
-      'end_date': endDate != null ? formatter.format(endDate!) : null,
+      'start_date': startDate != null ? dataFormatter.format(startDate!) : null,
+      'end_date': endDate != null ? dataFormatter.format(endDate!) : null,
       'task_freq': taskFreq,
       'users':
           users != null ? users!.map((user) => user.toJson()).toList() : null,

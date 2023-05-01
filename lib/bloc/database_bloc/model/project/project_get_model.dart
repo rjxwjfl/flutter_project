@@ -36,9 +36,9 @@ class ProjectGetModel {
       'mst_id': mstId,
       'prj_desc': prjDesc,
       'goal': goal,
-      'create_at': createAt != null ? formatter.format(createAt!) : null,
-      'start_on': startOn != null ? formatter.format(startOn!) : null,
-      'expire_on': expireOn != null ? formatter.format(expireOn!) : null,
+      'create_at': createAt != null ? dataFormatter.format(createAt!) : null,
+      'start_on': startOn != null ? dataFormatter.format(startOn!) : null,
+      'expire_on': expireOn != null ? dataFormatter.format(expireOn!) : null,
       'pvt': setInt(pvt),
       'member_count': memberCount
     };

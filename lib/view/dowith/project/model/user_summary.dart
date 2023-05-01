@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dowith/bloc/database_bloc/model/project/members_list_model.dart';
+import 'package:flutter_dowith/utils/convert_data.dart';
 import 'package:flutter_dowith/view/dowith/project/model/entry_view_ui.dart';
 
 class UserSummary extends StatelessWidget {

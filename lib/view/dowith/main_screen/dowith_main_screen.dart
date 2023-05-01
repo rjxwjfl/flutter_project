@@ -16,7 +16,7 @@ class DoWithMainScreen extends StatefulWidget {
 }
 
 class _DoWithMainScreenState extends State<DoWithMainScreen>{
-  final Bloc _bloc = Bloc(ProjectRepository());
+  final ProjectBloc _bloc = ProjectBloc(ProjectRepository());
   final int? _key = prefs.getInt("user_id");
 
   @override

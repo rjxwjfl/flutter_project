@@ -9,7 +9,7 @@ import '../model/project/project_overview_model.dart';
 import '../model/user/user_dtl_model.dart';
 import 'project_repository.dart';
 
-class Bloc {
+class ProjectBloc {
   static late int currentProject;
   final ProjectRepository _projectRepository;
   List<ProjectOverViewModel> _list = [];
@@ -40,7 +40,7 @@ class Bloc {
 
   Stream<List<MembersListModel>> get mbrListController => _mbrListController.stream;
 
-  Bloc(this._projectRepository);
+  ProjectBloc(this._projectRepository);
 
   bool get isLimit => _isLimit;
 
