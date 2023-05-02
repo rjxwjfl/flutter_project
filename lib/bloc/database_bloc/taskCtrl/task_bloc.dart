@@ -6,8 +6,8 @@ import 'package:flutter_dowith/bloc/database_bloc/taskCtrl/task_repository.dart'
 
 class TaskBloc {
   final TaskRepository _taskRepository;
-  List<TaskViewCompactModel> _taskList = [];
-  List<TaskViewCompactModel> _userTask = [];
+  static List<TaskViewCompactModel> _taskList = [];
+  static List<TaskViewCompactModel> _userTask = [];
   final StreamController<List<TaskAssignedCompactView>> _getPrjUserTaskCtrl = StreamController.broadcast();
   final StreamController<List<TaskAssignedCompactView>> _getUserTaskAllCtrl = StreamController.broadcast();
   final StreamController<List<TaskViewCompactModel>> _getTaskOriCtrl = StreamController.broadcast();

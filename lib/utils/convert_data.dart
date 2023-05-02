@@ -85,3 +85,4 @@ String intToString(int role) {
   result = map[role] ?? "손님";
   return result;
 }
+
