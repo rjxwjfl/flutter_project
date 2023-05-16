@@ -4,15 +4,11 @@ import 'theme_palette.dart';
 
 class ThemeProvider extends ChangeNotifier {
   late ThemeMode _themeMode = ThemeMode.light;
-  late ColorScheme _lightColorScheme;
-  late ColorScheme _darkColorScheme;
   bool _isDarkMode = prefs.getBool('isDarkMode') ?? false;
-  int _schemeValue = prefs.getInt('schemeValue') ?? 0;
 
   ThemeProvider() {
     _loadFromPrefs();
-    _lightColorScheme = lightSchemeSwitcher(_schemeValue);
-    _darkColorScheme = darkSchemeSwitcher(_schemeValue);
+    print(_isDarkMode);
     _themeMode = _isDarkMode ? ThemeMode.dark : ThemeMode.light;
   }
 
@@ -29,18 +25,10 @@ class ThemeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  get lightColorScheme => _lightColorScheme;
-
-  get darkColorScheme => _darkColorScheme;
 
   get themeMode => _themeMode;
 
-  get modeValue => _schemeValue;
-
   void schemeSelector(int value) {
-    _schemeValue = value;
-    _lightColorScheme = lightSchemeSwitcher(value);
-    _darkColorScheme = darkSchemeSwitcher(value);
     _saveToPrefs();
     notifyListeners();
   }
@@ -67,12 +55,10 @@ class ThemeProvider extends ChangeNotifier {
 
   _loadFromPrefs() {
     _isDarkMode = prefs.getBool('isDarkMode') ?? false;
-    _schemeValue = prefs.getInt('schemeValue') ?? 0;
   }
 
   _saveToPrefs() {
     prefs.setBool('isDarkMode', _isDarkMode);
-    prefs.setInt('schemeValue', _schemeValue);
   }
 
   Color setMaterialColor(context) {

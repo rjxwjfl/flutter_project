@@ -47,7 +47,7 @@ class _AddTaskState extends State<AddTask> {
                     controller: _taskDescCtrl,
                     focusNode: _taskDescFocus,
                     validator: _descValidate,
-                    length: 60,
+           length: 60,
                   ),
                   Row(
                     children: [

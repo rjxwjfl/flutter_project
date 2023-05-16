@@ -8,6 +8,7 @@ import 'package:flutter_dowith/riverpod/main_route_provider.dart';
 import 'package:flutter_dowith/riverpod/project_draw_up_provider.dart';
 import 'package:flutter_dowith/riverpod/user_management_provider.dart';
 import 'package:flutter_dowith/utils/glow_remover.dart';
+import 'package:flutter_dowith/utils/theme/theme_palette.dart';
 import 'package:flutter_dowith/utils/theme/theme_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -55,8 +56,8 @@ class AppInit extends ConsumerWidget {
     ));
     return MaterialApp(
         title: "Do With!",
-        theme: ThemeData(colorScheme: ref.watch(theme).lightColorScheme, fontFamilyFallback: const ["QuickSand", "NotoSans"], useMaterial3: true),
-        darkTheme: ThemeData(colorScheme: ref.watch(theme).darkColorScheme, fontFamilyFallback: const ["QuickSand", "NotoSans"], useMaterial3: true),
+        theme: ThemeData(colorScheme: AppScheme.lightColorScheme, fontFamilyFallback: const ["QuickSand", "NotoSans"], useMaterial3: true),
+        darkTheme: ThemeData(colorScheme: AppScheme.darkColorScheme, fontFamilyFallback: const ["QuickSand", "NotoSans"], useMaterial3: true),
         themeMode: ref.watch(theme).themeMode,
         scrollBehavior: ScrollGlowRemove(),
         debugShowCheckedModeBanner: false,
